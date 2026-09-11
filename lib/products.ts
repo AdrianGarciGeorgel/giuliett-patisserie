@@ -17,7 +17,7 @@ export const PRODUCTS: Product[] = [
     price: 25000,
     imagePrimary: '/images/chocotorta_3.png',
     imageSecondary: '/images/chocotorta_2.png',
-    description: 'La versión más cuidada de un favorito argentino, con presentación Giuliett.',
+    description: 'Nuestra chocotorta más especial: mucho dulce de leche, chocolates y Oreos bañadas. También podés pedirla personalizada con colores, temática y detalles especiales. \n\n Petit: rinde aproximadamente 15–20 personas. \nSuper: rinde aproximadamente 30–35 personas. \n\n Las personalizaciones especiales pueden tener un costo adicional.',
     gallery: ['/images/chocotorta_3.png', '/images/chocotorta_2.png', '/images/chocotorta.png'],
   },
   {
@@ -28,7 +28,7 @@ export const PRODUCTS: Product[] = [
     price: 24000,
     imagePrimary: '/images/marquise.png',
     imageSecondary: '/images/marquise_2.png',
-    description: 'Base intensa de chocolate, crema suave y una terminación delicada para compartir.',
+    description: 'Base de chocolate, dulce de leche y crema Chantilly. Terminada con chocolates o frutillas, según la temporada.\n\n Elaborada sin ingredientes con gluten.',
     gallery: ['/images/marquise.png', '/images/marquise_2.png'],
   },
   {
@@ -39,7 +39,7 @@ export const PRODUCTS: Product[] = [
     price: 26000,
     imagePrimary: '/images/NY_CHEESECAKE.png',
     imageSecondary: '/images/producto-mesas.png',
-    description: 'Clásico neoyorquino de textura sedosa, elaborado en pequeños lotes.',
+    description: 'Cheesecake estilo New York, súper cremoso, con base de galletas y topping de frutos rojos',
     gallery: ['/images/NY_CHEESECAKE.png', '/images/producto-mesas.png'],
   },
   {
@@ -50,7 +50,7 @@ export const PRODUCTS: Product[] = [
     price: 22000,
     imagePrimary: '/images/lemon.png',
     imageSecondary: '/images/lemon_2.png',
-    description: 'Limón fresco, merengue ligero y una base crocante hecha a mano.',
+    description: 'Masa sablée de vainilla, curd de limón y merengue italiano. Un clásico fresco y equilibrado.',
     gallery: ['/images/lemon.png', '/images/lemon_2.png'],
   },
   {
@@ -61,7 +61,7 @@ export const PRODUCTS: Product[] = [
     price: 23000,
     imagePrimary: '/images/cabsha.png',
     imageSecondary: '/images/cabsha_2.png',
-    description: 'Una tarta de capas suaves y sabor equilibrado para una sobremesa especial.',
+    description: 'Base de vainilla, dulce de leche y ganache de chocolate. Un clásico simple e irresistible.',
     gallery: ['/images/cabsha.png', '/images/cabsha_2.png'],
   },
   {
@@ -83,7 +83,7 @@ export const PRODUCTS: Product[] = [
     price: 24000,
     imagePrimary: '/images/OREO.png',
     imageSecondary: '/images/OREO_2.png',
-    description: 'Chocolate, crema y galletas en una composición intensa y generosa.',
+    description: 'Doble base de Oreo, mucho dulce de leche y una terminación irresistible con Oreos y Kit Kat.',
     gallery: ['/images/OREO.png', '/images/OREO_2.png'],
   },
   {
@@ -94,7 +94,7 @@ export const PRODUCTS: Product[] = [
     price: 23000,
     imagePrimary: '/images/frutilla.png',
     imageSecondary: '/images/frutilla_2.png',
-    description: 'Frutillas, crema y una base delicada para disfrutar en temporada.',
+    description: 'Masa sablée de vainilla, dulce de leche, crema Chantilly y abundantes frutillas frescas.',
     gallery: ['/images/frutilla.png', '/images/frutilla_2.png'],
   },
   {
@@ -116,7 +116,18 @@ export const PRODUCTS: Product[] = [
     price: 38000,
     imagePrimary: '/images/producto-mesas.png',
     imageSecondary: '/images/cierre-mesa-dulce.png',
-    description: 'Diseñada a medida para celebrar: sabores, colores y terminaciones a elección.',
+    description: 'Tortas 100% personalizadas, con bizcochuelo de chocolate o vainilla, rellenos a elección y buttercream en los colores que quieras. \n\n Rellenos a elección:\n-Dulce de leche\n-Dulce de leche con merenguitos\n-Ganache de chocolate\n-Crema Chocotorta \n-Mousse de limón\n-⁠Crema Bariloche \n\n Tamaños disponibles:\n-15/20 personas\n-30/40 personas\n-50/60 personas\nConsultar por opciones para más invitados.\n\nFormato:\nCircular\nRectangular',
+    gallery: ['/images/producto-mesas.png', '/images/cierre-mesa-dulce.png'],
+  },
+  {
+    id: 'flower-cake',
+    slug: 'flower-cake',
+    name: 'Flower Cake',
+    category: PRODUCT_CATEGORIES.CUSTOM_CAKES,
+    price: 38000,
+    imagePrimary: '/images/producto-mesas.png',
+    imageSecondary: '/images/cierre-mesa-dulce.png',
+    description: 'Tortas personalizadas con flores naturales y  buttercream, diseñadas especialmente para cada ocasión. \n\n Rellenos a elección:\n-Dulce de leche\n-Dulce de leche con merenguitos\n-Ganache de chocolate\n-Crema Chocotorta \n-Mousse de limón\n-⁠Crema Bariloche \n\n Tamaños disponibles:\n-15/20 personas\n-30/40 personas\n-50/60 personas\nConsultar por opciones para más invitados.\n\nFormato:\nCircular\nRectangular\nRectangular',
     gallery: ['/images/producto-mesas.png', '/images/cierre-mesa-dulce.png'],
   },
   {
@@ -127,7 +138,18 @@ export const PRODUCTS: Product[] = [
     price: 38000,
     imagePrimary: '/images/letter.png',
     imageSecondary: '/images/letter_2.png',
-    description: 'Diseñada a medida para celebrar: sabores, colores y terminaciones a elección.',
+    description: 'Base de brownie o sablée de vainilla, con dulce de leche, crema y chocolates. Personalizada en forma de letra o número.',
+    gallery: ['/images/letter.png', '/images/letter_2.png'],
+  },
+  {
+    id: 'wedding-cake',
+    slug: 'wedding-cake',
+    name: 'Wedding Cake',
+    category: PRODUCT_CATEGORIES.CUSTOM_CAKES,
+    price: 38000,
+    imagePrimary: '/images/letter.png',
+    imageSecondary: '/images/letter_2.png',
+    description: 'Una torta única para un día único. Personalizamos sabores, colores, flores y cada detalle para que acompañe la estética de su casamiento.',
     gallery: ['/images/letter.png', '/images/letter_2.png'],
   },
   {
@@ -160,7 +182,18 @@ export const PRODUCTS: Product[] = [
     price: 18000,
     imagePrimary: '/images/producto-cookies.png',
     imageSecondary: '/images/manifiesto-manos.png',
-    description: 'Galletas horneadas y decoradas una por una para hacer memorable cada detalle.',
+    description: 'Tu idea, hecha galleta.\n\nCreamos galletas personalizadas con fotos, nombres, ilustraciones o el diseño que quieras. Un detalle original para cumpleaños, casamientos, eventos, souvenirs y regalos especiales.\n\nElaboradas con sablée de vainilla, rellenas con dulce de leche y terminadas con impresión comestible de alta calidad.\n\nInformación:\n\n-6,5 cm de diámetro\n-Presentación individual\n-Diseño personalizado\n-Envíos a toda Argentina 🇦🇷',
+    gallery: ['/images/producto-cookies.png', '/images/manifiesto-manos.png'],
+  },
+  {
+    id: 'galletas-empresas',
+    slug: 'galletas-empresas',
+    name: 'Galletas para Empresas',
+    category: PRODUCT_CATEGORIES.CUSTOM_COOKIES,
+    price: 18000,
+    imagePrimary: '/images/producto-cookies.png',
+    imageSecondary: '/images/manifiesto-manos.png',
+    description: 'Tu marca, en un detalle que se recuerda.\n\nPersonalizamos nuestras galletas con logos, isotipos, iniciales o diseños de marca, creando un producto pensado especialmente para tu empresa.\n\nIdeales para eventos corporativos, lanzamientos, regalos empresariales, acciones de marca y obsequios para clientes o equipos.\n\nTambién realizamos pedidos por cantidad y venta mayorista, con propuestas adaptadas a las necesidades de cada empresa.\n\nElaboradas con sablée de vainilla, rellenas con dulce de leche y terminadas con impresión comestible de alta calidad.\n\nInformación:\n-4 cm de diámetro\n-Presentación individual\n-Personalización con identidad de marca\n-Venta mayorista y pedidos por cantidad\n-Envíos a toda Argentina 🇦🇷',
     gallery: ['/images/producto-cookies.png', '/images/manifiesto-manos.png'],
   },
   {
@@ -171,7 +204,7 @@ export const PRODUCTS: Product[] = [
     price: 16000,
     imagePrimary: '/images/BOX_COOKIES.png',
     imageSecondary: '/images/producto-cookies.png',
-    description: 'Una selección de cookies artesanales presentada para regalar o compartir.',
+    description: '6 cookies estilo New York, grandes y bien cargadas, en una selección de nuestros sabores. \n\nSabores disponibles: \n·Clásica de vainilla \n· Red Velvet \n· Limón & Chocolate \n· Doble Chocolate \n· Frambuesa & Chocolate \n· Salted Caramel.',
     gallery: ['/images/BOX_COOKIES.png', '/images/producto-cookies.png'],
   },
   {
@@ -182,7 +215,7 @@ export const PRODUCTS: Product[] = [
     price: 19000,
     imagePrimary: '/images/MACARONS.png',
     imageSecondary: '/images/MACARONS_2.png',
-    description: 'Macarons de receta francesa en una caja pensada para sorprender.',
+    description: 'Selección de macarons en colores y sabores surtidos. Un clásico Giuliett, ideal para regalar o disfrutar. \n\n Elaborados sin ingredientes con gluten.',
     gallery: ['/images/MACARONS.png', '/images/MACARONS_2.png'],
   },
   {
@@ -193,7 +226,7 @@ export const PRODUCTS: Product[] = [
     price: 22000,
     imagePrimary: '/images/BOX.png',
     imageSecondary: '/images/BOX_2.png',
-    description: 'Una experiencia de sabores y detalles delicados con acento parisino.',
+    description: 'Una selección inspirada en la pâtisserie francesa: macarons, madeleines, mini choux y éclairs. Ideal para compartir entre 2–3 personas.',
     gallery: ['/images/BOX.png', '/images/BOX_2.png'],
   },
   {
@@ -204,7 +237,7 @@ export const PRODUCTS: Product[] = [
     price: 22000,
     imagePrimary: '/images/souvenirs.png',
     imageSecondary: '/images/souvenirs_2.png',
-    description: 'Una experiencia de sabores y detalles delicados con acento parisino.',
+    description: 'Macarons presentados en cajitas individuales y personalizados con colores, etiquetas y detalles para cada ocasión. Ideales para cumpleaños, casamientos, baby showers y eventos corporativos.',
     gallery: ['/images/souvenirs.png', '/images/souvenirs_2.png', '/images/souvenirs_3.png'],
   },
 ]

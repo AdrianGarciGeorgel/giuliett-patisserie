@@ -37,7 +37,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {product.name}
             </h1>
             <p className="mt-5 text-[18px] text-primary md:text-[20px]">{priceFormatter.format(product.price)}</p>
-            <p className="mt-7 max-w-[38ch] text-[15px] leading-[1.7] text-muted-foreground">{product.description}</p>
+            <p className="mt-7 max-w-[38ch] text-[15px] leading-[1.7] text-muted-foreground whitespace-pre-line">{product.description}</p>
             <PrimaryAction href={waLink(whatsappMessage)} className="mt-10 w-full max-w-[400px] lg:w-auto">
               Consultar por WhatsApp
             </PrimaryAction>
