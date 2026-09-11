@@ -43,6 +43,12 @@ const teamMembers = [
     role: 'Ingeniera Comercial & Desarrollo Estratégico',
     description: 'Aporta una mirada estratégica al crecimiento de Giuliett, liderando la planificación, el desarrollo de la marca y los objetivos que acompañan su evolución.',
   },
+  {
+    name: '👻👻👻Marco👻👻👻',
+    image: '/images/giu/MARCO.jpeg',
+    role: 'Programador de Giuliett',
+    description: 'Convierte ideas en realidad digital y resuelve cosas mientras come torta',
+  },
 ] as const
 
 export default function GiuPage() {
