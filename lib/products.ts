@@ -38,9 +38,7 @@ export const PRODUCTS: Product[] = [
       '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_2.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_3.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_4.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_5.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_6.jpeg',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_7.jpeg',
+     
     ],
   },
   {
@@ -49,15 +47,14 @@ export const PRODUCTS: Product[] = [
     name: 'NY Cheesecake',
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 26000,
-    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_1.png',
+    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_3.png',
     imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_2.png',
     description: 'Cheesecake estilo New York, súper cremoso, con base de galletas y topping de frutos rojos',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_1.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_2.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_3.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_4.jpeg',
-      '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_5.jpeg',
+      
     ],
   },
   {
@@ -72,9 +69,7 @@ export const PRODUCTS: Product[] = [
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_1.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_2.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_3.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_4.jpeg',
-      '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_5.jpeg',
+      
     ],
   },
   {
@@ -89,7 +84,6 @@ export const PRODUCTS: Product[] = [
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_1.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_2.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_3.jpeg',
     ],
   },
   {
@@ -113,16 +107,14 @@ export const PRODUCTS: Product[] = [
     name: 'Bomba Oreo',
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 24000,
-    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_1.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_2.png',
+    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_3.png',
+    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_4.png',
     description: 'Doble base de Oreo, mucho dulce de leche y una terminación irresistible con Oreos y Kit Kat.',
     gallery: [
-      '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_1.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_2.png',
+ 
       '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_3.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_4.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_5.jpeg',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_6.jpeg',
+      
     ],
   },
   {
@@ -132,14 +124,12 @@ export const PRODUCTS: Product[] = [
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 23000,
     imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_1.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_2.png',
+    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_3.png',
     description: 'Masa sablée de vainilla, dulce de leche, crema Chantilly y abundantes frutillas frescas.',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_1.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_2.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_3.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_4.jpeg',
-      '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_5.jpeg',
+     
     ],
   },
   {
@@ -162,11 +152,10 @@ export const PRODUCTS: Product[] = [
     name: 'Chocotorta',
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 25000,
-    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_1.jpg',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_2.png',
+    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_4.png',
+    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_3.png',
     gallery: [
-      '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_1.jpg',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_2.png',
+  
       '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_3.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_4.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_5.png',
@@ -301,21 +290,15 @@ export const PRODUCTS: Product[] = [
     name: 'Galletas Artesanales',
     category: PRODUCT_CATEGORIES.CUSTOM_COOKIES,
     price: 18000,
-    imagePrimary: '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_1.png',
-    imageSecondary: '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_2.png',
+    imagePrimary: '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_7.png',
+    imageSecondary: '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_8.png',
     description: 'Tu idea, hecha galleta.\n\nCreamos galletas personalizadas con fotos, nombres, ilustraciones o el diseño que quieras. Un detalle original para cumpleaños, casamientos, eventos, souvenirs y regalos especiales.\n\nElaboradas con sablée de vainilla, rellenas con dulce de leche y terminadas con impresión comestible de alta calidad.\n\nInformación:\n\n-6,5 cm de diámetro\n-Presentación individual\n-Diseño personalizado\n-Envíos a toda Argentina 🇦🇷',
     gallery: [
-      '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_1.png',
-      '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_2.png',
-      '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_3.jpeg',
-      '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_4.jpeg',
-      '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_5.jpeg',
-      '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_6.png',
+      
       '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_7.png',
       '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_8.png',
-      '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_9.jpeg',
-      '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_10.jpg',
-      '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_11.jpg',
+      '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_6.png',
+     
     ],
   },
   {
@@ -331,9 +314,7 @@ export const PRODUCTS: Product[] = [
       '/images/PRODUCTOS/COOKIES/COMPANIES/MARCAS_1.png',
       '/images/PRODUCTOS/COOKIES/COMPANIES/MARCAS_2.png',
       '/images/PRODUCTOS/COOKIES/COMPANIES/MARCAS_3.png',
-      '/images/PRODUCTOS/COOKIES/COMPANIES/MARCAS_4.jpeg',
-      '/images/PRODUCTOS/COOKIES/COMPANIES/MARCAS_5.png',
-      '/images/PRODUCTOS/COOKIES/COMPANIES/MARCAS_6.png',
+
     ],
   },
   {

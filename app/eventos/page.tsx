@@ -15,6 +15,7 @@ const eventProposals = [
     ],
     cta: 'Hablemos de tu boda',
     message: 'Hola Giuliett, quisiera solicitar presupuesto para una boda.',
+    slides: EVENTOS.bodas,
     tone: 'cream',
     imageFirstOnDesktop: false,
     closing: undefined,
@@ -29,6 +30,7 @@ const eventProposals = [
     ],
     cta: 'Hablemos de tu proyecto',
     message: 'Hola Giuliett, quisiera consultar por eventos corporativos.',
+    slides: EVENTOS.empresas,
     tone: 'white',
     imageFirstOnDesktop: true,
     closing: undefined,
@@ -44,6 +46,7 @@ const eventProposals = [
     closing: 'Contanos tu idea y creemos juntos una propuesta única.',
     cta: 'Contanos tu idea',
     message: 'Hola Giuliett, quiero mi presupuesto para una celebración.',
+    slides: EVENTOS.celebraciones,
     tone: 'lilac-soft',
     imageFirstOnDesktop: false,
   },
@@ -70,7 +73,7 @@ function EventSection({ proposal, first }: { proposal: EventProposal; first: boo
           delay={40}
         >
           <HeroCarousel
-            slides={EVENTOS[proposal.id]}
+            slides={proposal.slides}
             ratio="4/5"
             showProductButton={false}
             showIndicators={true}

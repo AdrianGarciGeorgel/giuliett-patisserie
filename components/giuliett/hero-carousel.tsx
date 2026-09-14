@@ -231,9 +231,9 @@ export function HeroCarousel({
           className,
         )}
       >
-        {productCategories.map((slide, index) => (
+        {carouselSlides.map((slide, index) => (
           <figure
-            key={slide.name}
+            key={`${slide.id}-${index}`}
             role="group"
             aria-roledescription="diapositiva"
             // aria-label={`${index + 1} de ${carouselSlides.length}${slide.label ? `: ${slide.label}${slide.script ? ` ${slide.script}` : ''}` : ''}`}
@@ -241,7 +241,7 @@ export function HeroCarousel({
           >
             <div className="relative" style={{ aspectRatio: ratio.replace('/', ' / ') }}>
               <Image
-                src={slide.src}
+                src={slide.image}
                 alt={slide.alt}
                 fill
                 priority={index === 0}
@@ -253,9 +253,9 @@ export function HeroCarousel({
             </div>
             <div>
 
-            {slide.name ? (
+            {slide.text ? (
               <figcaption className="absolute bottom-3 left-3 right-3 truncate rounded-sm bg-white/82 px-3 py-2 text-center text-[12px] font-medium text-primary backdrop-blur-sm" style={{backgroundColor:'color-mix(in oklab, #beb4dc 82%, #d04d4d00)'}}>
-                {slide.name}
+                {slide.text}
               </figcaption>
             ) : null}
             </div>
@@ -264,8 +264,8 @@ export function HeroCarousel({
             {showProductButton ? (
               <button
               type="button"
-              onClick={() => window.location.assign(`/productos?categoria=${slide.category}`)}
-              aria-label={`Ver producto: ${slide.name}`}
+              onClick={() => window.location.assign(`/productos?categoria=${slide.label}`)}
+              aria-label={`Ver producto: ${slide.label}`}
               className="absolute bottom-15 left-1/2 min-h-[40px] -translate-x-1/2 rounded-full bg-[#FFF8E9]/82 px-5 text-[12px] font-medium text-[#51375C] shadow-[0_8px_20px_-10px_rgb(63_42_80/0.35)] backdrop-blur-md transition-colors duration-200 hover:bg-[#FFF8E9]"
               >
                 Ver producto

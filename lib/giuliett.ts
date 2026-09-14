@@ -18,6 +18,7 @@ export const WA_GENERAL = 'Hola Giuliett, quiero hacer una consulta.'
 
 export type EventImage = {
   image: string
+  src: string
   alt: string
   /** Copy opcional superpuesto en la parte inferior de la fotografía. */
   text?: string
@@ -27,35 +28,110 @@ export type EventImage = {
 export const EVENTOS = {
   bodas: [
     {
-      image: '/images/cierre-mesa-dulce.png',
-      alt: 'Mesa dulce con macarons, tartas y cookies sobre stands de cerámica lila',
+      image: '/images/EVENTOS/BODAS/BODA_1.jpeg',
+      src: '/images/EVENTOS/BODAS/BODA_1.jpeg',
+      alt: 'Propuesta dulce para una boda de Giuliett',
       text: 'Mesa dulce para bodas',
     },
     {
-      image: '/images/producto-mesas.png',
-      alt: 'Mesa dulce montada con macarons, flores y cerámica lila',
+      image: '/images/EVENTOS/BODAS/BODA_2.jpeg',
+      src: '/images/EVENTOS/BODAS/BODA_2.jpeg',
+      alt: 'Propuesta dulce para una boda de Giuliett',
+      text: 'Mesa dulce para bodas',
+    },
+    {
+      image: '/images/EVENTOS/BODAS/BODA_3.jpeg',
+      src: '/images/EVENTOS/BODAS/BODA_3.jpeg',
+      alt: 'Propuesta dulce para una boda de Giuliett',
+      text: 'Mesa dulce para bodas',
+    },
+    {
+      image: '/images/EVENTOS/BODAS/BODA_4.jpeg',
+      src: '/images/EVENTOS/BODAS/BODA_4.jpeg',
+      alt: 'Propuesta dulce para una boda de Giuliett',
+      text: 'Mesa dulce para bodas',
+    },
+    {
+      image: '/images/EVENTOS/BODAS/BODA_5.jpeg',
+      src: '/images/EVENTOS/BODAS/BODA_5.jpeg',
+      alt: 'Propuesta dulce para una boda de Giuliett',
+      text: 'Mesa dulce para bodas',
+    },
+    {
+      image: '/images/EVENTOS/BODAS/BODA_6.jpeg',
+      src: '/images/EVENTOS/BODAS/BODA_6.jpeg',
+      alt: 'Propuesta dulce para una boda de Giuliett',
+      text: 'Mesa dulce para bodas',
+    },
+    {
+      image: '/images/EVENTOS/BODAS/BODA_7.jpeg',
+      src: '/images/EVENTOS/BODAS/BODA_7.jpeg',
+      alt: 'Propuesta dulce para una boda de Giuliett',
+      text: 'Mesa dulce para bodas',
     },
   ],
   empresas: [
     {
-      image: '/images/producto-kits.png',
-      alt: 'Caja de regalo lila con macarons y cinta de raso',
+      image: '/images/EVENTOS/EMPRESAS/COMPANY_1.png',
+      src: '/images/EVENTOS/EMPRESAS/COMPANY_1.png',
+      alt: 'Propuesta corporativa de Giuliett para LTN',
       text: 'Regalos corporativos personalizados',
     },
     {
-      image: '/images/producto-cookies.png',
-      alt: 'Cookies artesanales glaseadas con el logo de Giuliett sobre mármol blanco',
+      image: '/images/EVENTOS/EMPRESAS/COMPANY_2.png',
+      src: '/images/EVENTOS/EMPRESAS/COMPANY_2.png',
+      alt: 'Mesa corporativa de Giuliett para LTN',
+      text: 'Mesa dulce para bodas',
+    },
+    {
+      image: '/images/EVENTOS/EMPRESAS/COMPANY_3.jpeg',
+      src: '/images/EVENTOS/EMPRESAS/COMPANY_3.jpeg',
+      alt: 'Propuesta corporativa de Giuliett',
+      text: 'Mesa dulce para bodas',
+    },
+    {
+      image: '/images/EVENTOS/EMPRESAS/COMPANY_4.jpeg',
+      src: '/images/EVENTOS/EMPRESAS/COMPANY_4.jpeg',
+      alt: 'Propuesta corporativa de Giuliett',
+      text: 'Mesa dulce para bodas',
     },
   ],
   celebraciones: [
     {
-      image: '/images/producto-mesas.png',
-      alt: 'Mesa dulce montada con macarons, flores y cerámica lila',
+      image: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_1.jpeg',
+      src: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_1.jpeg',
+      alt: 'Propuesta dulce para una celebración de Giuliett',
       text: 'Detalles para celebrar',
     },
     {
-      image: '/images/producto-macarons.png',
-      alt: 'Macarons artesanales en tonos lavanda y crema apilados sobre lino',
+      image: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_2.jpeg',
+      src: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_2.jpeg',
+      alt: 'Propuesta dulce para una celebración de Giuliett',
+      text: 'Mesa dulce para bodas',
+    },
+    {
+      image: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_3.jpeg',
+      src: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_3.jpeg',
+      alt: 'Propuesta dulce para una celebración de Giuliett',
+      text: 'Mesa dulce para bodas',
+    },
+    {
+      image: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_4.jpeg',
+      src: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_4.jpeg',
+      alt: 'Propuesta dulce para una celebración de Giuliett',
+      text: 'Mesa dulce para bodas',
+    },
+    {
+      image: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_5.jpeg',
+      src: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_5.jpeg',
+      alt: 'Propuesta dulce para una celebración de Giuliett',
+      text: 'Mesa dulce para bodas',
+    },
+    {
+      image: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_6.jpeg',
+      src: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_6.jpeg',
+      alt: 'Propuesta dulce para una celebración de Giuliett',
+      text: 'Mesa dulce para bodas',
     },
   ],
 } as const satisfies Record<'bodas' | 'empresas' | 'celebraciones', readonly EventImage[]>
