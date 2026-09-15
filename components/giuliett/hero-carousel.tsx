@@ -134,7 +134,7 @@ export function HeroCarousel({
           onPointerCancel={endDrag}
           className={cn(
             'flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden bg-[#BFB4DC]/20',
-            'touch-pan-x select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+            'touch-pan-x touch-pan-y select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
             dragging ? 'cursor-grabbing' : 'cursor-grab',
             className,
           )}
