@@ -9,21 +9,7 @@ export const PRODUCT_CATEGORY_OPTIONS: ReadonlyArray<{ value: ProductCategory; l
 
 /** Precios provisionales: editar este archivo al actualizar el catálogo. */
 export const PRODUCTS: Product[] = [
-  {
-    id: 'super-chocotorta-premium',
-    slug: 'super-chocotorta-premium',
-    name: 'Super Chocotorta',
-    category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
-    price: 25000,
-    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/SuperChocotorta/chocotorta_3.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/SuperChocotorta/chocotorta_2.png',
-    description: 'Nuestra chocotorta más especial: mucho dulce de leche, chocolates y Oreos bañadas. También podés pedirla personalizada con colores, temática y detalles especiales. \n\n Petit: rinde aproximadamente 15–20 personas. \nSuper: rinde aproximadamente 30–35 personas. \n\n Las personalizaciones especiales pueden tener un costo adicional.',
-    gallery: [
-      '/images/PRODUCTOS/CLASSIC_CAKES/SuperChocotorta/chocotorta_3.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/SuperChocotorta/chocotorta_2.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/SuperChocotorta/chocotorta.png',
-    ],
-  },
+
   {
     id: 'marquise',
     slug: 'marquise',
@@ -47,8 +33,8 @@ export const PRODUCTS: Product[] = [
     name: 'NY Cheesecake',
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 26000,
-    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_3.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_2.png',
+    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_2.png',
+    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_3.png',
     description: 'Cheesecake estilo New York, súper cremoso, con base de galletas y topping de frutos rojos',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_1.png',
@@ -63,8 +49,8 @@ export const PRODUCTS: Product[] = [
     name: 'Lemon Pie',
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 22000,
-    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_1.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_2.png',
+    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_2.png',
+    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_1.png',
     description: 'Masa sablée de vainilla, curd de limón y merengue italiano. Un clásico fresco y equilibrado.',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_1.png',
@@ -78,8 +64,8 @@ export const PRODUCTS: Product[] = [
     name: 'Tarta Cabsha',
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 23000,
-    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_1.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_2.png',
+    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_2.png',
+    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_1.png',
     description: 'Base de vainilla, dulce de leche y ganache de chocolate. Un clásico simple e irresistible.',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_1.png',
@@ -107,8 +93,8 @@ export const PRODUCTS: Product[] = [
     name: 'Bomba Oreo',
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 24000,
-    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_3.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_4.png',
+    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_4.png',
+    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_3.png',
     description: 'Doble base de Oreo, mucho dulce de leche y una terminación irresistible con Oreos y Kit Kat.',
     gallery: [
  
@@ -123,8 +109,8 @@ export const PRODUCTS: Product[] = [
     name: 'Tarta de Frutilla',
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 23000,
-    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_1.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_3.png',
+    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_3.png',
+    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_1.png',
     description: 'Masa sablée de vainilla, dulce de leche, crema Chantilly y abundantes frutillas frescas.',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/TartaDeFrutilla/TF_1.png',
@@ -132,36 +118,8 @@ export const PRODUCTS: Product[] = [
      
     ],
   },
-  {
-    id: 'turron-aleman',
-    slug: 'turron-aleman',
-    name: 'Turrón Alemán',
-    category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
-    price: 27000,
-    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/TurronAleman/producto-kits.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/TurronAleman/manifiesto-manos.png',
-    description: 'Capas de textura y sabor, inspiradas en la pastelería tradicional.',
-    gallery: [
-      '/images/PRODUCTOS/CLASSIC_CAKES/TurronAleman/producto-kits.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/TurronAleman/manifiesto-manos.png',
-    ],
-  },
-  {
-    id: 'chocotorta',
-    slug: 'chocotorta',
-    name: 'Chocotorta',
-    category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
-    price: 25000,
-    imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_4.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_3.png',
-    gallery: [
   
-      '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_3.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_4.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_5.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Chocotorta/CHOCOTORTA_6.png',
-    ],
-  },
+ 
   {
     id: 'mil-hojas',
     slug: 'mil-hojas',
@@ -211,10 +169,7 @@ export const PRODUCTS: Product[] = [
     gallery: [
       '/images/PRODUCTOS/CUSTOM_CAKES/FlowerCake/FLOWER_1.png',
       '/images/PRODUCTOS/CUSTOM_CAKES/FlowerCake/FLOWER_2.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/FlowerCake/FLOWER_3.jpg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/FlowerCake/FLOWER_4.jpeg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/FlowerCake/FLOWER_5.jpeg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/FlowerCake/FLOWER_6.jpeg',
+     
     ],
   },
   {
@@ -230,10 +185,7 @@ export const PRODUCTS: Product[] = [
       '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_1.png',
       '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_2.png',
       '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_3.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_4.jpg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_5.jpeg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_6.jpeg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_7.jpeg',
+      
     ],
   },
   {
@@ -248,40 +200,7 @@ export const PRODUCTS: Product[] = [
     gallery: [
       '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_1.png',
       '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_2.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_3.jpeg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_4.jpeg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_5.jpeg',
-    ],
-  },
-  {
-    id: 'torta-cumple',
-    slug: 'torta-cumple',
-    name: 'Torta de Cumpleaños',
-    category: PRODUCT_CATEGORIES.CUSTOM_CAKES,
-    price: 38000,
-    imagePrimary: '/images/PRODUCTOS/CUSTOM_CAKES/TortaCumple/HB.png',
-    imageSecondary: '/images/PRODUCTOS/CUSTOM_CAKES/TortaCumple/HB_3.png',
-    description: 'Diseñada a medida para celebrar: sabores, colores y terminaciones a elección.',
-    gallery: [
-      '/images/PRODUCTOS/CUSTOM_CAKES/TortaCumple/HB.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/TortaCumple/HB_3.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/TortaCumple/HB_2.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/TortaCumple/HB_4.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/TortaCumple/HB_5.png',
-    ],
-  },
-  {
-    id: 'torta-funny',
-    slug: 'torta-funny',
-    name: 'Torta Divertida',
-    category: PRODUCT_CATEGORIES.CUSTOM_CAKES,
-    price: 38000,
-    imagePrimary: '/images/PRODUCTOS/CUSTOM_CAKES/TortaDivertida/chocotorta_funny.png',
-    imageSecondary: '/images/PRODUCTOS/CUSTOM_CAKES/TortaDivertida/chocotorta_funny_2.png',
-    description: 'Diseñada a medida para celebrar: sabores, colores y terminaciones a elección.',
-    gallery: [
-      '/images/PRODUCTOS/CUSTOM_CAKES/TortaDivertida/chocotorta_funny.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/TortaDivertida/chocotorta_funny_2.png',
+      
     ],
   },
   {
@@ -324,14 +243,13 @@ export const PRODUCTS: Product[] = [
     category: PRODUCT_CATEGORIES.BOXES,
     price: 16000,
     imagePrimary: '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_1.png',
-    imageSecondary: '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_2.png',
+    imageSecondary: '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_3.jpg',
     description: '6 cookies estilo New York, grandes y bien cargadas, en una selección de nuestros sabores. \n\nSabores disponibles: \n·Clásica de vainilla \n· Red Velvet \n· Limón & Chocolate \n· Doble Chocolate \n· Frambuesa & Chocolate \n· Salted Caramel.',
     gallery: [
       '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_1.png',
       '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_2.png',
       '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_3.jpg',
       '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_4.jpg',
-      '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_5.jpg',
     ],
   },
   {
@@ -348,7 +266,6 @@ export const PRODUCTS: Product[] = [
       '/images/PRODUCTOS/BOXS/BOX MACARONS/BOX_MACARONS_2.png',
       '/images/PRODUCTOS/BOXS/BOX MACARONS/BOX_MACARONS_3.jpg',
       '/images/PRODUCTOS/BOXS/BOX MACARONS/BOX_MACARONS_4.jpg',
-      '/images/PRODUCTOS/BOXS/BOX MACARONS/BOX_MACARONS_5.jpeg',
     ],
   },
   {
@@ -358,14 +275,11 @@ export const PRODUCTS: Product[] = [
     category: PRODUCT_CATEGORIES.BOXES,
     price: 22000,
     imagePrimary: '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_1.png',
-    imageSecondary: '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_2.png',
+    imageSecondary: '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_3.png',
     description: 'Una selección inspirada en la pâtisserie francesa: macarons, madeleines, mini choux y éclairs. Ideal para compartir entre 2–3 personas.',
     gallery: [
       '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_1.png',
-      '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_2.png',
       '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_3.png',
-      '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_4.jpg',
-      '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_5.jpeg',
     ],
   },
   {
@@ -381,9 +295,7 @@ export const PRODUCTS: Product[] = [
       '/images/PRODUCTOS/BOXS/BOX SOUVENIR/BOX_SOUVENIR_1.png',
       '/images/PRODUCTOS/BOXS/BOX SOUVENIR/BOX_SOUVENIR_2.png',
       '/images/PRODUCTOS/BOXS/BOX SOUVENIR/BOX_SOUVENIR_3.png',
-      '/images/PRODUCTOS/BOXS/BOX SOUVENIR/BOX_SOUVENIR_4.jpeg',
-      '/images/PRODUCTOS/BOXS/BOX SOUVENIR/BOX_SOUVENIR_5.jpeg',
-      '/images/PRODUCTOS/BOXS/BOX SOUVENIR/BOX_SOUVENIR_6.jpeg',
+      
     ],
   },
 ]
