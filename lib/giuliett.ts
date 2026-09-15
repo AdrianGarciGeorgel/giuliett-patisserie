@@ -217,10 +217,10 @@ export const AUDIENCES: Audience[] = [
 ]
 
 export const REASONS = [
-  { id: 'francia', text: 'Formación en Francia', Image: '/images/alfajores.png' },
-  { id: 'entregas', text: 'Entregas a domicilio', Image: '/images/alfajores.png' },
+  { id: 'francia', text: 'Formación en Francia', Image: '/images/torre.png' },
+  { id: 'entregas', text: 'Entregas a domicilio', Image: '/images/camion.png' },
   { id: 'presentacion', text: 'Presentación premium', Image: '/images/alfajores.png' },
-  { id: 'fundadora', text: 'Hablás con la fundadora', Image: '/images/founter.png' },
+  { id: 'fundadora', text: 'Hablás con la fundadora', Image: '/images/giu.png' },
 ] as const
 
 export const STEPS = [
