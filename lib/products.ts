@@ -22,8 +22,8 @@ export const PRODUCTS: Product[] = [
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_1.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_2.png',
-      '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_3.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_4.png',
+      '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_3.png',
      
     ],
   },
@@ -37,7 +37,6 @@ export const PRODUCTS: Product[] = [
     imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_3.png',
     description: 'Cheesecake estilo New York, súper cremoso, con base de galletas y topping de frutos rojos',
     gallery: [
-      '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_1.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_2.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_3.png',
       
@@ -65,26 +64,27 @@ export const PRODUCTS: Product[] = [
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 23000,
     imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_2.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_1.png',
+    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_1.jpeg',
     description: 'Base de vainilla, dulce de leche y ganache de chocolate. Un clásico simple e irresistible.',
     gallery: [
-      '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_1.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_2.png',
+      '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_1.jpeg',
     ],
   },
   {
     id: 'chocotorta-premium',
     slug: 'chocotorta-premium',
-    name: 'Chocotorta Premium',
+    name: 'Súper Chocotorta',
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 25000,
     imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/ChocotartaPremium/chocotorta_premium.png',
     imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/ChocotartaPremium/chocotorta_premium_2.png',
-    description: 'La versión más cuidada de un favorito argentino, con presentación Giuliett.',
+    description: 'Nuestra chocotorta más especial: mucho dulce de leche, chocolates y Oreos bañadas. También podés pedirla personalizada con colores, temática y detalles especiales.\n\nPetit: rinde aproximadamente 15–20 personas.\nSuper: rinde aproximadamente 30–35 personas.\n\nLas personalizaciones especiales pueden tener un costo adicional.',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/ChocotartaPremium/chocotorta_premium.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/ChocotartaPremium/chocotorta_premium_2.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/ChocotartaPremium/chocotorta_premium_3.png',
+      '/images/PRODUCTOS/CLASSIC_CAKES/ChocotartaPremium/chocotorta_premium_4.png',
     ],
   },
   {
@@ -94,12 +94,12 @@ export const PRODUCTS: Product[] = [
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
     price: 24000,
     imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_4.png',
-    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_3.png',
+    imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_3.jpeg',
     description: 'Doble base de Oreo, mucho dulce de leche y una terminación irresistible con Oreos y Kit Kat.',
     gallery: [
- 
-      '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_3.png',
+      
       '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_4.png',
+      '/images/PRODUCTOS/CLASSIC_CAKES/Bomba_Oreo/B0_3.jpeg',
       
     ],
   },
@@ -128,6 +128,7 @@ export const PRODUCTS: Product[] = [
     price: 27000,
     imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/MilHojas/MILHOJAS_1.png',
     imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/MilHojas/MILHOJAS_2.png',
+    description: 'Un clásico elaborado con capas de hojaldre, relleno de dulce de leche y decorado con merengue italiano y flores naturales.\n\nRinde aproximadamente 25 a 30 porciones.',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/MilHojas/MILHOJAS_1.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/MilHojas/MILHOJAS_2.png',
@@ -136,25 +137,19 @@ export const PRODUCTS: Product[] = [
   {
     id: 'torta-butter',
     slug: 'torta-butter',
-    name: 'Torta de Butter',
+    name: 'Buttercream Cakes',
     category: PRODUCT_CATEGORIES.CUSTOM_CAKES,
     price: 38000,
-    imagePrimary: '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_1.png',
-    imageSecondary: '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_2.png',
+    imagePrimary: '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_7.png',
+    imageSecondary: '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_1.png',
     description: 'Tortas 100% personalizadas, con bizcochuelo de chocolate o vainilla, rellenos a elección y buttercream en los colores que quieras. \n\n Rellenos a elección:\n-Dulce de leche\n-Dulce de leche con merenguitos\n-Ganache de chocolate\n-Crema Chocotorta \n-Mousse de limón\n-⁠Crema Bariloche \n\n Tamaños disponibles:\n-15/20 personas\n-30/40 personas\n-50/60 personas\nConsultar por opciones para más invitados.\n\nFormato:\nCircular\nRectangular',
     gallery: [
-      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_1.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_2.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_3.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_4.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_5.jpg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_6.png',
       '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_7.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_8.jpeg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_9.jpeg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_10.jpeg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_11.jpeg',
-      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_12.jpeg',
+      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_1.png',
+      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_4.png',
+      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_2.png',
+      '/images/PRODUCTOS/CUSTOM_CAKES/ButtercreamCake/BC_6.png',
+
     ],
   },
   {
@@ -178,13 +173,13 @@ export const PRODUCTS: Product[] = [
     name: 'Letter Cake',
     category: PRODUCT_CATEGORIES.CUSTOM_CAKES,
     price: 38000,
-    imagePrimary: '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_1.png',
+    imagePrimary: '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_3.png',
     imageSecondary: '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_2.png',
     description: 'Base de brownie o sablée de vainilla, con dulce de leche, crema y chocolates. Personalizada en forma de letra o número.',
     gallery: [
-      '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_1.png',
-      '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_2.png',
       '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_3.png',
+      '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_2.png',
+      '/images/PRODUCTOS/CUSTOM_CAKES/LetterCake/LETTER_1.png',
       
     ],
   },
@@ -194,12 +189,12 @@ export const PRODUCTS: Product[] = [
     name: 'Wedding Cake',
     category: PRODUCT_CATEGORIES.CUSTOM_CAKES,
     price: 38000,
-    imagePrimary: '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_1.png',
-    imageSecondary: '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_2.png',
+    imagePrimary: '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_2.png',
+    imageSecondary: '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_1.png',
     description: 'Una torta única para un día único. Personalizamos sabores, colores, flores y cada detalle para que acompañe la estética de su casamiento.',
     gallery: [
-      '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_1.png',
       '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_2.png',
+      '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_1.png',
       
     ],
   },
