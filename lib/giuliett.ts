@@ -238,8 +238,8 @@ export const STEPS = [
 export const CLIENTS = [
   { id: 'LTN', text: 'LTN', Image: '/images/LOGOS/LTN.png' },
   { id: 'Marisolfa', text: 'Marisolfa', Image: '/images/LOGOS/Marisolfa.png' },
-  { id: 'UltraTex', text: 'UltraTex', Image: '/images/LOGOS/UltraTex.png' },
-  { id: 'Andreu', text: 'Andreu', Image: '/images/LOGOS/Andreu.png' },
+  { id: 'UltraTex', text: 'UltraTex', Image: '/images/LOGOS/ULTRATEX.png' },
+  { id: 'Andreu', text: 'Andreu', Image: '/images/LOGOS/ANDREU.png' },
 ] as const
 
 export const productCategories = [
