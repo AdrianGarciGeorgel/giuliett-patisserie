@@ -118,7 +118,7 @@ function TeamSection() {
     <Section tone="white" aria-labelledby="equipo-titulo">
       <div className="mx-auto max-w-[1040px]">
         <Reveal>
-          <Photo src="/images/giu/EQUIPO.png" alt="Equipo Giuliett" ratio="16/9" position="center 60%" />
+          <Photo src="/images/giu/EQUIPO.jpg" alt="Equipo Giuliett" ratio="16/9" position="center 60%" />
         </Reveal>
         <Reveal delay={100}>
           <h2 id="equipo-titulo" className="mt-14 text-center text-[34px] font-light text-primary md:mt-20 md:text-[48px]">

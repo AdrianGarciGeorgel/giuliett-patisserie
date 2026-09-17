@@ -160,7 +160,7 @@ export const PRODUCTS: Product[] = [
     price: 38000,
     imagePrimary: '/images/PRODUCTOS/CUSTOM_CAKES/FlowerCake/FLOWER_1.png',
     imageSecondary: '/images/PRODUCTOS/CUSTOM_CAKES/FlowerCake/FLOWER_2.png',
-    description: 'Tortas personalizadas con flores naturales y  buttercream, diseñadas especialmente para cada ocasión. \n\n Rellenos a elección:\n-Dulce de leche\n-Dulce de leche con merenguitos\n-Ganache de chocolate\n-Crema Chocotorta \n-Mousse de limón\n-⁠Crema Bariloche \n\n Tamaños disponibles:\n-15/20 personas\n-30/40 personas\n-50/60 personas\nConsultar por opciones para más invitados.\n\nFormato:\nCircular\nRectangular\nRectangular',
+    description: 'Tortas personalizadas con flores naturales y  buttercream, diseñadas especialmente para cada ocasión. \n\n Rellenos a elección:\n-Dulce de leche\n-Dulce de leche con merenguitos\n-Ganache de chocolate\n-Crema Chocotorta \n-Mousse de limón\n-⁠Crema Bariloche \n\n Tamaños disponibles:\n-15/20 personas\n-30/40 personas\n-50/60 personas\nConsultar por opciones para más invitados.\n\nFormato:\nCircular\nRectangular',
     gallery: [
       '/images/PRODUCTOS/CUSTOM_CAKES/FlowerCake/FLOWER_1.png',
       '/images/PRODUCTOS/CUSTOM_CAKES/FlowerCake/FLOWER_2.png',

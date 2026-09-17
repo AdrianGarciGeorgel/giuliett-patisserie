@@ -15,22 +15,22 @@ export function TrustedClients() {
         </div>
       </Reveal>
 
-      <div className="mx-auto mt-12 grid max-w-[1040px] items-center gap-10 lg:grid-cols-[132px_minmax(0,1fr)_230px] lg:gap-12">
-        <Reveal className="hidden  lg:block" delay={80}>
-          <img src="/images/mesero.png" className=" h-auto w-auto text-primary" />
+      <div id="clientes-icons" className="mx-auto mt-12 grid max-w-[1040px] items-center gap-10 lg:grid-cols-[140px_minmax(0,1fr)_140px] lg:gap-12">
+        <Reveal className="hidden  lg:block lg:size-[200px] " delay={80}>
+          <img src="/images/mesero.png" className="size-[200px] object-contain text-primary" />
         </Reveal>
+        <ul className="mx-auto mt-12 grid max-w-[1040px] grid-cols-2 gap-x-6 gap-y-12 sm:gap-x-10 lg:grid-cols-4 lg:gap-x-0 lg:gap-y-0">
+            {CLIENTS.map((reason, index) => {
 
-        <Reveal delay={120}>
-          <ul className="grid grid-cols-2 items-center gap-x-6 gap-y-8 text-center sm:grid-cols-4 lg:gap-x-8">
-            {CLIENTS.map((client) => (
-              <li key={client} className="tracked text-[13px] font-medium text-primary/75 md:text-[15px]">
-                {client}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-
-        <Reveal delay={180} className="mx-auto w-full max-w-[190px] lg:max-w-none lg:self-end">
+              return (
+                <Reveal as="li" key={reason.id} delay={index * 80} className="relative flex min-h-[142px] flex-col items-center justify-start px-2 text-center lg:px-8 lg:self-center">
+                  {index > 0 ? <span aria-hidden="true" className=" absolute bottom-2 left-0 top-2 hidden lg:block" /> : null}
+                  <img className="h-[96px] w-[132px] object-contain lg:size-[140px]" src={reason.Image} alt="" />
+                </Reveal>
+              )
+            })}
+        </ul>
+      <Reveal delay={180} className="mx-auto w-full max-w-[1040px] lg:size-[200px] lg:max-w-none lg:self-center">
           <Image
             src="/images/gui_wine.png"
             alt="Ilustración de Giu, fundadora de Giuliett"
