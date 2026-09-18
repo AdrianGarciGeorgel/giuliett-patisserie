@@ -125,7 +125,11 @@ export function ProductCatalog({ initialCategory }: ProductCatalogProps) {
         <select
           id="product-category"
           value={selectedCategory}
-          onChange={(event) => setSelectedCategory(event.target.value as ProductCategory)}
+          onChange={(event) => {
+            const category = event.target.value as ProductCategory
+            setSelectedCategory(category)
+            window.history.replaceState(null, '', `/productos?categoria=${category}`)
+          }}
           className="min-h-[46px] border-b border-primary/40 bg-transparent px-1 pr-9 text-[14px] text-primary outline-none transition-colors duration-200 focus-visible:border-primary"
         >
           {PRODUCT_CATEGORY_OPTIONS.map((category) => (
@@ -139,7 +143,7 @@ export function ProductCatalog({ initialCategory }: ProductCatalogProps) {
       <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:mt-14 md:grid-cols-3 md:gap-x-8 md:gap-y-14 lg:grid-cols-4 lg:gap-x-10">
         {products.map((product) => (
           <li key={product.id}>
-            <Link href={`/productos/${product.slug}`} className="group block min-w-0" aria-label={`Ver ${product.name}`}>
+            <Link href={`/productos/${product.slug}?categoria=${selectedCategory}`} className="group block min-w-0" aria-label={`Ver ${product.name}`}>
               <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-lilac-soft">
                 <Image
                   src={product.imagePrimary}

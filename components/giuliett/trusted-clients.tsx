@@ -15,17 +15,14 @@ export function TrustedClients() {
         </div>
       </Reveal>
 
-      <div id="clientes-icons" className="mx-auto mt-12 grid max-w-[1040px] items-center gap-10 lg:grid-cols-[140px_minmax(0,1fr)_140px] lg:gap-12">
-        <Reveal className="hidden  lg:block lg:size-[200px] " delay={80}>
-          <img src="/images/mesero.png" className="size-[200px] object-contain text-primary" />
-        </Reveal>
-        <ul className="mx-auto mt-12 grid max-w-[1040px] grid-cols-2 gap-x-6 gap-y-12 sm:gap-x-10 lg:grid-cols-4 lg:gap-x-0 lg:gap-y-0">
+      <div id="clientes-icons" className="mx-auto mt-12 grid max-w-[1040px] items-center gap-10 lg:grid-cols-[minmax(0,1fr)_180px] lg:gap-12">
+        <ul className="mx-auto mt-12 grid max-w-[1040px] grid-cols-2 gap-x-6 gap-y-12 sm:gap-x-10 lg:grid-cols-4 lg:gap-x-20 lg:gap-y-0">
             {CLIENTS.map((reason, index) => {
 
               return (
-                <Reveal as="li" key={reason.id} delay={index * 80} className="relative flex min-h-[142px] flex-col items-center justify-start px-2 text-center lg:px-8 lg:self-center">
+                <Reveal as="li" key={reason.id} delay={index * 80} className="relative flex min-h-[142px] flex-col items-center justify-start px-2 text-center lg:px-0 lg:self-center">
                   {index > 0 ? <span aria-hidden="true" className=" absolute bottom-2 left-0 top-2 hidden lg:block" /> : null}
-                  <img className="h-[96px] w-[132px] object-contain lg:size-[140px]" src={reason.Image} alt="" />
+                  <img className="h-[96px] w-[132px] object-contain lg:size-[180px]" src={reason.Image} alt="" />
                 </Reveal>
               )
             })}
