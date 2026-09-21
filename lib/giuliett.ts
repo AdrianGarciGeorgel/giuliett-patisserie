@@ -131,7 +131,7 @@ export const EVENTOS = {
       image: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_5.jpeg',
       src: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_5.jpeg',
       alt: 'Propuesta dulce para una celebración de Giuliett',
-      text: 'Pastelería personalizada para celebrar a tu manera',
+      text: 'Pastelería personalizada para celebrar.',
     },
     {
       image: '/images/EVENTOS/CELEBRACIONES/CELEBRATE_6.jpeg',
