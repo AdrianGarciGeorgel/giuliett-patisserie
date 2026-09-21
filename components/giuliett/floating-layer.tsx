@@ -57,25 +57,29 @@ function WhatsAppFab() {
   }, [])
 
   return (
-    <a
-      href={waLink(WA_GENERAL)}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Escribinos por WhatsApp"
-      tabIndex={shown ? 0 : -1}
-      className={cn(
-        'fixed bottom-6 right-5 z-50 md:bottom-8 md:right-8',
-        'inline-flex h-14 items-center justify-center gap-2.5 rounded-full bg-primary text-primary-foreground',
-        'w-14 md:h-13 md:w-auto md:rounded-sm md:px-6',
-        'shadow-[var(--shadow-giuliett)]',
-        'transition-[opacity,transform,box-shadow] duration-[350ms] ease-out',
-        'hover:scale-105 hover:shadow-[var(--shadow-giuliett-lift)] active:scale-[0.96]',
-        shown ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0',
-      )}
-    >
-      <IconWhatsApp className="h-6 w-6 shrink-0" strokeWidth={1.7} />
-      <span className="hidden text-[15px] font-medium md:inline">Escribinos</span>
-    </a>
+    <>
+    
+      <a
+        href={waLink(WA_GENERAL)}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Escribinos por WhatsApp"
+        tabIndex={shown ? 0 : -1}
+        className={cn(
+          'czm-pulse',
+          'fixed bottom-6 right-5 z-50 md:bottom-8 md:right-8',
+          'inline-flex h-14 items-center justify-center gap-2.5 rounded-full bg-primary text-primary-foreground',
+          'w-14 md:h-13 md:w-auto md:rounded-sm md:px-6',
+          'shadow-[var(--shadow-giuliett)]',
+          'transition-[opacity,transform,box-shadow] duration-[350ms] ease-out',
+          'hover:scale-105 hover:shadow-[var(--shadow-giuliett-lift)] active:scale-[0.96]',
+          shown ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0',
+        )}
+      >
+        <IconWhatsApp className="czm-pulse h-6 w-6 shrink-0" strokeWidth={1.7} />
+        <span className="hidden text-[15px] font-medium md:inline">Escribinos</span>
+      </a>
+    </>
   )
 }
 

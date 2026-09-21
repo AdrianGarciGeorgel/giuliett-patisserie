@@ -210,3 +210,18 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+
+@keyframes czm-pulse {
+          0%, 100% { opacity: 0.9; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.08); }
+        }
+
+        .czm-pulse {
+          animation: czm-pulse 2s ease-in-out infinite;
+          transform-origin: center;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .czm-pulse { animation: none; }
+        }
