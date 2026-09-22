@@ -27,8 +27,8 @@ export function SocialProof() {
           <Reveal delay={80} className="w-full">
             <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 lg:justify-start lg:gap-x-10">
               {CLIENTS.map((client) => (
-                <li key={client} className="tracked text-[14px] font-medium text-primary/75 md:text-[16px]">
-                  {client}
+                <li key={client.id} className="tracked text-[14px] font-medium text-primary/75 md:text-[16px]">
+                  {client.text}
                 </li>
               ))}
             </ul>
