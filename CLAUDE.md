@@ -144,7 +144,7 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
 
 | Capa | Tecnología |
 |---|---|
-| Framework | **Next.js 16.2.6** (App Router, Turbopack, `proxy.ts` en vez de `middleware.ts`) |
+| Framework | **Next.js 16.3.6** (App Router, Turbopack, `proxy.ts` en vez de `middleware.ts`). Mantenerlo al día: `npm audit` en cada sprint |
 | UI | React 19 · TypeScript 5.7.3 |
 | Estilos | **Tailwind CSS v4** (`@theme inline` en `globals.css`) |
 | Componentes | shadcn + `@base-ui/react` · `lucide-react` |
@@ -310,11 +310,10 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
 10. **Vercel en plan Hobby** (según sus términos, uso no comercial): pasar a **Pro** al lanzar
     con dominio. Funciones en `iad1` (Washington): conviene `gru1` (São Paulo) — Settings →
     Functions → Region.
-11. **Rotación de la clave secreta (22-09-2026, noche):** por el prefijo parcial filtrado se creó
-    `giuliett_servidor` en Supabase y ya está en `.env.local` (probada: inserta). **Falta:**
-    pegarla en Vercel (el permiso de la sesión de Claude bloquea escribir secretos en Vercel:
-    lo hace Adrián en Settings → Environment Variables → `SUPABASE_SECRET_KEY` → Edit) y después
-    **borrar** en Supabase las claves `default` y `servidor_web` (API Keys → More actions → Delete).
+11. **Rotación de la clave secreta (22-09-2026, noche):** `giuliett_servidor` creada en Supabase,
+    en `.env.local` (probada) y **en Vercel** (la pegó Adrián: el permiso de la sesión de Claude
+    bloquea escribir secretos). **Falta borrar** en Supabase las claves viejas `default` y
+    `servidor_web` (API Keys → More actions → Delete; el mismo permiso lo bloquea para Claude).
     Hasta que se borren, la vieja sigue funcionando.
 
 ---
@@ -354,7 +353,12 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
 - [x] `/robots.txt` (bloquea `/admin` y `/api`) y `/sitemap.xml` (24 URLs).
 - [x] JSON-LD: `Bakery` en todo el sitio; `Product` + `Offer` + `BreadcrumbList` por producto.
 - [x] Tarjetas Open Graph generadas (`app/opengraph-image.tsx` y por producto): JPEG de ~60 KB
-      con foto + nombre + precio y paleta oficial. `sharp` fijado en 0.34.5 (la que trae Next).
+      con foto + nombre + precio y paleta oficial. `sharp` **siempre en la misma versión que
+      trae Next** (hoy 0.35.4): dos versiones conviviendo rompen el build (`colourspace`).
+- [x] **Seguridad (punto 10):** `npm audit` en 0 (Next 16.3.6 cerró una crítica de bypass del
+      proxy); cabeceras `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
+      `Permissions-Policy` en todo el sitio y `noindex` + `no-store` en `/admin`
+      (`next.config.mjs`). Sin CSP todavía (JSON-LD inline).
 - [x] Un solo `h1` por página (`/giu` tenía cuatro, `/galeria` ninguno).
 - [x] Test de integridad del catálogo (`test/catalogo.test.ts`).
 - [x] **Lighthouse (build de producción local, móvil 4G simulado):** Home **91 / 91 / 96 / 100**,
