@@ -83,6 +83,17 @@ export default function EventosPage() {
           </Reveal>
         </div>
       </Section>
+
+      {/* Botón flotante de WhatsApp: uno por página (antes se renderizaba una vez por sección). */}
+      <a
+        href={waLink(WA_GENERAL)}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Escribinos por WhatsApp"
+        className="czm-pulse fixed bottom-[calc(92px+env(safe-area-inset-bottom))] right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#51375C] text-[#FFF8E9] shadow-[0_12px_32px_-10px_rgb(81_55_92/0.45)] transition-[transform,box-shadow] duration-300 ease-out hover:scale-[1.03] active:scale-[0.97] sm:right-8 lg:right-8"
+      >
+        <IconWhatsApp className="h-6 w-6 czm-pulse" strokeWidth={1.7} />
+      </a>
     </main>
   )
 }
@@ -90,6 +101,8 @@ export default function EventosPage() {
 type EventProposal = (typeof eventProposals)[number]
 
 function EventSection({ proposal, first }: { proposal: EventProposal; first: boolean }) {
+  const Heading = first ? 'h1' : 'h2'
+
   return (
     <Section tone={proposal.tone} layered={!first} className={first ? 'pt-12 md:pt-20' : undefined} aria-labelledby={proposal.id}>
       <div className="grid gap-10 md:gap-14 lg:grid-cols-2 lg:items-center lg:gap-20">
@@ -113,9 +126,10 @@ function EventSection({ proposal, first }: { proposal: EventProposal; first: boo
             <p className="tracked text-[30px] font-medium text-muted-foreground" >{proposal.eyebrow}</p>
           </Reveal>
           <Reveal delay={160}>
-            <h1 id={proposal.id} className="mt-5 max-w-[18ch] text-balance text-[30px] font-light leading-[1.18] text-primary md:text-[40px] lg:text-[46px]">
+            {/* Un solo h1 por página: la primera propuesta; las demás son h2. Mismo estilo. */}
+            <Heading id={proposal.id} className="mt-5 max-w-[18ch] text-balance text-[30px] font-light leading-[1.18] text-primary md:text-[40px] lg:text-[46px]">
               {proposal.title}
-            </h1>
+            </Heading>
           </Reveal>
           <Reveal delay={220} className="max-w-[52ch]">
             <div className="mt-7 space-y-4 text-[15px] leading-[1.7] text-muted-foreground md:text-[16px]">
@@ -140,15 +154,6 @@ function EventSection({ proposal, first }: { proposal: EventProposal; first: boo
         </div>
       </div>
 
-       <a
-              href={waLink(WA_GENERAL)}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Escribinos por WhatsApp"
-              className="czm-pulse fixed bottom-[calc(92px+env(safe-area-inset-bottom))] right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#51375C] text-[#FFF8E9] shadow-[0_12px_32px_-10px_rgb(81_55_92/0.45)] transition-[transform,box-shadow] duration-300 ease-out hover:scale-[1.03] active:scale-[0.97] sm:right-8 lg:right-8"
-            >
-              <IconWhatsApp className="h-6 w-6 czm-pulse" strokeWidth={1.7} />
-            </a>
     </Section>
   )
 }
