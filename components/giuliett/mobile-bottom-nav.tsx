@@ -34,6 +34,9 @@ function isCurrentPath(pathname: string, href: string) {
 export function GlobalNavigation() {
   const pathname = usePathname()
 
+  // El panel interno (/admin) no lleva la navegación del sitio.
+  if (pathname.startsWith('/admin')) return null
+
   return (
     <>
       <header className="sticky top-0 z-50 hidden border-b border-border/60 bg-background/85 backdrop-blur-md md:block">
