@@ -13,7 +13,7 @@ sugerencia (mía o de una herramienta), **gana este archivo**.
 Web de **Giuliett Pâtisserie** — pastelería francesa artesanal en Mendoza, Argentina.
 No es una landing genérica: es una experiencia premium de boutique francesa.
 
-Producción: https://giuliett-patisserie.vercel.app/
+Producción (Vercel de Marco): https://giuliett-patisserie.vercel.app/
 
 ## Equipo
 
@@ -21,32 +21,46 @@ Producción: https://giuliett-patisserie.vercel.app/
 |---|---|
 | **Marco (@maap00)** | Frontend: diseño, componentes, maquetado. Dueño del repo. |
 | **Adrián (@AdrianGarciGeorgel)** | Lidera el desarrollo: backend, formularios, CMS, SEO, deploy. |
+| **Giuliana (Giu)** | La clienta. Dueña de la marca. Usa el panel. |
+
+# Notion Base de Operaciones
+
+Este proyecto está documentado en Notion.
+URL del proyecto: https://app.notion.com/p/39a5bca17c2b81b0889ac7aa1338feb0
+Antes de hacer cambios estructurales, verificar el estado en Notion (ahí están el
+Master Plan del cliente, la cotización, las decisiones y el historial).
+Después de cambios significativos, actualizar Notion via MCP.
 
 ---
 
 ## Reglas NO NEGOCIABLES
 
-### 1. Texto legal sobre el gluten
+### 1. Sin TACC: tercerizado, con aclaración legal, sin promesas
 
-⚠️ **Nunca escribir "Sin TACC" ni usar el logo oficial de Sin TACC sin certificación ANMAT.**
+Según el **Master Plan v2 de Giuliana**: Giuliett **no elabora Sin TACC en su taller**.
+Las opciones Sin TACC se **tercerizan** a un proveedor habilitado, **según disponibilidad**.
 
-La fórmula que usa el proyecto hoy, y la que se debe seguir usando, es:
+En la web esto se traduce en:
 
-> **"Elaborada sin ingredientes con gluten."** (o *"Elaborados…"* según el producto)
+- Los **4 formularios** llevan el campo **obligatorio** "¿Necesitás una opción especial?"
+  (No, ninguna / Sí, Sin TACC / Sí, otra) con la aclaración legal debajo.
+- La aclaración vive en **un solo lugar**: `AVISO_SIN_TACC` en `lib/consultas/tipos.ts`.
+  Un test (`test/consultas.formularios.test.ts`) verifica que diga "proveedor
+  habilitado", "disponibilidad" y **no prometa tiempos**.
+- **Nunca** escribir "Sin TACC" como si fuera producción propia, ni usar el logo oficial.
+- **Nunca prometer tiempos** ("respondemos en 24 hs") en ningún texto.
 
-Por qué importa: en Argentina "Sin TACC" es una declaración regulada. Usarla sin el
-certificado del RNPA correspondiente expone a la marca. La fórmula actual describe el
-proceso sin hacer una declaración certificada.
+> 🔲 **Redacción provisoria, a confirmar por Adrián / Giu antes del lanzamiento:**
+> *"Las opciones Sin TACC se elaboran a través de un proveedor habilitado y están sujetas
+> a disponibilidad. No se elaboran en el taller de Giuliett."*
 
-Hoy aparece en `lib/products.ts` en **Marquise** y en **Macarons**. Al sumar productos
-elaborados igual, copiar el texto **literal**, sin reescribirlo ni "mejorarlo".
-
-> 🔲 **A confirmar con Adrián / Giu:** si existe una redacción legal aprobada distinta
-> a la que está hoy en el código, reemplazarla acá y en `lib/products.ts` de una vez.
+> ⚠️ **A revisar con Marco y Giu:** `lib/products.ts` dice *"Elaborada sin ingredientes con
+> gluten"* en **Marquise** y **Macarons**. Es una afirmación sobre el taller propio que puede
+> no corresponder si el Sin TACC es tercerizado. No se tocó: es decisión de la clienta.
 
 ### 2. Paleta oficial
 
-La paleta de marca (de `AI_CONTEXT.md`) es:
+La paleta de marca (de `AI_CONTEXT.md` y del manual de Kate) es:
 
 | Nombre | Hex |
 |---|---|
@@ -66,9 +80,9 @@ La paleta de marca (de `AI_CONTEXT.md`) es:
 | `--primary` / `--foreground` | `#3f2a50` | `#51375C` (Aubergine) |
 | `--background` | `#f5f1eb` | `#FFF8E9` (Warm White) |
 
-> 🔲 **A resolver con Marco antes de tocar nada:** ¿los valores del código son un ajuste
-> deliberado de diseño, o hay que alinearlos al brief? **No cambiar la paleta
-> unilateralmente** — es identidad de marca, no una decisión técnica.
+> 🔲 **A resolver con Marco antes de tocar nada:** ¿ajuste deliberado o hay que alinear al
+> brief? **No cambiar la paleta unilateralmente** — es identidad de marca, no técnica.
+> Preguntado en el PR #1.
 
 Los colores se definen **solo** como tokens CSS en `app/globals.css`. Nunca hardcodear
 un hex en un componente.
@@ -76,18 +90,21 @@ un hex en un componente.
 ### 3. Performance manda sobre diseño
 
 Si un efecto, animación, fuente o imagen cuesta performance, **se recorta el efecto**.
-Ante la duda entre "más lindo" y "más rápido", gana rápido.
+Core Web Vitals en verde es compromiso contractual de Adrián.
 
-- Animaciones: sutiles, elegantes, nunca exageradas. Respetar **siempre**
-  `prefers-reduced-motion` (ya hay soporte en `globals.css`).
-- Nada de dependencias pesadas para efectos visuales. CSS y hooks propios primero.
+- Animaciones sutiles. Respetar **siempre** `prefers-reduced-motion` (ya está en `globals.css`).
+- Nada de dependencias pesadas para efectos. CSS y hooks propios primero.
+- **Zod no viaja al navegador**: el formulario valida a mano; Zod solo en servidor.
+- Las páginas públicas son **estáticas** (○ en el build). Un formulario nunca debe
+  volverlas dinámicas: los parámetros de URL se leen en el cliente, no con `searchParams`.
 - Medir con **Lighthouse sobre build de producción**, no en dev.
 
 ### 4. Git
 
 - **NUNCA pushear directo a `main`.** Todo entra por rama + Pull Request.
-- Ramas: `feat/…`, `fix/…`, `perf/…`, `chore/…`.
+- Ramas: `feat/…`, `fix/…`, `perf/…`, `chore/…`. Commits chicos y frecuentes.
 - Commits en **español**, imperativo, describiendo el porqué.
+- Un fix detectado en medio de una feature va en **commit aparte**, antes.
 - El repo es de Marco: los PRs a `main` van **con @maap00 como reviewer**.
 
 ### 5. Copy
@@ -95,12 +112,21 @@ Ante la duda entre "más lindo" y "más rápido", gana rápido.
 - Español **rioplatense** (vos, no tú). Muy breve. Emocional. Nada comercial.
 - "Hace falta filtrar": cada pantalla comunica **una sola idea**.
 - La fotografía vende, el texto acompaña. No al revés.
+- Sin promesas de tiempos de respuesta ni de entrega.
 
 ### 6. Mobile first
 
-La mayoría llega desde Instagram y WhatsApp. Se diseña primero para celular;
-desktop es la adaptación. El usuario debe poder escribir por WhatsApp en
-**menos de 15 segundos**.
+La mayoría llega desde Instagram y WhatsApp. Se diseña primero para celular.
+El usuario debe poder escribir por WhatsApp en **menos de 15 segundos**: por eso el
+WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que **registra**.
+
+### 7. Loop Engineering: los tests son la condición de salida
+
+- **Tests primero**, código después. `npm test` en verde + `npm run build` en verde es lo
+  que declara "listo", no el juicio del agente.
+- Los módulos de reglas (`lib/consultas/*`, `app/api/*`) tienen tests en `test/`.
+- **Prueba de mutación** al cerrar un módulo: romper 5-15 reglas a propósito y confirmar
+  que la suite las caza. Una suite que no caza la mutación es decorativa.
 
 ---
 
@@ -108,14 +134,16 @@ desktop es la adaptación. El usuario debe poder escribir por WhatsApp en
 
 | Capa | Tecnología |
 |---|---|
-| Framework | **Next.js 16.2.6** (App Router, Turbopack) |
+| Framework | **Next.js 16.2.6** (App Router, Turbopack, `proxy.ts` en vez de `middleware.ts`) |
 | UI | React 19 · TypeScript 5.7.3 |
 | Estilos | **Tailwind CSS v4** (`@theme inline` en `globals.css`) |
-| Componentes | shadcn + `@base-ui/react` · `lucide-react` (iconos) |
-| Fuentes | `next/font/google`: **Poppins** (sans) + **Ephesis** (script) |
+| Componentes | shadcn + `@base-ui/react` · `lucide-react` |
+| Fuentes | `next/font/google`: **Poppins** + **Ephesis** |
+| Backend | **Supabase** (Postgres + RLS + Auth) via `@supabase/supabase-js` y `@supabase/ssr` |
+| Validación | **Zod 4** (solo servidor) |
+| Tests | **Vitest 5** (`npm test`) |
 | Analytics | `@vercel/analytics` |
 | Deploy | **Vercel** |
-| Backend (Fase B) | **Supabase** (PostgreSQL + RLS) |
 
 El frontend fue generado inicialmente con **v0.app** (`generator: 'v0.app'` en el layout).
 
@@ -125,112 +153,170 @@ El frontend fue generado inicialmente con **v0.app** (`generator: 'v0.app'` en e
 
 ```
 app/
-├── layout.tsx              # metadata global, fuentes, nav
-├── globals.css             # TOKENS de color, radios, sombras, easings
-├── page.tsx                # home
-├── productos/
-│   ├── page.tsx            # catálogo
-│   └── [slug]/page.tsx     # ficha de producto (dinámica)
-├── eventos/  · giu/  · galeria/  · contacto/
-components/
-├── giuliett/               # componentes propios de la marca
-│   ├── sections/           # secciones de página (hero, manifesto, process…)
-│   ├── contact-form.tsx    # formulario → abre WhatsApp
-│   ├── hero-carousel.tsx · product-catalog.tsx · product-gallery.tsx
-│   └── …
-└── ui/                     # primitivas shadcn
+├── layout.tsx                    # metadata global, fuentes, nav
+├── globals.css                   # TOKENS de color, radios, sombras, easings
+├── page.tsx · giu/ · galeria/    # páginas estáticas
+├── productos/[slug]/page.tsx     # ficha + formulario "particular" plegado (<details>)
+├── eventos/page.tsx              # 3 propuestas + sección "Tu evento" con el formulario
+├── contacto/page.tsx             # formulario con selector de los 4 recorridos
+├── api/consultas/route.ts        # POST: valida, anti-spam, guarda en Supabase
+├── api/consultas/[id]/whatsapp/  # POST: marca que el usuario abrió WhatsApp
+└── admin/                        # panel de consultas (login + lista + detalle)
+    ├── acciones.ts               # server actions: login, logout, actualizar
+    ├── login/                    # /admin/login
+    └── consultas/[id]/           # detalle + seguimiento
+components/giuliett/
+├── contact-form.tsx              # UN formulario, 4 recorridos, guarda → WhatsApp
+└── …                             # componentes de Marco
 lib/
-├── giuliett.ts             # CONTACT, waLink(), catálogo de EVENTOS
-├── products.ts             # catálogo PRODUCTS (precios incluidos)
-└── utils.ts
-types/product.ts            # Product, PRODUCT_CATEGORIES
-public/images/              # todas las imágenes, en WebP
+├── consultas/
+│   ├── tipos.ts                  # recorridos, estados, opción especial, AVISO_SIN_TACC (sin Zod)
+│   ├── schema.ts                 # validación Zod (servidor)
+│   ├── formularios.ts            # qué campos tiene cada recorrido
+│   └── whatsapp.ts               # armado del mensaje, normalización de números
+├── supabase/
+│   ├── admin.ts                  # clave SECRETA, solo servidor (server-only)
+│   └── server.ts                 # cliente con sesión (cookies) para el panel
+├── admin/auth.ts                 # requerirAdministrador()
+├── giuliett.ts                   # CONTACT, waLink(), EVENTOS
+└── products.ts                   # catálogo PRODUCTS (precios incluidos)
+proxy.ts                          # protege /admin, refresca la sesión
+supabase/migrations/              # esquema versionado (consultas, administradores, RLS)
+scripts/crear-admin.mjs           # da acceso al panel a un email
+test/                             # Vitest
 ```
 
 ## Fuente de verdad de los datos
 
-Hoy **no hay CMS ni base de datos**. Todo es estático en el código:
-
-| Dato | Archivo |
+| Dato | Dónde |
 |---|---|
 | Teléfono, email, Instagram, ciudad | `lib/giuliett.ts` → `CONTACT` |
-| Link de WhatsApp | `lib/giuliett.ts` → `waLink()` |
-| Fotos de Eventos (bodas/empresas/…) | `lib/giuliett.ts` → `EVENTOS` |
 | Productos, precios, galerías | `lib/products.ts` → `PRODUCTS` |
-| Categorías | `types/product.ts` → `PRODUCT_CATEGORIES` |
+| Fotos de Eventos | `lib/giuliett.ts` → `EVENTOS` |
+| **Consultas de clientes** | **Supabase**, tabla `consultas` (se ven en `/admin`) |
+| Quién entra al panel | Supabase, tabla `administradores` |
 
-Las **4 categorías** son: `tortas-clasicas`, `tortas-personalizadas`,
-`galletas-personalizadas`, `boxes`.
-
-**Para agregar un producto:** sumar un objeto a `PRODUCTS` en `lib/products.ts` con
-`slug` único, `category` válida y rutas de imagen que existan en `public/images/`.
+Las **4 categorías** de producto: `tortas-clasicas`, `tortas-personalizadas`,
+`galletas-personalizadas`, `boxes`. **Para agregar un producto:** sumar un objeto a
+`PRODUCTS` con `slug` único, `category` válida y rutas de imagen que existan.
 
 ---
+
+## Variables de entorno
+
+Copiar `.env.example` a `.env.local` (ignorado por git). En Vercel van las mismas tres.
+
+| Variable | Qué es | Dónde se usa |
+|---|---|---|
+| `SUPABASE_URL` | URL del proyecto | servidor |
+| `SUPABASE_PUBLISHABLE_KEY` | clave publicable (`sb_publishable_…`) | panel y `proxy.ts` (sesión) |
+| `SUPABASE_SECRET_KEY` | clave secreta (`sb_secret_…`) | **solo** `lib/supabase/admin.ts` y el script de admins |
+
+Ninguna lleva prefijo `NEXT_PUBLIC_`: nada de Supabase viaja al navegador.
+Sin variables, la web sigue funcionando: el formulario muestra un error claro con
+el WhatsApp directo como salida, y `/admin/login` explica qué falta.
 
 ## Comandos
 
 ```bash
 npm install
-npm run dev      # dev server
-npm run build    # build de producción (obligatorio antes de deploy)
-npm run lint     # eslint
+npm run dev        # dev server
+npm test           # Vitest (condición de salida)
+npm run build      # build de producción (obligatorio antes de deploy)
+node scripts/crear-admin.mjs correo@ejemplo.com "Nombre"   # acceso al panel
 ```
 
-⚠️ Si `npm run build` falla **solo** por la descarga de Google Fonts, es problema de
-red, no de código.
+⚠️ `npm run lint` **no funciona**: ESLint no está instalado en el repo (pendiente, PR aparte).
+⚠️ Si `npm run build` falla **solo** por descarga de Google Fonts, es red, no código.
 
 ---
 
-## Reglas de código
+## Cómo funcionan las consultas (Fase B)
 
-- Componentes funcionales con hooks. Nunca clases.
-- **Server Components por defecto.** `'use client'` solo cuando hace falta estado,
-  efectos o eventos del navegador.
-- Tailwind con los tokens de `globals.css`. Nunca un hex suelto.
-- TypeScript con tipos explícitos en props y datos de dominio.
-- Sin `console.log` ni código experimental en lo que se mergea.
-- `alt` descriptivo en **todas** las imágenes. Keys únicas en todos los `.map()`.
-- Ningún `<Image>` puede recibir `src=""`.
+1. El usuario completa uno de los **4 recorridos** (`particular`, `evento`, `empresa`,
+   `mayorista`) — un solo componente, `<ContactForm origen=…>`.
+2. Al enviar, el formulario valida a mano y hace `POST /api/consultas`.
+3. La API valida con Zod, frena bots (campo trampa, tiempo mínimo en el formulario,
+   límite por IP), evita duplicados (mismo WhatsApp + origen + mensaje en 2 minutos)
+   y **guarda la fila con la clave secreta**.
+4. Recién entonces el formulario muestra "¡Gracias!" con el botón **Abrir WhatsApp**
+   (mensaje ya armado). Si el usuario lo abre, se marca `abrio_whatsapp`.
+5. Si la API falla, el formulario ofrece igual el WhatsApp directo: **ninguna consulta se
+   pierde por un problema técnico**.
+6. Giu entra a `/admin` (email + contraseña), ve las consultas, filtra por estado,
+   abre el detalle, le escribe por WhatsApp con un clic y deja notas y estado.
+7. El borrador se guarda en `sessionStorage`: si recarga o vuelve atrás, no pierde lo escrito.
+
+**Seguridad:** RLS activo. `anon` no lee ni escribe nada. `authenticated` lee y actualiza
+solo si su email está en `administradores` (función `es_administrador()`, security definer).
+Nadie borra consultas desde la web.
+
+**Dónde está cada recorrido:**
+
+| Recorrido | Dónde | Cómo se llega |
+|---|---|---|
+| Particular | `/contacto` (selector, default) y ficha de producto (plegado) | nav "Hacé tu Pedido", producto |
+| Evento | `/eventos` (sección final) y `/contacto?para=evento` | página Eventos |
+| Empresa | `/contacto?para=empresa` | link en la sección Empresas de `/eventos` |
+| Mayorista | `/contacto?para=mayorista` | selector de `/contacto` |
+
+**Para dar acceso al panel a alguien:** `node scripts/crear-admin.mjs email "Nombre"`
+(imprime la contraseña una sola vez). En el dashboard de Supabase conviene apagar
+"Allow new users to sign up" (Auth → Providers → Email); la allowlist protege igual.
 
 ---
 
 ## Deuda técnica conocida
 
-Detectada al auditar el repo el 22-09-2026. Resolver antes del deploy final:
+Detectada el 22-09-2026. Resolver antes del deploy final:
 
-1. **`next.config.mjs` tiene `images: { unoptimized: true }`** → `next/image` no
-   optimiza nada. Choca de frente con la regla de performance. Revisar al cerrar
-   la optimización de imágenes.
-2. **`next.config.mjs` tiene `typescript: { ignoreBuildErrors: true }`** → el build
-   pasa aunque haya errores de tipos. Hay que apagarlo y arreglar lo que aparezca.
-3. **El campo Email del formulario dice obligatorio (`*`) pero no se valida.**
-   En `components/giuliett/contact-form.tsx`, `handleSubmit` valida `name`,
-   `whatsapp` y `orderType`, pero nunca setea `nextErrors.email`.
-4. **Falta metadata por página**: solo hay metadata global en `layout.tsx`.
-   Sin `metadataBase`, sin canonical, sin Twitter/X, sin `robots.txt`, sin `sitemap.xml`,
-   sin metadata dinámica por producto.
+1. **`next.config.mjs`: `images: { unoptimized: true }`** → `next/image` no optimiza.
+   Choca con la regla de performance. PR aparte, hablado con Marco.
+2. **`next.config.mjs`: `typescript: { ignoreBuildErrors: true }`** → tapa **7 errores de
+   tipos** en `sections/audiences.tsx`, `closing.tsx`, `products.tsx`, `reasons.tsx` y
+   `social-proof.tsx` (prop `id` que el componente no acepta; `key` con objeto).
+   Arreglarlos y apagar la bandera. `npx tsc --noEmit` los lista.
+3. **`/eventos` renderiza 3 veces el botón flotante de WhatsApp** (uno por sección,
+   todos `fixed` en el mismo lugar) y **tiene 3 `<h1>`**. Punto 6 del checklist.
+4. **Falta metadata por página**: sin `metadataBase`, canonical, Twitter/X, `robots.txt`,
+   `sitemap.xml` ni metadata dinámica por producto. Fase C.
 5. **La paleta del código no coincide con el brief** (ver Reglas → Paleta).
-6. **El formulario no registra nada**: arma un texto y abre WhatsApp. Si el usuario
-   no envía el mensaje, la consulta se pierde. Lo resuelve la Fase B.
+6. **Higiene:** `package.json` se llama `my-project`; conviven `package-lock.json` y
+   `pnpm-lock.yaml`; no hay ESLint aunque `npm run lint` existe.
+7. ~~El campo Email decía obligatorio pero no se validaba~~ → resuelto en Fase B: email
+   opcional y validado.
+8. ~~El formulario no registraba nada~~ → resuelto en Fase B.
 
 ---
 
 ## Roadmap
 
-### Fase A — Frontend y performance ✅ (en curso de mergearse)
-- Maquetado completo de las 6 rutas (Marco).
-- **Optimización de imágenes**: 232MB → 15MB (−93%), 129 WebP, 163 referencias
-  migradas, fix de `manifiesto-manos` que apuntaba a una ruta inexistente.
+### Fase A — Frontend y performance ✅
+Maquetado de Marco + optimización de imágenes 232MB → 15MB (−93%).
+PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review de Marco).
 
-### Fase B — Supabase, formularios y registro de consultas 🔲
-Persistir las consultas en vez de perderlas en WhatsApp. Ver el plan detallado
-acordado con Adrián antes de codear.
+### Fase B — Supabase, 4 formularios, Sin TACC legal, registro y panel 🟡
+**Código listo y testeado (49 tests + prueba de mutación + build verde).** Falta la
+infraestructura, que requiere manos humanas:
+- [ ] Crear el proyecto de Supabase (São Paulo) — el permiso de la sesión lo bloqueó.
+- [ ] Aplicar `supabase/migrations/20260922120000_consultas.sql`.
+- [ ] Cargar `.env.local` con las tres claves y probar el flujo real.
+- [ ] Crear el usuario de Giu con `scripts/crear-admin.mjs`.
+- [ ] Variables en Vercel (proyecto de Marco → lo carga él, o se hace fork a la cuenta de Adrián).
+- [ ] Confirmar la redacción del aviso Sin TACC y del aviso de privacidad.
+- [ ] Aviso a Giu por cada consulta nueva (email vía Resend o Telegram) — no está; se pidió panel.
 
-### Fase C — CMS, SEO y deploy 🔲
-- Metadata completa, sitemap, robots, OG por producto.
-- Arquitectura lista para migrar datos a un CMS **sin rehacer el frontend**.
-  ⚠️ No introducir un CMS antes de definir cuál.
-- Dominio propio, DNS, SSL, redirects, Lighthouse en producción.
+### Fase C — SEO técnico 🔲
+Metadata por página, OG por producto, `robots.txt` (con `Disallow: /admin`), `sitemap.xml`,
+Schema.org, GA4 / Search Console. Arreglar los 3 `<h1>` de `/eventos`.
+
+### Fase D — CMS con roles (Giu / Jime) 🔲
+Arquitectura lista para migrar `PRODUCTS` y `EVENTOS` a datos editables **sin rehacer el
+frontend**. ⚠️ No introducir un CMS antes de definir cuál.
+
+### Fase E — Dominio, lanzamiento y capacitación 🔲
+Giuliana ya tiene el dominio contratado en **Namecheap** (dato del 22-09-2026; falta el
+nombre exacto). DNS, SSL, redirects www, Lighthouse en producción, capacitación del panel.
 
 ---
 
