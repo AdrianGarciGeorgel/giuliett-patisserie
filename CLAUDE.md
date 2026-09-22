@@ -310,10 +310,12 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
 10. **Vercel en plan Hobby** (según sus términos, uso no comercial): pasar a **Pro** al lanzar
     con dominio. Funciones en `iad1` (Washington): conviene `gru1` (São Paulo) — Settings →
     Functions → Region.
-11. Al automatizar Vercel quedó un **prefijo parcial (25 de 41 caracteres) de la clave
-    secreta** en el registro de la sesión de Claude. No alcanza para usarla, pero por higiene:
-    **rotarla** antes del lanzamiento (Supabase → New secret key → actualizar `.env.local` y
-    Vercel → borrar la vieja).
+11. **Rotación de la clave secreta (22-09-2026, noche):** por el prefijo parcial filtrado se creó
+    `giuliett_servidor` en Supabase y ya está en `.env.local` (probada: inserta). **Falta:**
+    pegarla en Vercel (el permiso de la sesión de Claude bloquea escribir secretos en Vercel:
+    lo hace Adrián en Settings → Environment Variables → `SUPABASE_SECRET_KEY` → Edit) y después
+    **borrar** en Supabase las claves `default` y `servidor_web` (API Keys → More actions → Delete).
+    Hasta que se borren, la vieja sigue funcionando.
 
 ---
 
