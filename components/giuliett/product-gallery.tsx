@@ -36,7 +36,7 @@ export function ProductGallery({ name, images }: ProductGalleryProps) {
         ))}
       </div>
 
-      <div className="mt-4 flex justify-center gap-1.5 md:hidden" aria-label={`Foto ${activeIndex + 1} de ${images.length}`}>
+      <div role="group" className="mt-4 flex justify-center gap-1.5 md:hidden" aria-label={`Foto ${activeIndex + 1} de ${images.length}`}>
         {images.map((image, index) => (
           <span
             key={image}

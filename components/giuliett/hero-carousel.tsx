@@ -191,7 +191,8 @@ export function HeroCarousel({
                   {slide.name}
                 </h1>
 
-                <div className="mt-6 flex justify-center gap-2" aria-label={`Producto ${activeIndex + 1} de ${productCategories.length}`}>
+                {/* role="group": un div sin rol no puede llevar aria-label (Lighthouse: aria-prohibited-attr). */}
+                <div role="group" className="mt-6 flex justify-center gap-2" aria-label={`Producto ${activeIndex + 1} de ${productCategories.length}`}>
                   {productCategories.map((category, indicatorIndex) => (
                     <span
                       key={category.name}
@@ -277,7 +278,7 @@ export function HeroCarousel({
       </div>
 
       {showIndicators ? (
-        <div className="mt-4 flex justify-center gap-1.5" aria-label={`Producto ${activeIndex + 1} de ${carouselSlides.length}`}>
+        <div role="group" className="mt-4 flex justify-center gap-1.5" aria-label={`Producto ${activeIndex + 1} de ${carouselSlides.length}`}>
           {carouselSlides.map((slide, index) => (
             <span
               key={slide.id ?? slide.image}
