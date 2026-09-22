@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { ContactForm } from '@/components/giuliett/contact-form'
 import { ProductGallery } from '@/components/giuliett/product-gallery'
 import { PrimaryAction } from '@/components/giuliett/atoms'
 import { Section } from '@/components/giuliett/section'
@@ -46,6 +47,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <PrimaryAction href={waLink(whatsappMessage)} className="mt-10 w-full max-w-[400px] lg:w-auto">
               Consultar por WhatsApp
             </PrimaryAction>
+
+            {/* Alternativa al WhatsApp directo: deja la consulta registrada. Cerrado por defecto, sin peso visual. */}
+            <details className="group mt-6 w-full max-w-[400px] lg:max-w-[520px]">
+              <summary className="underline-write inline-flex min-h-[44px] cursor-pointer list-none items-center text-[14px] text-primary/70 transition-colors duration-200 hover:text-primary [&::-webkit-details-marker]:hidden">
+                ¿Preferís que te escribamos nosotros? Dejanos tus datos
+              </summary>
+              <div className="mt-8 text-left">
+                <ContactForm
+                  origen="particular"
+                  producto={{ slug: product.slug, nombre: product.name, categoria: category?.label ?? '' }}
+                />
+              </div>
+            </details>
           </article>
         </div>
       </Section>

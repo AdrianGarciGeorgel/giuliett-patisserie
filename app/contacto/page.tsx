@@ -40,7 +40,7 @@ export default function ContactoPage() {
             </p>
           </Reveal>
           <Reveal delay={100} className="mt-14 md:mt-16">
-            <ContactForm />
+            <ContactForm origen="particular" selector />
           </Reveal>
         </div>
       </Section>
