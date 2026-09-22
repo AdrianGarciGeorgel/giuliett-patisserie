@@ -14,8 +14,8 @@ Web de **Giuliett Pâtisserie** — pastelería francesa artesanal en Mendoza, A
 No es una landing genérica: es una experiencia premium de boutique francesa.
 
 Producción hoy (Vercel de Marco): https://giuliett-patisserie.vercel.app/
-Repo canónico desde el 22-09-2026: https://github.com/AdrianGarciGeorgel/giuliett-patisserie
-(el Vercel de Adrián se conecta a ese fork; ver Fase B).
+Staging (Vercel de Adrián, desde el fork): https://giuliett-patisserie-nu.vercel.app/
+Repo de trabajo: `maap00/giuliett-patisserie` hasta que exista la organización (ver Git).
 
 ## Equipo
 
@@ -109,12 +109,13 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
 - Ramas: `feat/…`, `fix/…`, `perf/…`, `chore/…`. Commits chicos y frecuentes.
 - Commits en **español**, imperativo, describiendo el porqué.
 - Un fix detectado en medio de una feature va en **commit aparte**, antes.
-- **Repo canónico: `AdrianGarciGeorgel/giuliett-patisserie`** (fork hecho el 22-09-2026 por
-  decisión de Adrián, coherente con la propiedad del código acordada con Giuliana).
-  Remotos locales: `origin` = fork de Adrián, `upstream` = `maap00/giuliett-patisserie`.
-- Marco sigue siendo **reviewer** de los PRs a `main` (hay que invitarlo como colaborador del
-  fork para poder asignarlo). El PR #1 quedó abierto en el repo de Marco; cuando se mergee
-  allá, se trae con `git pull upstream main`.
+- **Dónde se trabaja (decisión del 22-09-2026, noche):** un solo repo de trabajo hasta que exista
+  la organización de GitHub `giuliett-patisserie` (recomendación aceptada por Adrián; falta el
+  OK de Marco para transferir su repo allí). Mientras tanto **los PRs van al repo de Marco**
+  (`upstream` = `maap00/giuliett-patisserie`), que es la única verdad. El fork
+  `AdrianGarciGeorgel/giuliett-patisserie` (`origin`) es **staging**: alimenta el Vercel de
+  Adrián y se sincroniza con `upstream` (`git pull upstream main`).
+- Marco sigue siendo **reviewer**. El PR #1 está abierto en el repo de Marco.
 
 ### 5. Copy
 
@@ -215,7 +216,11 @@ Las **4 categorías** de producto: `tortas-clasicas`, `tortas-personalizadas`,
 
 Copiar `.env.example` a `.env.local` (ignorado por git). En Vercel van las mismas tres.
 Proyecto de Supabase: **`giuliett-patisserie`**, ref `evpuimzqgkxfwbifnbgf`, región São Paulo,
-organización de Adrián. Creado y migrado el 22-09-2026.
+organización de Adrián. Creado y migrado el 22-09-2026. El conector MCP de Supabase **no
+expone la clave secreta**: sale del dashboard (API Keys → Copy).
+Vercel: proyecto `giuliett-patisserie` (`prj_3H5SN1fT4uk5FAhgh6mTsxeZE9sH`) en el equipo
+`adriangarcigeorgels-projects`. El conector de Vercel **solo lee** (403 al crear/actualizar):
+la configuración se toca en el dashboard, o con Playwright sobre la sesión de Adrián.
 
 | Variable | Qué es | Dónde se usa |
 |---|---|---|
@@ -301,6 +306,13 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
    `why-choose-us.tsx`; `window.location.assign` en `hero-carousel.tsx`.
 8. ~~Email decía obligatorio pero no se validaba~~ → resuelto: opcional y validado.
 9. ~~El formulario no registraba nada~~ → resuelto en Fase B.
+10. **Vercel en plan Hobby** (según sus términos, uso no comercial): pasar a **Pro** al lanzar
+    con dominio. Funciones en `iad1` (Washington): conviene `gru1` (São Paulo) — Settings →
+    Functions → Region.
+11. Al automatizar Vercel quedó un **prefijo parcial (25 de 41 caracteres) de la clave
+    secreta** en el registro de la sesión de Claude. No alcanza para usarla, pero por higiene:
+    **rotarla** antes del lanzamiento (Supabase → New secret key → actualizar `.env.local` y
+    Vercel → borrar la vieja).
 
 ---
 
@@ -314,18 +326,23 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
 **Código listo y testeado (49 tests + prueba de mutación 15/15 + build verde + Playwright).**
 - [x] Proyecto de Supabase creado: `evpuimzqgkxfwbifnbgf` (São Paulo), 22-09-2026.
 - [x] Migración aplicada (+ `revoke execute … from anon` sobre `es_administrador()`).
-- [x] `.env.local` con URL y clave publicable. **Falta pegar `SUPABASE_SECRET_KEY`**
-      (Dashboard → Project Settings → API Keys → `sb_secret_…`). Nunca en un chat.
+- [x] `.env.local` completo con las tres claves (la secreta se copió del dashboard con
+      Playwright, sin pasar por el chat). Nunca commitear, nunca pegar en un chat.
 - [x] Aviso Sin TACC y aviso de privacidad confirmados.
-- [x] Fork a la cuenta de Adrián (repo canónico).
-- [ ] Proyecto de Vercel desde el fork: el conector devolvió **403** al crearlo → importar
-      desde el dashboard (Add New → Project → `AdrianGarciGeorgel/giuliett-patisserie`) o
-      `npx vercel` con login por código. Después, las 3 variables.
+- [x] Fork a la cuenta de Adrián (hoy: staging).
+- [x] **Staging en Vercel**: https://giuliett-patisserie-nu.vercel.app (cuenta de Adrián,
+      importado desde el fork con Playwright; las 3 variables cargadas subiendo `.env.local`
+      con "Import .env"; Deployment Protection apagada para que Giu y Marco puedan verlo).
+      Hoy sirve `main` del fork = el `main` de Marco; la Fase B se ve cuando se mergee.
+- [x] **Prueba real contra Supabase (22-09-2026):** la API guarda, el doble envío no duplica,
+      el flag de WhatsApp se marca; panel: login, lista con conteos, detalle, cambio de estado
+      y notas, todo persistido. Datos de prueba borrados (fila y usuario descartable).
 - [ ] Usuario de Giu con `scripts/crear-admin.mjs` (esperando su email). Apagar
       "Allow new users to sign up" en Auth → Providers → Email.
-- [ ] Prueba real del flujo contra Supabase (necesita la clave secreta).
 - [ ] Aviso a Giu por cada consulta nueva (email vía Resend o Telegram) — se pidió panel primero.
-- [ ] PR #2 (`feat/supabase-consultas` → `main` del fork) con Marco como reviewer.
+- [ ] PR #2 (`feat/supabase-consultas` → `main` del **repo de Marco**) con Marco como reviewer.
+- [ ] Organización de GitHub `giuliett-patisserie` (esperando el OK de Marco) y, después,
+      reconectar el Vercel al repo de la organización.
 
 ### Fase C — SEO técnico 🔲
 Metadata por página, OG por producto, `robots.txt` (con `Disallow: /admin`), `sitemap.xml`,
