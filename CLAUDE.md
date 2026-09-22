@@ -13,7 +13,9 @@ sugerencia (mía o de una herramienta), **gana este archivo**.
 Web de **Giuliett Pâtisserie** — pastelería francesa artesanal en Mendoza, Argentina.
 No es una landing genérica: es una experiencia premium de boutique francesa.
 
-Producción (Vercel de Marco): https://giuliett-patisserie.vercel.app/
+Producción hoy (Vercel de Marco): https://giuliett-patisserie.vercel.app/
+Repo canónico desde el 22-09-2026: https://github.com/AdrianGarciGeorgel/giuliett-patisserie
+(el Vercel de Adrián se conecta a ese fork; ver Fase B).
 
 ## Equipo
 
@@ -50,13 +52,15 @@ En la web esto se traduce en:
 - **Nunca** escribir "Sin TACC" como si fuera producción propia, ni usar el logo oficial.
 - **Nunca prometer tiempos** ("respondemos en 24 hs") en ningún texto.
 
-> 🔲 **Redacción provisoria, a confirmar por Adrián / Giu antes del lanzamiento:**
+> ✅ **Redacción confirmada por Adrián (22-09-2026):**
 > *"Las opciones Sin TACC se elaboran a través de un proveedor habilitado y están sujetas
 > a disponibilidad. No se elaboran en el taller de Giuliett."*
 
-> ⚠️ **A revisar con Marco y Giu:** `lib/products.ts` dice *"Elaborada sin ingredientes con
-> gluten"* en **Marquise** y **Macarons**. Es una afirmación sobre el taller propio que puede
-> no corresponder si el Sin TACC es tercerizado. No se tocó: es decisión de la clienta.
+> ✅ **Decisión (Adrián, 22-09-2026):** el copy *"Elaborada sin ingredientes con gluten"* de
+> **Marquise** y **Macarons** en `lib/products.ts` **se respeta tal cual**. No reabrir.
+
+El aviso de privacidad bajo el botón (*"Usamos tus datos solo para responder esta consulta.
+No los compartimos con nadie."*) también quedó confirmado el 22-09-2026.
 
 ### 2. Paleta oficial
 
@@ -105,7 +109,12 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
 - Ramas: `feat/…`, `fix/…`, `perf/…`, `chore/…`. Commits chicos y frecuentes.
 - Commits en **español**, imperativo, describiendo el porqué.
 - Un fix detectado en medio de una feature va en **commit aparte**, antes.
-- El repo es de Marco: los PRs a `main` van **con @maap00 como reviewer**.
+- **Repo canónico: `AdrianGarciGeorgel/giuliett-patisserie`** (fork hecho el 22-09-2026 por
+  decisión de Adrián, coherente con la propiedad del código acordada con Giuliana).
+  Remotos locales: `origin` = fork de Adrián, `upstream` = `maap00/giuliett-patisserie`.
+- Marco sigue siendo **reviewer** de los PRs a `main` (hay que invitarlo como colaborador del
+  fork para poder asignarlo). El PR #1 quedó abierto en el repo de Marco; cuando se mergee
+  allá, se trae con `git pull upstream main`.
 
 ### 5. Copy
 
@@ -205,6 +214,8 @@ Las **4 categorías** de producto: `tortas-clasicas`, `tortas-personalizadas`,
 ## Variables de entorno
 
 Copiar `.env.example` a `.env.local` (ignorado por git). En Vercel van las mismas tres.
+Proyecto de Supabase: **`giuliett-patisserie`**, ref `evpuimzqgkxfwbifnbgf`, región São Paulo,
+organización de Adrián. Creado y migrado el 22-09-2026.
 
 | Variable | Qué es | Dónde se usa |
 |---|---|---|
@@ -222,12 +233,13 @@ el WhatsApp directo como salida, y `/admin/login` explica qué falta.
 npm install
 npm run dev        # dev server
 npm test           # Vitest (condición de salida)
-npm run build      # build de producción (obligatorio antes de deploy)
+npm run lint       # ESLint core-web-vitals: 0 errores; los avisos se leen, no frenan
+npm run build      # build de producción, valida tipos (obligatorio antes de deploy)
 node scripts/crear-admin.mjs correo@ejemplo.com "Nombre"   # acceso al panel
 ```
 
-⚠️ `npm run lint` **no funciona**: ESLint no está instalado en el repo (pendiente, PR aparte).
 ⚠️ Si `npm run build` falla **solo** por descarga de Google Fonts, es red, no código.
+El repo usa **npm** (un solo lockfile, `package-lock.json`). No agregar `pnpm-lock.yaml`.
 
 ---
 
@@ -268,24 +280,27 @@ Nadie borra consultas desde la web.
 
 ## Deuda técnica conocida
 
-Detectada el 22-09-2026. Resolver antes del deploy final:
+Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (decisión de Adrián).
 
-1. **`next.config.mjs`: `images: { unoptimized: true }`** → `next/image` no optimiza.
-   Choca con la regla de performance. PR aparte, hablado con Marco.
-2. **`next.config.mjs`: `typescript: { ignoreBuildErrors: true }`** → tapa **7 errores de
-   tipos** en `sections/audiences.tsx`, `closing.tsx`, `products.tsx`, `reasons.tsx` y
-   `social-proof.tsx` (prop `id` que el componente no acepta; `key` con objeto).
-   Arreglarlos y apagar la bandera. `npx tsc --noEmit` los lista.
-3. **`/eventos` renderiza 3 veces el botón flotante de WhatsApp** (uno por sección,
-   todos `fixed` en el mismo lugar) y **tiene 3 `<h1>`**. Punto 6 del checklist.
+1. ~~`images: { unoptimized: true }`~~ → **resuelto**: `next/image` optimiza (WebP/AVIF y
+   tamaños por dispositivo). Los `<Image fill sizes=…>` de Marco ya estaban listos para esto.
+2. ~~`ignoreBuildErrors: true` tapaba 7 errores de tipos~~ → **resuelto**: `SectionLockup`
+   acepta `id`; `social-proof.tsx` renderiza `client.text`. La bandera se apagó: el build
+   valida tipos.
+3. ~~3 botones flotantes de WhatsApp y 3 `<h1>` en `/eventos`~~ → **resuelto**: un botón por
+   página; la primera propuesta es `h1`, las otras `h2`, mismo estilo visual.
 4. **Falta metadata por página**: sin `metadataBase`, canonical, Twitter/X, `robots.txt`,
    `sitemap.xml` ni metadata dinámica por producto. Fase C.
-5. **La paleta del código no coincide con el brief** (ver Reglas → Paleta).
-6. **Higiene:** `package.json` se llama `my-project`; conviven `package-lock.json` y
-   `pnpm-lock.yaml`; no hay ESLint aunque `npm run lint` existe.
-7. ~~El campo Email decía obligatorio pero no se validaba~~ → resuelto en Fase B: email
-   opcional y validado.
-8. ~~El formulario no registraba nada~~ → resuelto en Fase B.
+5. **La paleta del código no coincide con el brief** (ver Reglas → Paleta). Esperando la
+   respuesta de Marco en el PR #1: es identidad, no un bug.
+6. ~~`my-project`, dos lockfiles, sin ESLint~~ → **resuelto**: `giuliett-patisserie`, solo
+   `package-lock.json`, ESLint instalado con `eslint.config.mjs`.
+7. **Avisos de lint conocidos (no frenan):** `setState` dentro de efectos en `reveal.tsx`,
+   `sections/products.tsx` y `contact-form.tsx` (sincronizan con IntersectionObserver /
+   sessionStorage; corregirlos es refactor); `<img>` en `trusted-clients.tsx` y
+   `why-choose-us.tsx`; `window.location.assign` en `hero-carousel.tsx`.
+8. ~~Email decía obligatorio pero no se validaba~~ → resuelto: opcional y validado.
+9. ~~El formulario no registraba nada~~ → resuelto en Fase B.
 
 ---
 
@@ -296,15 +311,21 @@ Maquetado de Marco + optimización de imágenes 232MB → 15MB (−93%).
 PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review de Marco).
 
 ### Fase B — Supabase, 4 formularios, Sin TACC legal, registro y panel 🟡
-**Código listo y testeado (49 tests + prueba de mutación + build verde).** Falta la
-infraestructura, que requiere manos humanas:
-- [ ] Crear el proyecto de Supabase (São Paulo) — el permiso de la sesión lo bloqueó.
-- [ ] Aplicar `supabase/migrations/20260922120000_consultas.sql`.
-- [ ] Cargar `.env.local` con las tres claves y probar el flujo real.
-- [ ] Crear el usuario de Giu con `scripts/crear-admin.mjs`.
-- [ ] Variables en Vercel (proyecto de Marco → lo carga él, o se hace fork a la cuenta de Adrián).
-- [ ] Confirmar la redacción del aviso Sin TACC y del aviso de privacidad.
-- [ ] Aviso a Giu por cada consulta nueva (email vía Resend o Telegram) — no está; se pidió panel.
+**Código listo y testeado (49 tests + prueba de mutación 15/15 + build verde + Playwright).**
+- [x] Proyecto de Supabase creado: `evpuimzqgkxfwbifnbgf` (São Paulo), 22-09-2026.
+- [x] Migración aplicada (+ `revoke execute … from anon` sobre `es_administrador()`).
+- [x] `.env.local` con URL y clave publicable. **Falta pegar `SUPABASE_SECRET_KEY`**
+      (Dashboard → Project Settings → API Keys → `sb_secret_…`). Nunca en un chat.
+- [x] Aviso Sin TACC y aviso de privacidad confirmados.
+- [x] Fork a la cuenta de Adrián (repo canónico).
+- [ ] Proyecto de Vercel desde el fork: el conector devolvió **403** al crearlo → importar
+      desde el dashboard (Add New → Project → `AdrianGarciGeorgel/giuliett-patisserie`) o
+      `npx vercel` con login por código. Después, las 3 variables.
+- [ ] Usuario de Giu con `scripts/crear-admin.mjs` (esperando su email). Apagar
+      "Allow new users to sign up" en Auth → Providers → Email.
+- [ ] Prueba real del flujo contra Supabase (necesita la clave secreta).
+- [ ] Aviso a Giu por cada consulta nueva (email vía Resend o Telegram) — se pidió panel primero.
+- [ ] PR #2 (`feat/supabase-consultas` → `main` del fork) con Marco como reviewer.
 
 ### Fase C — SEO técnico 🔲
 Metadata por página, OG por producto, `robots.txt` (con `Disallow: /admin`), `sitemap.xml`,
