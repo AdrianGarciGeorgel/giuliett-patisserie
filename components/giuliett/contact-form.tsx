@@ -540,7 +540,7 @@ export function ContactForm({ origen: origenInicial, selector = false, producto,
         </fieldset>
       ) : null}
 
-      <fieldset aria-invalid={Boolean(errores.opcionEspecial)}>
+      <fieldset>
         <legend className="text-[14px] font-medium text-primary">
           ¿Necesitás una opción especial?<span aria-hidden="true"> *</span>
         </legend>
@@ -555,7 +555,6 @@ export function ContactForm({ origen: origenInicial, selector = false, producto,
                   value={opcion}
                   checked={seleccionado}
                   onChange={() => actualizar('opcionEspecial', opcion)}
-                  aria-invalid={Boolean(errores.opcionEspecial)}
                   className="sr-only"
                 />
                 {ETIQUETA_OPCION_ESPECIAL[opcion]}

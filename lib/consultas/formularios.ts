@@ -94,5 +94,5 @@ export const FORMULARIOS: Record<Origen, ConfigFormulario> = {
   },
 }
 
-/** Texto bajo el botón. Lo valida Adrián / Giu; si cambia, cambia acá. */
+/** Texto bajo el botón (Ley 25.326). Confirmado por Adrián el 22-09-2026; si cambia, cambia acá. */
 export const AVISO_PRIVACIDAD = 'Usamos tus datos solo para responder esta consulta. No los compartimos con nadie.'

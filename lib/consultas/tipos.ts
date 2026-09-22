@@ -38,7 +38,7 @@ export const ETIQUETA_OPCION_ESPECIAL: Record<OpcionEspecial, string> = {
 
 /**
  * Aclaración legal del Sin TACC (Master Plan v2: tercerizado, según disponibilidad).
- * 🔲 Redacción provisoria: la confirma Adrián / Giu antes del lanzamiento.
+ * Redacción confirmada por Adrián el 22-09-2026. Cambiarla solo con su OK.
  * Nunca prometer tiempos ni decir que se elabora en el taller.
  */
 export const AVISO_SIN_TACC =

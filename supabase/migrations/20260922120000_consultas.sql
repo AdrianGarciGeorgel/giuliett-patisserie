@@ -101,7 +101,8 @@ as $$
   );
 $$;
 
-revoke all on function public.es_administrador() from public;
+-- El esquema public otorga EXECUTE a anon por defecto: se revoca explícito.
+revoke all on function public.es_administrador() from public, anon;
 grant execute on function public.es_administrador() to authenticated;
 
 -- ---------------------------------------------------------------------------
