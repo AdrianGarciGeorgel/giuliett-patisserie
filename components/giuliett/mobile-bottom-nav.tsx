@@ -90,7 +90,9 @@ export function GlobalNavigation() {
                   className={cn(
                     'relative flex min-h-[56px] min-w-[48px] flex-col items-center justify-center gap-1 px-1.5',
                     'transition-colors duration-200 ease-out',
-                    active ? 'text-[#51375C]' : 'text-[#9C8065]',
+                    // Taupe oscurecido: el #9C8065 de marca da 3,5:1 sobre el fondo crema y
+                    // el texto es de 10px; con #7D6650 llega a 5,1:1 (AA) sin cambiar de familia.
+                    active ? 'text-[#51375C]' : 'text-[#7D6650]',
                   )}
                 >
                   <Icon
