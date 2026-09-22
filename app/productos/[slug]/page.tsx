@@ -4,11 +4,25 @@ import { ContactForm } from '@/components/giuliett/contact-form'
 import { ProductGallery } from '@/components/giuliett/product-gallery'
 import { PrimaryAction } from '@/components/giuliett/atoms'
 import { Section } from '@/components/giuliett/section'
-import { PRODUCT_CATEGORY_OPTIONS, getProductBySlug } from '@/lib/products'
+import { PRODUCT_CATEGORY_OPTIONS, PRODUCTS, getProductBySlug } from '@/lib/products'
 import { waLink } from '@/lib/giuliett'
+import { jsonLdMigas, jsonLdProducto, metadataProducto, resolverUrlSitio } from '@/lib/seo'
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>
+}
+
+/** Las fichas se generan en el build: son estáticas y el sitemap las conoce. */
+export function generateStaticParams() {
+  return PRODUCTS.map((product) => ({ slug: product.slug }))
+}
+
+/** Título, descripción, canonical y tarjeta Open Graph por producto (para WhatsApp y Google). */
+export async function generateMetadata({ params }: ProductPageProps) {
+  const { slug } = await params
+  const product = getProductBySlug(slug)
+  if (!product) return { title: 'Producto no encontrado · Giuliett Pâtisserie', robots: { index: false } }
+  return metadataProducto(product)
 }
 
 const priceFormatter = new Intl.NumberFormat('es-AR', {
@@ -27,9 +41,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const productsUrl = `/productos?categoria=${encodeURIComponent(product.category)}`
   const images = product.gallery?.length ? product.gallery : [product.imagePrimary, product.imageSecondary]
   const whatsappMessage = `Hola Giuliett! Quisiera consultar por ${product.name}.`
+  const base = resolverUrlSitio()
+  const datosEstructurados = [
+    jsonLdProducto(product, base),
+    jsonLdMigas(base, [
+      { nombre: 'Inicio', ruta: '/' },
+      { nombre: 'Productos', ruta: '/productos' },
+      { nombre: product.name, ruta: `/productos/${product.slug}` },
+    ]),
+  ]
 
   return (
     <main>
+      {/* Schema.org: Google entiende que es un producto con precio, y de qué pastelería. */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(datosEstructurados) }} />
       <Section tone="cream" layered={false} className="pb-20 pt-12 md:pb-28 md:pt-20">
         <Link href={productsUrl} className="mb-8 inline-flex min-h-[48px] items-center rounded-sm border border-primary/30 px-5 text-[14px] font-medium text-primary transition-[background-color,border-color] duration-200 hover:border-primary/50 hover:bg-lilac-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40">
           Volver

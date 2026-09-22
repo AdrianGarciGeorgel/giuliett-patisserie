@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Ephesis, Poppins } from 'next/font/google'
 import { GlobalNavigation } from '@/components/giuliett/mobile-bottom-nav'
+import { NOMBRE_SITIO, jsonLdPasteleria, metadataPagina, resolverUrlSitio } from '@/lib/seo'
 import './globals.css'
 
 const poppins = Poppins({
@@ -18,18 +19,20 @@ const ephesis = Ephesis({
   display: 'swap',
 })
 
+const urlSitio = resolverUrlSitio()
+
+/* Base para todo el sitio: las páginas pisan título, descripción y canonical con
+   `metadataPagina`; las fichas de producto usan `generateMetadata`. */
 export const metadata: Metadata = {
-  title: 'Giuliett Pâtisserie · Pastelería francesa en Mendoza',
-  description:
-    'Pastelería francesa artesanal para empresas, cafeterías y eventos. Cookies con tu marca, macarons, kits y mesas dulces. Mendoza.',
-  generator: 'v0.app',
-  openGraph: {
-    title: 'Giuliett Pâtisserie · Pastelería francesa en Mendoza',
-    description:
-      'Pastelería francesa artesanal para empresas, cafeterías y eventos. Cookies con tu marca, macarons, kits y mesas dulces.',
-    locale: 'es_AR',
-    type: 'website',
-  },
+  metadataBase: new URL(urlSitio),
+  ...metadataPagina({
+    titulo: NOMBRE_SITIO,
+    ruta: '/',
+    base: urlSitio,
+    descripcion:
+      'Pastelería francesa artesanal en Mendoza. Tortas de autor, macarons, galletas personalizadas, boxes y mesas dulces para particulares, eventos y empresas.',
+  }),
+  robots: { index: true, follow: true },
   icons: {
     icon: [
       { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
@@ -53,6 +56,8 @@ export default function RootLayout({
   return (
     <html lang="es-AR" className={`${poppins.variable} ${ephesis.variable} bg-background`}>
       <body className="bg-background pb-[calc(92px+env(safe-area-inset-bottom))] font-sans antialiased md:pb-0">
+        {/* Schema.org: la pastelería como negocio local (Google Maps / fichas locales). */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPasteleria(urlSitio)) }} />
         <GlobalNavigation />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

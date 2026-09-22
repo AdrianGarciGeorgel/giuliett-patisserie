@@ -7,6 +7,14 @@ import { TrustedClients } from '@/components/giuliett/trusted-clients'
 import { WhyChooseUs } from '@/components/giuliett/why-choose-us'
 import { IconWhatsApp } from '@/components/giuliett/line-art'
 import { WA_GENERAL, waLink } from '@/lib/giuliett'
+import { metadataPagina } from '@/lib/seo'
+
+export const metadata = metadataPagina({
+  titulo: 'Hacé tu pedido',
+  ruta: '/contacto',
+  descripcion:
+    'Contanos qué estás imaginando: tortas, galletas personalizadas, boxes, mesas dulces o eventos. Te respondemos por WhatsApp.',
+})
 
 export default function ContactoPage() {
   return (

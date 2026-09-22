@@ -3,6 +3,14 @@ import { Reveal } from '@/components/giuliett/reveal'
 import { Section } from '@/components/giuliett/section'
 import { IconWhatsApp } from '@/components/giuliett/line-art'
 import { WA_GENERAL, waLink } from '@/lib/giuliett'
+import { metadataPagina } from '@/lib/seo'
+
+export const metadata = metadataPagina({
+  titulo: 'Sobre Giuliett',
+  ruta: '/giu',
+  descripcion:
+    'Giu, formada en École Ferrandi Paris, y el equipo detrás de Giuliett Pâtisserie: pastelería francesa artesanal en Mendoza desde 2018.',
+})
 
 const teamMembers = [
   {
@@ -70,9 +78,9 @@ function HistorySection() {
               <Photo src="/images/giu/giu_1.webp" alt="Giu cocinando" ratio="4/3" position="20% center" />
             </Reveal>
             <Reveal delay={100}>
-              <h1 id="historia-titulo" className="font-script pb-12 text-[34px] font-light text-primary md:text-[48px]">
+              <h2 id="historia-titulo-2" className="font-script pb-12 text-[34px] font-light text-primary md:text-[48px]">
                 Todo empezó en la cocina de casa
-              </h1>
+              </h2>
               <p className="max-w-[42ch] text-[16px] leading-[1.75] text-muted-foreground md:text-[17px]">
                 Giuliett nació en 2017, cuando con tan solo 17 años decidí convertir mi pasión por la pastelería en un sueño.
               </p>
@@ -84,9 +92,9 @@ function HistorySection() {
               <Photo src="/images/giu/giu_2.webp" alt="Giu durante su formación en París" ratio="4/5" position="center 28%" />
             </Reveal>
             <Reveal delay={100} className="lg:order-1 lg:justify-self-end">
-               <h1 id="historia-titulo" className="font-script pb-12 text-[34px] font-light text-primary md:text-[48px]">
+               <h2 id="historia-titulo-3" className="font-script pb-12 text-[34px] font-light text-primary md:text-[48px]">
                 Paris, un sueño hecho realidad
-              </h1>
+              </h2>
               <p className="max-w-[42ch] text-[16px] leading-[1.75] text-muted-foreground md:text-[17px]">
                 Años después, viajé a París para estudiar en la prestigiosa École Ferrandi Paris y, tras finalizar mi
                 formación, me quedé tres años trabajando en numerosas pastelerías y perfeccionándome.
@@ -99,9 +107,9 @@ function HistorySection() {
               <Photo src="/images/giu/giu_3.webp" alt="Giu en la École Ferrandi Paris" ratio="4/5" />
             </Reveal>
             <Reveal delay={100}>
-              <h1 id="historia-titulo" className="font-script pb-12 text-[34px] font-light text-primary md:text-[48px]">
+              <h2 id="historia-titulo-4" className="font-script pb-12 text-[34px] font-light text-primary md:text-[48px]">
                 Giuliett en la actualidad
-              </h1>
+              </h2>
               <p className="max-w-[42ch] text-[16px] leading-[1.75] text-muted-foreground md:text-[17px]">
                 De regreso en Argentina, todo lo aprendido se transformó en la Giuliett de hoy: una pâtisserie que combina técnica francesa, sabores argentinos y diseño, y que continúa creciendo cada día sin perder la esencia con la que empezó.
               </p>

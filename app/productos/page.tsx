@@ -2,6 +2,14 @@ import { ProductCatalog } from '@/components/giuliett/product-catalog'
 import { Section } from '@/components/giuliett/section'
 import { isProductCategory } from '@/lib/products'
 import { PRODUCT_CATEGORIES } from '@/types/product'
+import { metadataPagina } from '@/lib/seo'
+
+export const metadata = metadataPagina({
+  titulo: 'Nuestros productos',
+  ruta: '/productos',
+  descripcion:
+    'Tortas clásicas y personalizadas, galletas con tu marca, macarons y boxes. Pastelería francesa artesanal, hecha en Mendoza.',
+})
 
 type ProductosPageProps = {
   searchParams: Promise<{ categoria?: string }>

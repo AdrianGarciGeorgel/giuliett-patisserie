@@ -5,6 +5,14 @@ import { IconWhatsApp } from '@/components/giuliett/line-art'
 import { Reveal } from '@/components/giuliett/reveal'
 import { Section } from '@/components/giuliett/section'
 import { EVENTOS, WA_GENERAL, waLink } from '@/lib/giuliett'
+import { metadataPagina } from '@/lib/seo'
+
+export const metadata = metadataPagina({
+  titulo: 'Eventos',
+  ruta: '/eventos',
+  descripcion:
+    'Mesas dulces y pastelería a medida para bodas, celebraciones y eventos corporativos en Mendoza. Asesoramiento, producción, traslado y montaje.',
+})
 
 const eventProposals = [
   {

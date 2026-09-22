@@ -8,6 +8,14 @@ import { Reveal } from '@/components/giuliett/reveal'
 import { SectionLockup } from '@/components/giuliett/section-lockup'
 import { waLink, WA_GENERAL, CONTACT } from '@/lib/giuliett'
 import { IconWhatsApp } from '@/components/giuliett/line-art'
+import { metadataPagina } from '@/lib/seo'
+
+export const metadata = metadataPagina({
+  titulo: 'Galería',
+  ruta: '/galeria',
+  descripcion:
+    'Fotos de tortas, macarons, galletas personalizadas, boxes y mesas dulces de Giuliett Pâtisserie, pastelería francesa en Mendoza.',
+})
 
 const productCategories = [
   {
@@ -94,9 +102,9 @@ export default function GaleriaPage() {
 
 
       <Section tone="white" aria-labelledby="galeria-titulo" innerClassName="max-w-[1280px] px-5 md:px-8">
-        <h2 id="galeria-titulo" className="sr-only">
+        <h1 id="galeria-titulo" className="sr-only">
           Categorías de productos Giuliett Pâtisserie
-        </h2>
+        </h1>
         <ul className="flex flex-col gap-16 md:gap-0">
           {productCategories.map((category) => (
             <li key={category.name} className="grid md:min-h-[440px] md:grid-cols-2 lg:min-h-[520px]">
