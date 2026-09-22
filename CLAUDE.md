@@ -364,7 +364,9 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
 - [x] **Lighthouse (build de producción local, móvil 4G simulado):** Home **91 / 91 / 96 / 100**,
       ficha **91 / 91 / 96 / 100**, desktop **97 / 96 / 96 / 100** (Performance / Accesibilidad /
       Buenas prácticas / SEO). CLS 0, TBT ≤ 100 ms. Pendiente medir en producción con dominio.
-- [x] Contraste del nav móvil corregido (etiquetas de 10 px: taupe `#9C8065` → `#7D6650`, 5,1:1).
+- [x] Contraste del nav móvil corregido (etiquetas de 10 px: taupe `#9C8065` → `#7D6650`, 5,1:1)
+      y `role="group"` en los indicadores de los tres carruseles (`aria-label` en un `div` sin
+      rol está prohibido). **Accesibilidad Lighthouse: 100** en la home (era 91).
 - [ ] `NEXT_PUBLIC_SITE_URL` en Vercel cuando exista el dominio (hoy usa la URL de producción de
       Vercel sola).
 - [ ] GA4 / Search Console (necesita el dominio y una cuenta de Google de Giuliett).
