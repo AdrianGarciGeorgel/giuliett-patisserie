@@ -227,6 +227,7 @@ la configuración se toca en el dashboard, o con Playwright sobre la sesión de 
 | `SUPABASE_URL` | URL del proyecto | servidor |
 | `SUPABASE_PUBLISHABLE_KEY` | clave publicable (`sb_publishable_…`) | panel y `proxy.ts` (sesión) |
 | `SUPABASE_SECRET_KEY` | clave secreta (`sb_secret_…`) | **solo** `lib/supabase/admin.ts` y el script de admins |
+| `NEXT_PUBLIC_SITE_URL` | URL pública del sitio (opcional; el dominio final) | `lib/seo.ts`: canonical, sitemap, OG. Si falta, usa la URL de producción de Vercel |
 
 Ninguna lleva prefijo `NEXT_PUBLIC_`: nada de Supabase viaja al navegador.
 Sin variables, la web sigue funcionando: el formulario muestra un error claro con
@@ -344,9 +345,29 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
 - [ ] Organización de GitHub `giuliett-patisserie` (esperando el OK de Marco) y, después,
       reconectar el Vercel al repo de la organización.
 
-### Fase C — SEO técnico 🔲
-Metadata por página, OG por producto, `robots.txt` (con `Disallow: /admin`), `sitemap.xml`,
-Schema.org, GA4 / Search Console. Arreglar los 3 `<h1>` de `/eventos`.
+### Fase C — SEO técnico 🟡 (rama `feat/seo-tecnico`, 22-09-2026)
+- [x] `lib/seo.ts` con tests: URL del sitio, metadata, robots, sitemap, Schema.org.
+- [x] Título, descripción, canonical, Open Graph y Twitter en las 6 páginas; `generateMetadata`
+      en la ficha de producto, que pasa a **estática** (`generateStaticParams`).
+- [x] `/robots.txt` (bloquea `/admin` y `/api`) y `/sitemap.xml` (24 URLs).
+- [x] JSON-LD: `Bakery` en todo el sitio; `Product` + `Offer` + `BreadcrumbList` por producto.
+- [x] Tarjetas Open Graph generadas (`app/opengraph-image.tsx` y por producto): JPEG de ~60 KB
+      con foto + nombre + precio y paleta oficial. `sharp` fijado en 0.34.5 (la que trae Next).
+- [x] Un solo `h1` por página (`/giu` tenía cuatro, `/galeria` ninguno).
+- [x] Test de integridad del catálogo (`test/catalogo.test.ts`).
+- [x] **Lighthouse (build de producción local, móvil 4G simulado):** Home **91 / 91 / 96 / 100**,
+      ficha **91 / 91 / 96 / 100**, desktop **97 / 96 / 96 / 100** (Performance / Accesibilidad /
+      Buenas prácticas / SEO). CLS 0, TBT ≤ 100 ms. Pendiente medir en producción con dominio.
+- [x] Contraste del nav móvil corregido (etiquetas de 10 px: taupe `#9C8065` → `#7D6650`, 5,1:1).
+- [ ] `NEXT_PUBLIC_SITE_URL` en Vercel cuando exista el dominio (hoy usa la URL de producción de
+      Vercel sola).
+- [ ] GA4 / Search Console (necesita el dominio y una cuenta de Google de Giuliett).
+- [ ] Medir Lighthouse en producción y revisar el LCP móvil (3,4 s simulado: hero image).
+
+Notas: el 404 de `/_vercel/insights/script.js` que aparece en local es Vercel Analytics, que solo
+existe en Vercel. Las **previews de Vercel están detrás del login** (`vercel.com/sso-api`);
+producción es pública. Para compartir una preview con Giu o Marco hay que apagar la protección
+de previews en Settings → Deployment Protection.
 
 ### Fase D — CMS con roles (Giu / Jime) 🔲
 Arquitectura lista para migrar `PRODUCTS` y `EVENTOS` a datos editables **sin rehacer el
