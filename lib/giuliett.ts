@@ -3,7 +3,7 @@
 export const CONTACT = {
   phoneDisplay: '+54 9 261 713 7765',
   phoneRaw: '5492617137765',
-  email: 'giuliettpatisserie@giuliett.com',
+  email: 'hola@giuliettpatisserie.com', // el del brochure oficial (confirmado 22-09-2026)
   instagramHandle: '@giuliettpatisserie',
   instagramUrl: 'https://instagram.com/giuliettpatisserie',
   city: 'Mendoza, Argentina',

@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { CLIENTS, EVENTOS, REASONS } from '@/lib/giuliett'
+import { CLIENTS, CONTACT, EVENTOS, REASONS } from '@/lib/giuliett'
 import { PRODUCTS, PRODUCT_CATEGORY_OPTIONS } from '@/lib/products'
 import { PRODUCT_CATEGORIES } from '@/types/product'
 
@@ -59,6 +59,14 @@ describe('catálogo de productos', () => {
         expect(ruta, p.slug).toMatch(/\.webp$/)
       }
     }
+  })
+})
+
+describe('datos de contacto oficiales (brochure B2B)', () => {
+  it('teléfono, email e Instagram son los del brochure', () => {
+    expect(CONTACT.phoneRaw).toBe('5492617137765')
+    expect(CONTACT.email).toBe('hola@giuliettpatisserie.com')
+    expect(CONTACT.instagramHandle).toBe('@giuliettpatisserie')
   })
 })
 
