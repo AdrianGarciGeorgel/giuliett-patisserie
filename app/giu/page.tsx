@@ -7,39 +7,39 @@ import { WA_GENERAL, waLink } from '@/lib/giuliett'
 const teamMembers = [
   {
     name: 'Giu',
-    image: '/images/giu/GIU.png',
+    image: '/images/giu/GIU.webp',
     role: 'Fundadora & Chef Pastelera',
     description:
       'Fundadora de Giuliett y formada en École Ferrandi Paris. Lidera el desarrollo creativo de la marca y supervisa cada creación para que refleje la calidad, la estética y la esencia de Giuliett.',
   },
   {
     name: 'Rai',
-    image: '/images/giu/RAI.png',
+    image: '/images/giu/RAI.webp',
     role: 'Administración & Gestión General',
     description:
       'Es quien coordina el funcionamiento diario de Giuliett, organiza los procesos internos y acompaña al equipo para que cada detalle esté bajo control.',
   },
   {
     name: 'Juli',
-    image: '/images/giu/JULI.png',
+    image: '/images/giu/JULI.webp',
     role: 'Responsable de cocina',
     description: 'Lidera la producción artesanal de Giuliett. Supervisa cada elaboración y trabaja con dedicación para garantizar la calidad y el cuidado en cada detalle.',
   },
   {
     name: 'Jime',
-    image: '/images/giu/JIME.png',
+    image: '/images/giu/JIME.webp',
     role: 'Diseño gráfico & Producción',
     description: 'Es la responsable de la identidad visual de Giuliett. Diseña cada pieza gráfica de la marca y acompaña al equipo de cocina, aportando creatividad y atención a los detalles en cada proyecto.',
   },
   {
     name: 'Ana',
-    image: '/images/giu/ANA.png',
+    image: '/images/giu/ANA.webp',
     role: 'Marketing & Community Manager',
     description: 'Planifica la comunicación de Giuliett y gestiona nuestras redes sociales. Es quien transforma cada creación en contenido, acercando la esencia de la marca a nuestra comunidad.',
   },
   {
     name: 'Ceci',
-    image: '/images/giu/CECI.png',
+    image: '/images/giu/CECI.webp',
     role: 'Ingeniera Comercial & Desarrollo Estratégico',
     description: 'Aporta una mirada estratégica al crecimiento de Giuliett, liderando la planificación, el desarrollo de la marca y los objetivos que acompañan su evolución.',
   }
@@ -67,7 +67,7 @@ function HistorySection() {
         <div className="mt-12 flex flex-col gap-16 md:mt-16 md:gap-24">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center lg:gap-16">
             <Reveal>
-              <Photo src="/images/giu/giu_1.jpeg" alt="Giu cocinando" ratio="4/3" position="20% center" />
+              <Photo src="/images/giu/giu_1.webp" alt="Giu cocinando" ratio="4/3" position="20% center" />
             </Reveal>
             <Reveal delay={100}>
               <h1 id="historia-titulo" className="font-script pb-12 text-[34px] font-light text-primary md:text-[48px]">
@@ -81,7 +81,7 @@ function HistorySection() {
 
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:items-center lg:gap-16">
             <Reveal className="lg:order-2">
-              <Photo src="/images/giu/giu_2.jpeg" alt="Giu durante su formación en París" ratio="4/5" position="center 28%" />
+              <Photo src="/images/giu/giu_2.webp" alt="Giu durante su formación en París" ratio="4/5" position="center 28%" />
             </Reveal>
             <Reveal delay={100} className="lg:order-1 lg:justify-self-end">
                <h1 id="historia-titulo" className="font-script pb-12 text-[34px] font-light text-primary md:text-[48px]">
@@ -96,7 +96,7 @@ function HistorySection() {
 
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center lg:gap-16">
             <Reveal>
-              <Photo src="/images/giu/giu_3.png" alt="Giu en la École Ferrandi Paris" ratio="4/5" />
+              <Photo src="/images/giu/giu_3.webp" alt="Giu en la École Ferrandi Paris" ratio="4/5" />
             </Reveal>
             <Reveal delay={100}>
               <h1 id="historia-titulo" className="font-script pb-12 text-[34px] font-light text-primary md:text-[48px]">
@@ -118,7 +118,7 @@ function TeamSection() {
     <Section tone="white" aria-labelledby="equipo-titulo">
       <div className="mx-auto max-w-[1040px]">
         <Reveal>
-          <Photo src="/images/giu/EQUIPO.jpg" alt="Equipo Giuliett" ratio="16/9" position="center 60%" />
+          <Photo src="/images/giu/EQUIPO.webp" alt="Equipo Giuliett" ratio="16/9" position="center 60%" />
         </Reveal>
         <Reveal delay={100}>
           <h2 id="equipo-titulo" className="mt-14 text-center text-[34px] font-light text-primary md:mt-20 md:text-[48px]">

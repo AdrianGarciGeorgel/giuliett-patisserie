@@ -34,7 +34,7 @@ export function Manifesto() {
           {/* Ratio horizontal: rompe el patrón vertical del sitio a propósito. */}
           <Reveal delay={160} className="mt-10 w-full max-w-[62ch]">
             <FramedPhoto
-              src="/images/manifiesto-manos.png"
+              src="/images/manifiesto-manos.webp"
               alt="Manos decorando a mano una cookie glaseada con glasé violeta"
               ratio="16/9"
               radius="md"

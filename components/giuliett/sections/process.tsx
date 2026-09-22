@@ -57,7 +57,7 @@ export function Process() {
                           style={{ aspectRatio: '4 / 5' }}
                         >
                           <Image
-                            src="/images/gui_wine.png"
+                            src="/images/gui_wine.webp"
                             alt="Caja de cookies artesanales con el logo de Giuliett sobre mármol blanco"
                             fill
                             priority

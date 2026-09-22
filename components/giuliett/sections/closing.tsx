@@ -16,7 +16,7 @@ export function Closing() {
       <div className="flex flex-col items-center gap-12 lg:flex-row lg:items-center lg:gap-16">
         <Reveal className="w-full lg:w-[46%]">
           <FramedPhoto
-            src="/images/cierre-mesa-dulce.png"
+            src="/images/cierre-mesa-dulce.webp"
             alt="Mesa dulce con macarons, tartas y cookies sobre stands de cerámica lila"
             ratio="4/3"
             lifted

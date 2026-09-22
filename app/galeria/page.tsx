@@ -12,7 +12,7 @@ import { IconWhatsApp } from '@/components/giuliett/line-art'
 const productCategories = [
   {
     name: 'Tortas clásicas',
-    src: '/images/Tortas_clasicas.png',
+    src: '/images/Tortas_clasicas.webp',
     alt: 'Cookies artesanales glaseadas con el logo de Giuliett sobre mármol blanco',
     imageFirstOnDesktop: false,
     category: PRODUCT_CATEGORIES.CLASSIC_CAKES,
@@ -21,7 +21,7 @@ const productCategories = [
   },
   {
     name: 'Tortas personalizadas',
-    src: '/images/Tortas_Personalizadas.png',
+    src: '/images/Tortas_Personalizadas.webp',
     alt: 'Mesa dulce montada con macarons, flores y cerámica lila',
     imageFirstOnDesktop: true,
     category: PRODUCT_CATEGORIES.CUSTOM_CAKES,
@@ -30,7 +30,7 @@ const productCategories = [
   },
   {
     name: 'Galletas personalizadas',
-    src: '/images/Galletas_personalizadas.png',
+    src: '/images/Galletas_personalizadas.webp',
     alt: 'Manos decorando una cookie glaseada a mano',
     imageFirstOnDesktop: false,
     category: PRODUCT_CATEGORIES.CUSTOM_COOKIES,
@@ -39,7 +39,7 @@ const productCategories = [
   },
   {
     name: 'Boxes',
-    src: '/images/Boxes.png',
+    src: '/images/Boxes.webp',
     alt: 'Caja de regalo lila con macarons y cinta de raso',
     imageFirstOnDesktop: true,
     category: PRODUCT_CATEGORIES.BOXES,
