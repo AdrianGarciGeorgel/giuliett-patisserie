@@ -322,9 +322,11 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
 8. ~~Email decía obligatorio pero no se validaba~~ → resuelto: opcional y validado.
 9. ~~El formulario no registraba nada~~ → resuelto en Fase B.
 10. **Vercel en plan Hobby** (según sus términos, uso no comercial): pasar a **Pro** al lanzar
-    con dominio. Región de Functions: Adrián la cambió a `gru1` (São Paulo) el 23-09-2026, pero el
-    primer deploy posterior seguía reportando `iad1` → **verificar en el próximo deploy** (Vercel →
-    Deployments → el deploy → "Regions"); si sigue en `iad1`, rehacer Settings → Functions → Save.
+    con dominio. **Región de Functions: `gru1` (São Paulo), verificada el 23-09-2026** en el header
+    `X-Vercel-Id: gru1::gru1::…` de una ruta dinámica. Lo que pasó antes: el plan Hobby permite **una
+    sola región** y habían quedado tildadas `iad1` y `gru1` a la vez, con lo que el botón Save no se
+    habilitaba; hubo que destildar `iad1`, guardar y redeployar. Si algún día vuelve a `iad1`,
+    ese es el primer lugar donde mirar.
 11. **Rotación de la clave secreta (22/23-09-2026):** `giuliett_servidor` es la clave en uso
     (`.env.local` y Vercel, probada). `servidor_web` fue borrada. La secreta `default` de Supabase
     **no se puede borrar desde el menú de la fila** (Supabase la protege): queda sin usar. Si algún
@@ -381,13 +383,24 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
 - [x] Contraste del nav móvil corregido (etiquetas de 10 px: taupe `#9C8065` → `#7D6650`, 5,1:1)
       y `role="group"` en los indicadores de los tres carruseles (`aria-label` en un `div` sin
       rol está prohibido). **Accesibilidad Lighthouse: 100** en la home (era 91).
+- [x] **Auditoría de rutas sobre el staging (23-09-2026, puntos 2 y 3 del checklist):** todas las
+      rutas fijas en 200, `/admin` → `/admin/login` (307), `/no-existe` y `/productos/no-existe` en
+      404, `/api/consultas` por GET en 405, las **24 URLs del sitemap en 200**, `?categoria=inventada`
+      cae en Tortas clásicas. Flujo **Categoría → Producto → Volver**: el botón "Volver" siempre
+      funcionó; **"Atrás" del navegador mostraba la categoría anterior** (URL decía galletas, grilla
+      mostraba Boxes) → corregido: `ProductCatalog` deriva la categoría de `useSearchParams()` en vez
+      de un `useState` (`test/product-catalog.test.tsx`, render SSR con `next/navigation` mockeado).
+      Verificado en escritorio (1280) y móvil (390) con Playwright, en las dos direcciones.
 - [ ] `NEXT_PUBLIC_SITE_URL` en Vercel cuando exista el dominio (hoy usa la URL de producción de
       Vercel sola).
 - [ ] GA4 / Search Console (necesita el dominio y una cuenta de Google de Giuliett).
 - [ ] Medir Lighthouse en producción y revisar el LCP móvil (3,4 s simulado: hero image).
 
 Notas: el 404 de `/_vercel/insights/script.js` que aparece en local es Vercel Analytics, que solo
-existe en Vercel. Las **previews de Vercel están detrás del login** (`vercel.com/sso-api`);
+existe en Vercel. En `/productos` la consola avisa que se precargan 8 imágenes del home (`torre`,
+`camion`, `alfajores`, `giu`, `LOGOS/*`) que la página no usa: no vienen en el HTML servido, las
+inyecta el cliente (probablemente el prefetch de "Inicio"). Es un warning, no un error, y Lighthouse
+ya dio 91 con eso puesto; queda anotado por si se busca exprimir el LCP móvil. Las **previews de Vercel están detrás del login** (`vercel.com/sso-api`);
 producción es pública. Para compartir una preview con Giu o Marco hay que apagar la protección
 de previews en Settings → Deployment Protection.
 
