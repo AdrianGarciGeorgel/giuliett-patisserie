@@ -23,7 +23,14 @@ Repo de trabajo: `maap00/giuliett-patisserie` hasta que exista la organización 
 |---|---|
 | **Marco (@maap00)** | Frontend: diseño, componentes, maquetado. Dueño del repo. |
 | **Adrián (@AdrianGarciGeorgel)** | Lidera el desarrollo: backend, formularios, CMS, SEO, deploy. |
-| **Giuliana (Giu)** | La clienta. Dueña de la marca. Usa el panel. |
+| **Giuliana (Giu)** | La clienta. Dueña de la marca y del dominio `giuliettpatisserie.com`. Usa el panel. |
+| **Cecilia Frías** | Ingeniera comercial de Giu. Autora del brief de traspaso de la App de Cocina. |
+
+**Proyecto hermano (otro repo, misma clienta):** la **App de Cocina y Administración**
+(pedidos, producción, stock, finanzas con sueldos confidenciales), hoy en ChatGPT Sites +
+Cloudflare D1, a migrar a Next.js + Supabase + Vercel. Ficha en Notion:
+*Giuliett — App de Cocina y Administración (traspaso)*. Comparte stack y auth con este
+panel; no mezclar repos.
 
 # Notion Base de Operaciones
 
@@ -382,8 +389,12 @@ Arquitectura lista para migrar `PRODUCTS` y `EVENTOS` a datos editables **sin re
 frontend**. ⚠️ No introducir un CMS antes de definir cuál.
 
 ### Fase E — Dominio, lanzamiento y capacitación 🔲
-Giuliana ya tiene el dominio contratado en **Namecheap** (dato del 22-09-2026; falta el
-nombre exacto). DNS, SSL, redirects www, Lighthouse en producción, capacitación del panel.
+**Dominio: `giuliettpatisserie.com`** (Namecheap, a nombre de Giuliana; confirmado el 23-09-2026).
+Plan: agregar el dominio al proyecto de Vercel de Adrián (Domains → Add, con `www` redirigiendo
+al apex) → cargar en Namecheap los registros que Vercel indique (A / CNAME) → SSL automático →
+`NEXT_PUBLIC_SITE_URL=https://giuliettpatisserie.com` en Vercel → redeploy → Lighthouse en
+producción → Search Console y GA4 → capacitación del panel. Hasta que el DNS apunte, **no**
+poner el dominio en `NEXT_PUBLIC_SITE_URL` (canonical y sitemap apuntarían a algo que no responde).
 
 ---
 
