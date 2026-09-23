@@ -317,11 +317,10 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
 10. **Vercel en plan Hobby** (según sus términos, uso no comercial): pasar a **Pro** al lanzar
     con dominio. Funciones en `iad1` (Washington): conviene `gru1` (São Paulo) — Settings →
     Functions → Region.
-11. **Rotación de la clave secreta (22-09-2026, noche):** `giuliett_servidor` creada en Supabase,
-    en `.env.local` (probada) y **en Vercel** (la pegó Adrián: el permiso de la sesión de Claude
-    bloquea escribir secretos). **Falta borrar** en Supabase las claves viejas `default` y
-    `servidor_web` (API Keys → More actions → Delete; el mismo permiso lo bloquea para Claude).
-    Hasta que se borren, la vieja sigue funcionando.
+11. **Rotación de la clave secreta (22/23-09-2026):** `giuliett_servidor` es la clave en uso
+    (`.env.local` y Vercel, probada). `servidor_web` fue borrada. La secreta `default` de Supabase
+    **no se puede borrar desde el menú de la fila** (Supabase la protege): queda sin usar. Si algún
+    día hace falta rotar de nuevo: New secret key → `.env.local` → Vercel (lo pega Adrián) → borrar.
 
 ---
 
