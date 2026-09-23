@@ -315,8 +315,9 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
 8. ~~Email decía obligatorio pero no se validaba~~ → resuelto: opcional y validado.
 9. ~~El formulario no registraba nada~~ → resuelto en Fase B.
 10. **Vercel en plan Hobby** (según sus términos, uso no comercial): pasar a **Pro** al lanzar
-    con dominio. ~~Funciones en `iad1`~~ → **región cambiada a `gru1` (São Paulo) por Adrián el
-    23-09-2026**; aplica a los deploys nuevos.
+    con dominio. Región de Functions: Adrián la cambió a `gru1` (São Paulo) el 23-09-2026, pero el
+    primer deploy posterior seguía reportando `iad1` → **verificar en el próximo deploy** (Vercel →
+    Deployments → el deploy → "Regions"); si sigue en `iad1`, rehacer Settings → Functions → Save.
 11. **Rotación de la clave secreta (22/23-09-2026):** `giuliett_servidor` es la clave en uso
     (`.env.local` y Vercel, probada). `servidor_web` fue borrada. La secreta `default` de Supabase
     **no se puede borrar desde el menú de la fila** (Supabase la protege): queda sin usar. Si algún
