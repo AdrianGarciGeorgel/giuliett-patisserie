@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { requerirAdministrador } from '@/lib/admin/auth'
 import { ESTADOS, ETIQUETA_ESTADO, ETIQUETA_OPCION_ESPECIAL, type Consulta } from '@/lib/consultas/tipos'
 import { linkWhatsappA } from '@/lib/consultas/whatsapp'
-import { getProductBySlug } from '@/lib/products'
+import { getProductoPorSlug } from '@/lib/catalogo'
 import { actualizarConsulta } from '../../acciones'
 import {
   EtiquetaEstado,
@@ -28,7 +28,7 @@ export default async function ConsultaPage({ params, searchParams }: Props) {
   if (error || !data) notFound()
   const consulta = data as Consulta
 
-  const producto = consulta.producto_slug ? getProductBySlug(consulta.producto_slug) : null
+  const producto = await getProductoPorSlug(consulta.producto_slug ?? '')
   const saludo = `Hola ${consulta.nombre.split(' ')[0]}! Soy Giu, de Giuliett Pâtisserie. Recibí tu consulta y te escribo para charlar los detalles.`
   const whatsapp = linkWhatsappA(consulta.whatsapp, saludo)
   const guardar = actualizarConsulta.bind(null, consulta.id)

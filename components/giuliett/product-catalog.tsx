@@ -3,14 +3,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { PRODUCT_CATEGORY_OPTIONS, PRODUCTS } from '@/lib/products'
-import type { ProductCategory } from '@/types/product'
+import { PRODUCT_CATEGORY_OPTIONS } from '@/lib/products'
+import type { Product, ProductCategory } from '@/types/product'
 import { SectionLockup } from './section-lockup'
 import { ChefHat } from 'lucide-react'
 
 
 type ProductCatalogProps = {
   initialCategory: ProductCategory
+  /** Los productos vienen de la página (lib/catalogo): el componente no sabe de dónde salen. */
+  productos: Product[]
 }
 
 const priceFormatter = new Intl.NumberFormat('es-AR', {
@@ -19,9 +21,9 @@ const priceFormatter = new Intl.NumberFormat('es-AR', {
   maximumFractionDigits: 0,
 })
 
-export function ProductCatalog({ initialCategory }: ProductCatalogProps) {
+export function ProductCatalog({ initialCategory, productos }: ProductCatalogProps) {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>(initialCategory)
-  const products = PRODUCTS.filter((product) => product.category === selectedCategory)
+  const products = productos.filter((product) => product.category === selectedCategory)
   const selectedCategoryLabel = PRODUCT_CATEGORY_OPTIONS.find((category) => category.value === selectedCategory)?.label
 
   return (

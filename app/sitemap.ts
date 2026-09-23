@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
-import { PRODUCTS } from '@/lib/products'
+import { getProductos } from '@/lib/catalogo'
 import { generarSitemap, resolverUrlSitio } from '@/lib/seo'
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return generarSitemap(resolverUrlSitio(), PRODUCTS)
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  return generarSitemap(resolverUrlSitio(), await getProductos())
 }

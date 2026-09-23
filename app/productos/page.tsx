@@ -1,5 +1,6 @@
 import { ProductCatalog } from '@/components/giuliett/product-catalog'
 import { Section } from '@/components/giuliett/section'
+import { getProductos } from '@/lib/catalogo'
 import { isProductCategory } from '@/lib/products'
 import { PRODUCT_CATEGORIES } from '@/types/product'
 import { metadataPagina } from '@/lib/seo'
@@ -19,6 +20,7 @@ export default async function ProductosPage({ searchParams }: ProductosPageProps
   const { categoria } = await searchParams
   const categoryParam = categoria ?? null
   const initialCategory = isProductCategory(categoryParam) ? categoryParam : PRODUCT_CATEGORIES.CLASSIC_CAKES
+  const productos = await getProductos()
 
   return (
     <main>
@@ -26,7 +28,7 @@ export default async function ProductosPage({ searchParams }: ProductosPageProps
         <h1 id="productos-titulo" className="sr-only">
           Nuestros productos
         </h1>
-        <ProductCatalog initialCategory={initialCategory} />
+        <ProductCatalog initialCategory={initialCategory} productos={productos} />
       </Section>
     </main>
   )

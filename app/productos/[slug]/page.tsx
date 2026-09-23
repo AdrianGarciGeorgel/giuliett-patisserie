@@ -4,7 +4,8 @@ import { ContactForm } from '@/components/giuliett/contact-form'
 import { ProductGallery } from '@/components/giuliett/product-gallery'
 import { PrimaryAction } from '@/components/giuliett/atoms'
 import { Section } from '@/components/giuliett/section'
-import { PRODUCT_CATEGORY_OPTIONS, PRODUCTS, getProductBySlug } from '@/lib/products'
+import { getProductoPorSlug, getProductos } from '@/lib/catalogo'
+import { PRODUCT_CATEGORY_OPTIONS } from '@/lib/products'
 import { waLink } from '@/lib/giuliett'
 import { jsonLdMigas, jsonLdProducto, metadataProducto, resolverUrlSitio } from '@/lib/seo'
 
@@ -13,14 +14,14 @@ type ProductPageProps = {
 }
 
 /** Las fichas se generan en el build: son estáticas y el sitemap las conoce. */
-export function generateStaticParams() {
-  return PRODUCTS.map((product) => ({ slug: product.slug }))
+export async function generateStaticParams() {
+  return (await getProductos()).map((product) => ({ slug: product.slug }))
 }
 
 /** Título, descripción, canonical y tarjeta Open Graph por producto (para WhatsApp y Google). */
 export async function generateMetadata({ params }: ProductPageProps) {
   const { slug } = await params
-  const product = getProductBySlug(slug)
+  const product = await getProductoPorSlug(slug)
   if (!product) return { title: 'Producto no encontrado · Giuliett Pâtisserie', robots: { index: false } }
   return metadataProducto(product)
 }
@@ -33,7 +34,7 @@ const priceFormatter = new Intl.NumberFormat('es-AR', {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params
-  const product = getProductBySlug(slug)
+  const product = await getProductoPorSlug(slug)
 
   if (!product) notFound()
 

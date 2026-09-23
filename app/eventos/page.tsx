@@ -4,7 +4,8 @@ import { HeroCarousel } from '@/components/giuliett/hero-carousel'
 import { IconWhatsApp } from '@/components/giuliett/line-art'
 import { Reveal } from '@/components/giuliett/reveal'
 import { Section } from '@/components/giuliett/section'
-import { EVENTOS, WA_GENERAL, waLink } from '@/lib/giuliett'
+import { getEventos, type Eventos } from '@/lib/catalogo'
+import { WA_GENERAL, waLink, type EventImage } from '@/lib/giuliett'
 import { metadataPagina } from '@/lib/seo'
 
 export const metadata = metadataPagina({
@@ -14,61 +15,80 @@ export const metadata = metadataPagina({
     'Mesas dulces y pastelería a medida para bodas, celebraciones y eventos corporativos en Mendoza. Asesoramiento, producción, traslado y montaje.',
 })
 
-const eventProposals = [
-  {
-    id: 'bodas',
-    eyebrow: '01 · Bodas',
-    title: 'Mucho más que una mesa dulce.',
-    paragraphs: [
-      'Creamos experiencias dulces totalmente personalizadas para uno de los días más importantes de sus vidas. Los acompañamos desde el asesoramiento inicial hasta la producción artesanal, el traslado y el montaje, cuidando cada detalle para que todo salga perfecto.',
-    ],
-    cta: 'Hablemos de tu boda',
-    message: 'Hola Giuliett, quisiera solicitar presupuesto para una boda.',
-    slides: EVENTOS.bodas,
-    tone: 'cream',
-    imageFirstOnDesktop: false,
-    closing: undefined,
-    secondary: undefined,
-  },
-  {
-    id: 'empresas',
-    eyebrow: '02 · Empresas',
-    title: 'Regalos y experiencias que dejan huella.',
-    paragraphs: [
-      'Desarrollamos propuestas gastronómicas personalizadas para empresas, eventos corporativos, lanzamientos, acciones de marketing y regalos institucionales.',
-      'Incorporamos la identidad de tu marca en cada detalle para crear una experiencia memorable.',
-    ],
-    cta: 'Hablemos de tu proyecto',
-    message: 'Hola Giuliett, quisiera consultar por eventos corporativos.',
-    slides: EVENTOS.empresas,
-    tone: 'white',
-    imageFirstOnDesktop: true,
-    closing: undefined,
-    /* Recorrido Empresa del Master Plan: deja la consulta registrada. */
-    secondary: { href: '/contacto?para=empresa', label: 'Prefiero dejar los datos de mi empresa' },
-  },
-  {
-    id: 'celebraciones',
-    eyebrow: '03 · Celebraciones',
-    title: 'Cada momento especial merece un detalle único.',
-    paragraphs: [
-      'Cumpleaños, bautismos, comuniones, baby showers, aniversarios y mucho más.',
-      'Diseñamos propuestas a medida con mesas dulces, tortas, macarons y detalles pensados especialmente para vos.',
-    ],
-    closing: 'Contanos tu idea y creemos juntos una propuesta única.',
-    cta: 'Contanos tu idea',
-    message: 'Hola Giuliett, quiero mi presupuesto para una celebración.',
-    slides: EVENTOS.celebraciones,
-    tone: 'lilac-soft',
-    imageFirstOnDesktop: false,
-    secondary: undefined,
-  },
-] as const
+type Propuesta = {
+  id: string
+  eyebrow: string
+  title: string
+  paragraphs: readonly string[]
+  cta: string
+  message: string
+  slides: readonly EventImage[]
+  tone: 'cream' | 'white' | 'lilac-soft'
+  imageFirstOnDesktop: boolean
+  closing?: string
+  secondary?: { href: string; label: string }
+}
 
-export default function EventosPage() {
+/** Las fotos vienen de lib/catalogo (hoy estáticas, mañana CMS); el copy sigue acá. */
+function armarPropuestas(eventos: Eventos): Propuesta[] {
+  return [
+    {
+      id: 'bodas',
+      eyebrow: '01 · Bodas',
+      title: 'Mucho más que una mesa dulce.',
+      paragraphs: [
+        'Creamos experiencias dulces totalmente personalizadas para uno de los días más importantes de sus vidas. Los acompañamos desde el asesoramiento inicial hasta la producción artesanal, el traslado y el montaje, cuidando cada detalle para que todo salga perfecto.',
+      ],
+      cta: 'Hablemos de tu boda',
+      message: 'Hola Giuliett, quisiera solicitar presupuesto para una boda.',
+      slides: eventos.bodas,
+      tone: 'cream',
+      imageFirstOnDesktop: false,
+      closing: undefined,
+      secondary: undefined,
+    },
+    {
+      id: 'empresas',
+      eyebrow: '02 · Empresas',
+      title: 'Regalos y experiencias que dejan huella.',
+      paragraphs: [
+        'Desarrollamos propuestas gastronómicas personalizadas para empresas, eventos corporativos, lanzamientos, acciones de marketing y regalos institucionales.',
+        'Incorporamos la identidad de tu marca en cada detalle para crear una experiencia memorable.',
+      ],
+      cta: 'Hablemos de tu proyecto',
+      message: 'Hola Giuliett, quisiera consultar por eventos corporativos.',
+      slides: eventos.empresas,
+      tone: 'white',
+      imageFirstOnDesktop: true,
+      closing: undefined,
+      /* Recorrido Empresa del Master Plan: deja la consulta registrada. */
+      secondary: { href: '/contacto?para=empresa', label: 'Prefiero dejar los datos de mi empresa' },
+    },
+    {
+      id: 'celebraciones',
+      eyebrow: '03 · Celebraciones',
+      title: 'Cada momento especial merece un detalle único.',
+      paragraphs: [
+        'Cumpleaños, bautismos, comuniones, baby showers, aniversarios y mucho más.',
+        'Diseñamos propuestas a medida con mesas dulces, tortas, macarons y detalles pensados especialmente para vos.',
+      ],
+      closing: 'Contanos tu idea y creemos juntos una propuesta única.',
+      cta: 'Contanos tu idea',
+      message: 'Hola Giuliett, quiero mi presupuesto para una celebración.',
+      slides: eventos.celebraciones,
+      tone: 'lilac-soft',
+      imageFirstOnDesktop: false,
+      secondary: undefined,
+    },
+  ]
+}
+
+export default async function EventosPage() {
+  const propuestas = armarPropuestas(await getEventos())
+
   return (
     <main>
-      {eventProposals.map((proposal, index) => (
+      {propuestas.map((proposal, index) => (
         <EventSection key={proposal.id} proposal={proposal} first={index === 0} />
       ))}
 
@@ -106,7 +126,7 @@ export default function EventosPage() {
   )
 }
 
-type EventProposal = (typeof eventProposals)[number]
+type EventProposal = Propuesta
 
 function EventSection({ proposal, first }: { proposal: EventProposal; first: boolean }) {
   const Heading = first ? 'h1' : 'h2'

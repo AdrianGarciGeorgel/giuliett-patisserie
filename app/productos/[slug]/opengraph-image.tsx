@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { comprimirTarjeta, fotoParaTarjeta } from '@/lib/og'
-import { getProductBySlug } from '@/lib/products'
+import { getProductoPorSlug } from '@/lib/catalogo'
 import { etiquetaCategoria } from '@/lib/seo'
 
 /* Tarjeta 1200×630 que ven WhatsApp, Instagram y Google al compartir una ficha.
@@ -16,7 +16,7 @@ const priceFormatter = new Intl.NumberFormat('es-AR', { style: 'currency', curre
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const product = getProductBySlug(slug)
+  const product = await getProductoPorSlug(slug)
   const foto = product ? await fotoParaTarjeta(product.imagePrimary, 630, 630) : null
 
   return comprimirTarjeta(

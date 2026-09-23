@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { requerirAdministrador } from '@/lib/admin/auth'
 import { ESTADOS, ETIQUETA_ESTADO, type Consulta, type Estado } from '@/lib/consultas/tipos'
-import { getProductBySlug } from '@/lib/products'
+import { getProductos } from '@/lib/catalogo'
 import { cerrarSesion } from './acciones'
 import { EtiquetaEstado, EtiquetaOrigen, botonSecundarioClassName, formatearFechaEvento, formatearFechaHora } from './ui'
 
@@ -28,10 +28,12 @@ export default async function AdminPage({ searchParams }: Props) {
     .limit(200)
   if (filtro) consulta = consulta.eq('estado', filtro)
 
-  const [{ data: filas, error }, { data: todas }] = await Promise.all([
+  const [{ data: filas, error }, { data: todas }, productos] = await Promise.all([
     consulta,
     supabase.from('consultas').select('estado').limit(5000),
+    getProductos(),
   ])
+  const nombrePorSlug = new Map(productos.map((p) => [p.slug, p.name]))
 
   const conteo = Object.fromEntries(ESTADOS.map((e) => [e, 0])) as Record<Estado, number>
   for (const fila of todas ?? []) conteo[fila.estado as Estado] += 1
@@ -87,7 +89,7 @@ export default async function AdminPage({ searchParams }: Props) {
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-muted-foreground">
                 <EtiquetaOrigen origen={fila.origen} />
-                <span>{resumenPedido(fila)}</span>
+                <span>{resumenPedido(fila, nombrePorSlug)}</span>
                 {fila.fecha_evento ? <span>Evento: {formatearFechaEvento(fila.fecha_evento)}</span> : null}
                 <span className="ml-auto">{formatearFechaHora(fila.created_at)}</span>
               </div>
@@ -99,8 +101,8 @@ export default async function AdminPage({ searchParams }: Props) {
   )
 }
 
-function resumenPedido(fila: Fila) {
-  if (fila.producto_slug) return getProductBySlug(fila.producto_slug)?.name ?? fila.producto_slug
+function resumenPedido(fila: Fila, nombrePorSlug: Map<string, string>) {
+  if (fila.producto_slug) return nombrePorSlug.get(fila.producto_slug) ?? fila.producto_slug
   return fila.tipo_pedido ?? 'Sin tipo'
 }
 
