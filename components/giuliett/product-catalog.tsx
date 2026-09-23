@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
-import { PRODUCT_CATEGORY_OPTIONS } from '@/lib/products'
+import { useSearchParams } from 'next/navigation'
+import { PRODUCT_CATEGORY_OPTIONS, isProductCategory } from '@/lib/products'
 import type { Product, ProductCategory } from '@/types/product'
 import { SectionLockup } from './section-lockup'
 import { ChefHat } from 'lucide-react'
@@ -22,7 +22,10 @@ const priceFormatter = new Intl.NumberFormat('es-AR', {
 })
 
 export function ProductCatalog({ initialCategory, productos }: ProductCatalogProps) {
-  const [selectedCategory, setSelectedCategory] = useState<ProductCategory>(initialCategory)
+  // La URL manda: así el botón Volver y el "Atrás" del navegador muestran siempre la categoría
+  // que dice la barra de direcciones. Antes vivía en un useState y al volver quedaba desfasada.
+  const categoriaUrl = useSearchParams().get('categoria')
+  const selectedCategory: ProductCategory = isProductCategory(categoriaUrl) ? categoriaUrl : initialCategory
   const products = productos.filter((product) => product.category === selectedCategory)
   const selectedCategoryLabel = PRODUCT_CATEGORY_OPTIONS.find((category) => category.value === selectedCategory)?.label
 
@@ -128,9 +131,8 @@ export function ProductCatalog({ initialCategory, productos }: ProductCatalogPro
           id="product-category"
           value={selectedCategory}
           onChange={(event) => {
-            const category = event.target.value as ProductCategory
-            setSelectedCategory(category)
-            window.history.replaceState(null, '', `/productos?categoria=${category}`)
+            // Next sincroniza useSearchParams con replaceState: sin recarga ni viaje al servidor.
+            window.history.replaceState(null, '', `/productos?categoria=${event.target.value}`)
           }}
           className="min-h-[46px] border-b border-primary/40 bg-transparent px-1 pr-9 text-[14px] text-primary outline-none transition-colors duration-200 focus-visible:border-primary"
         >
