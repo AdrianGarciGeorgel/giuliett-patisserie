@@ -15,3 +15,6 @@ node_modules
 .DS_Store
 # Salida del chequeo de tipos (npx tsc --noEmit)
 *.tsbuildinfo
+
+# Capturas y snapshots del navegador de Playwright MCP (auditorías locales)
+.playwright-mcp/
