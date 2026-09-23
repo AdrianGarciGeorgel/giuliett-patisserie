@@ -195,8 +195,9 @@ lib/
 │   ├── admin.ts                  # clave SECRETA, solo servidor (server-only)
 │   └── server.ts                 # cliente con sesión (cookies) para el panel
 ├── admin/auth.ts                 # requerirAdministrador()
-├── giuliett.ts                   # CONTACT, waLink(), EVENTOS
-└── products.ts                   # catálogo PRODUCTS (precios incluidos)
+├── catalogo.ts                   # ÚNICA puerta a productos/eventos desde app/ y components/
+├── giuliett.ts                   # CONTACT, waLink(), EVENTOS (datos crudos)
+└── products.ts                   # catálogo PRODUCTS (datos crudos, precios incluidos)
 proxy.ts                          # protege /admin, refresca la sesión
 supabase/migrations/              # esquema versionado (consultas, administradores, RLS)
 scripts/crear-admin.mjs           # da acceso al panel a un email
@@ -208,14 +209,20 @@ test/                             # Vitest
 | Dato | Dónde |
 |---|---|
 | Teléfono, email, Instagram, ciudad | `lib/giuliett.ts` → `CONTACT` |
-| Productos, precios, galerías | `lib/products.ts` → `PRODUCTS` |
-| Fotos de Eventos | `lib/giuliett.ts` → `EVENTOS` |
+| Productos, precios, galerías | `lib/products.ts` → `PRODUCTS` (se leen vía `lib/catalogo.ts`) |
+| Fotos de Eventos | `lib/giuliett.ts` → `EVENTOS` (se leen vía `lib/catalogo.ts`) |
 | **Consultas de clientes** | **Supabase**, tabla `consultas` (se ven en `/admin`) |
 | Quién entra al panel | Supabase, tabla `administradores` |
 
 Las **4 categorías** de producto: `tortas-clasicas`, `tortas-personalizadas`,
 `galletas-personalizadas`, `boxes`. **Para agregar un producto:** sumar un objeto a
 `PRODUCTS` con `slug` único, `category` válida y rutas de imagen que existan.
+
+**Capa de acceso (`lib/catalogo.ts`).** Las páginas y componentes **no importan** `PRODUCTS`,
+`getProductBySlug` ni `EVENTOS` directo: usan `getProductos()`, `getProductoPorSlug()`,
+`getProductosPorCategoria()`, `getCategorias()` y `getEventos()`. Hoy leen los arrays estáticos;
+cuando llegue el CMS (Fase D) cambian solo esas funciones. Un test (`test/catalogo.acceso.test.ts`)
+falla si alguien se salta la capa. Son `async` a propósito: el contrato ya es el de una fuente remota.
 
 ---
 
@@ -384,9 +391,12 @@ existe en Vercel. Las **previews de Vercel están detrás del login** (`vercel.c
 producción es pública. Para compartir una preview con Giu o Marco hay que apagar la protección
 de previews en Settings → Deployment Protection.
 
-### Fase D — CMS con roles (Giu / Jime) 🔲
-Arquitectura lista para migrar `PRODUCTS` y `EVENTOS` a datos editables **sin rehacer el
-frontend**. ⚠️ No introducir un CMS antes de definir cuál.
+### Fase D — CMS con roles (Giu / Jime) 🟡
+- [x] Capa de acceso `lib/catalogo.ts` (23-09-2026): todo el frontend lee productos y eventos a
+  través de ella. Migrar a datos editables = reimplementar 5 funciones, sin tocar páginas.
+- [ ] Definir el CMS (Supabase con tablas `productos`/`eventos` + panel propio es el candidato natural:
+  ya hay Auth, RLS y panel). ⚠️ No introducir un CMS antes de definir cuál.
+- [ ] Roles (Giu / Jime), carga de fotos, previsualización.
 
 ### Fase E — Dominio, lanzamiento y capacitación 🔲
 **Dominio: `giuliettpatisserie.com`** (Namecheap, a nombre de Giuliana; confirmado el 23-09-2026).
