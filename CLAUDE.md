@@ -459,7 +459,8 @@ de previews en Settings → Deployment Protection.
 - [x] Capa de acceso `lib/catalogo.ts` (23-09-2026): todo el frontend lee productos y eventos a
   través de ella. Migrar a datos editables = reimplementar 5 funciones, sin tocar páginas.
 - [ ] Definir el CMS (Supabase con tablas `productos`/`eventos` + panel propio es el candidato natural:
-  ya hay Auth, RLS y panel). ⚠️ No introducir un CMS antes de definir cuál.
+  ya hay Auth, RLS y panel). ⚠️ No introducir un CMS antes de definir cuál. **Decisión de Adrián
+  (23-09-2026): se define con Marco y Giu; no se arranca por cuenta propia.**
 - [ ] Roles (Giu / Jime), carga de fotos, previsualización.
 
 ### Fase E — Dominio, lanzamiento y capacitación 🔲
