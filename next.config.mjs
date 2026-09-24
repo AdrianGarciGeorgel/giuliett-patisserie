@@ -1,16 +1,37 @@
+/* Content-Security-Policy, primero en modo REPORTE (Content-Security-Policy-Report-Only):
+   el navegador avisa en consola qué bloquearía, sin bloquear nada. Cuando el staging
+   no muestre avisos en todas las páginas, se cambia la clave a 'Content-Security-Policy'.
+   'unsafe-inline' en scripts es inevitable hoy: Next hidrata con scripts inline y el
+   JSON-LD también lo es; igual la política frena scripts de cualquier otro origen. */
+const esDesarrollo = process.env.NODE_ENV === 'development'
+const politicaContenido = [
+  "default-src 'self'",
+  // Vercel Analytics carga su script desde va.vercel-scripts.com. En dev, Turbopack necesita eval.
+  `script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com${esDesarrollo ? " 'unsafe-eval'" : ''}`,
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "font-src 'self' data:",
+  "connect-src 'self' https://vitals.vercel-insights.com https://va.vercel-scripts.com",
+  "frame-src 'none'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+].join('; ')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // El build valida tipos: `npx tsc --noEmit` tiene que estar limpio.
   // Las imágenes las optimiza next/image (WebP/AVIF y tamaños por dispositivo).
 
   // Cabeceras de seguridad para todo el sitio (punto 10 del checklist).
-  // HSTS lo agrega Vercel solo. Sin CSP por ahora: el JSON-LD y los scripts de
-  // Next son inline y una CSP mal calibrada rompe la página en silencio.
+  // HSTS lo agrega Vercel solo.
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
+          { key: 'Content-Security-Policy-Report-Only', value: politicaContenido },
           // El navegador no adivina tipos de archivo (evita ejecutar algo que no es script).
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           // Nadie puede meter la web dentro de un iframe (clickjacking).
