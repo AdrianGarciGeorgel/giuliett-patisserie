@@ -122,7 +122,11 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
   (`upstream` = `maap00/giuliett-patisserie`), que es la única verdad. El fork
   `AdrianGarciGeorgel/giuliett-patisserie` (`origin`) es **staging**: alimenta el Vercel de
   Adrián y se sincroniza con `upstream` (`git pull upstream main`).
-- Marco sigue siendo **reviewer**. El PR #1 está abierto en el repo de Marco.
+- Marco sigue siendo **reviewer**. PRs abiertos en su repo, **apilados** (cada uno con base en el
+  anterior; se mergean en orden): #1 imágenes → #2 consultas → #3 SEO → #4 capa de datos + fix Atrás
+  → #5 recuperación de contraseña + aviso + CSP → #6 código sin uso. El `main` del fork es **staging**
+  y se lleva a la punta de la rama más nueva (`git push origin <rama>:main`; si hubo rebase,
+  `--force-with-lease`).
 
 ### 5. Copy
 
@@ -154,7 +158,7 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
 | Framework | **Next.js 16.3.6** (App Router, Turbopack, `proxy.ts` en vez de `middleware.ts`). Mantenerlo al día: `npm audit` en cada sprint |
 | UI | React 19 · TypeScript 5.7.3 |
 | Estilos | **Tailwind CSS v4** (`@theme inline` en `globals.css`) |
-| Componentes | shadcn + `@base-ui/react` · `lucide-react` |
+| Componentes | `lucide-react`; `components.json` (shadcn) queda por si se agregan componentes, hoy sin dependencias de shadcn/base-ui |
 | Fuentes | `next/font/google`: **Poppins** + **Ephesis** |
 | Backend | **Supabase** (Postgres + RLS + Auth) via `@supabase/supabase-js` y `@supabase/ssr` |
 | Validación | **Zod 4** (solo servidor) |
@@ -179,8 +183,11 @@ app/
 ├── api/consultas/route.ts        # POST: valida, anti-spam, guarda en Supabase
 ├── api/consultas/[id]/whatsapp/  # POST: marca que el usuario abrió WhatsApp
 └── admin/                        # panel de consultas (login + lista + detalle)
-    ├── acciones.ts               # server actions: login, logout, actualizar
-    ├── login/                    # /admin/login
+    ├── acciones.ts               # server actions: login, logout, recuperación, contraseña, actualizar
+    ├── login/                    # /admin/login (+ link "¿Olvidaste tu contraseña?")
+    ├── recuperar/                # pide el email → Supabase manda el enlace
+    ├── restablecer/              # elige la contraseña nueva (exige sesión: la del enlace o la del panel)
+    ├── auth/callback/route.ts    # canjea el enlace del email por una sesión
     └── consultas/[id]/           # detalle + seguimiento
 components/giuliett/
 ├── contact-form.tsx              # UN formulario, 4 recorridos, guarda → WhatsApp
@@ -194,13 +201,18 @@ lib/
 ├── supabase/
 │   ├── admin.ts                  # clave SECRETA, solo servidor (server-only)
 │   └── server.ts                 # cliente con sesión (cookies) para el panel
-├── admin/auth.ts                 # requerirAdministrador()
+├── admin/
+│   ├── auth.ts                   # requerirAdministrador()
+│   ├── rutas.ts                  # rutas públicas del panel, destinoSeguro() (anti open-redirect)
+│   └── recuperacion.ts           # reglas de la recuperación de contraseña (puras, testeadas)
+├── notificaciones/consulta-nueva.ts  # email a Giu por consulta nueva (Resend por HTTP; apagado sin variables)
 ├── catalogo.ts                   # ÚNICA puerta a productos/eventos desde app/ y components/
 ├── giuliett.ts                   # CONTACT, waLink(), EVENTOS (datos crudos)
 └── products.ts                   # catálogo PRODUCTS (datos crudos, precios incluidos)
 proxy.ts                          # protege /admin, refresca la sesión
 supabase/migrations/              # esquema versionado (consultas, administradores, RLS)
-scripts/crear-admin.mjs           # da acceso al panel a un email
+scripts/crear-admin.mjs           # da acceso al panel a un email (--sin-contrasena / --nueva-contrasena)
+knip.json                         # config de `npx knip` (código y dependencias sin uso)
 test/                             # Vitest
 ```
 
@@ -241,9 +253,12 @@ la configuración se toca en el dashboard, o con Playwright sobre la sesión de 
 | `SUPABASE_URL` | URL del proyecto | servidor |
 | `SUPABASE_PUBLISHABLE_KEY` | clave publicable (`sb_publishable_…`) | panel y `proxy.ts` (sesión) |
 | `SUPABASE_SECRET_KEY` | clave secreta (`sb_secret_…`) | **solo** `lib/supabase/admin.ts` y el script de admins |
-| `NEXT_PUBLIC_SITE_URL` | URL pública del sitio (opcional; el dominio final) | `lib/seo.ts`: canonical, sitemap, OG. Si falta, usa la URL de producción de Vercel |
+| `NEXT_PUBLIC_SITE_URL` | URL pública del sitio (opcional; el dominio final) | `lib/seo.ts`: canonical, sitemap, OG, enlaces de los emails. Si falta, usa la URL de producción de Vercel |
+| `RESEND_API_KEY` | clave de Resend (opcional) | `lib/notificaciones/consulta-nueva.ts`: aviso a Giu por consulta nueva |
+| `AVISOS_EMAIL_DESTINO` | a quién avisar, separado por comas (opcional) | ídem; sin esta y la anterior **no se manda nada** |
+| `AVISOS_EMAIL_REMITENTE` | remitente (opcional; por defecto `Giuliett Web <avisos@giuliettpatisserie.com>`) | ídem; debe ser un dominio verificado en Resend (Fase E) |
 
-Ninguna lleva prefijo `NEXT_PUBLIC_`: nada de Supabase viaja al navegador.
+Ninguna de las de Supabase lleva prefijo `NEXT_PUBLIC_`: nada de Supabase viaja al navegador.
 Sin variables, la web sigue funcionando: el formulario muestra un error claro con
 el WhatsApp directo como salida, y `/admin/login` explica qué falta.
 
@@ -255,7 +270,8 @@ npm run dev        # dev server
 npm test           # Vitest (condición de salida)
 npm run lint       # ESLint core-web-vitals: 0 errores; los avisos se leen, no frenan
 npm run build      # build de producción, valida tipos (obligatorio antes de deploy)
-node scripts/crear-admin.mjs correo@ejemplo.com "Nombre"   # acceso al panel
+node scripts/crear-admin.mjs correo@ejemplo.com "Nombre"   # acceso al panel (ver "Para dar acceso")
+npx knip           # archivos, exports y dependencias sin uso (config en knip.json)
 ```
 
 ⚠️ Si `npm run build` falla **solo** por descarga de Google Fonts, es red, no código.
@@ -278,6 +294,10 @@ El repo usa **npm** (un solo lockfile, `package-lock.json`). No agregar `pnpm-lo
 6. Giu entra a `/admin` (email + contraseña), ve las consultas, filtra por estado,
    abre el detalle, le escribe por WhatsApp con un clic y deja notas y estado.
 7. El borrador se guarda en `sessionStorage`: si recarga o vuelve atrás, no pierde lo escrito.
+8. **Aviso a Giu (opcional):** después de responder, la API manda un email con los datos y el link
+   al detalle (`after()` de Next: nunca demora ni rompe el registro; una consulta repetida no
+   vuelve a avisar). Se activa con `RESEND_API_KEY` + `AVISOS_EMAIL_DESTINO`; el remitente tiene que
+   ser un dominio verificado en Resend → **queda apagado hasta la Fase E**.
 
 **Seguridad:** RLS activo. `anon` no lee ni escribe nada. `authenticated` lee y actualiza
 solo si su email está en `administradores` (función `es_administrador()`, security definer).
@@ -292,9 +312,30 @@ Nadie borra consultas desde la web.
 | Empresa | `/contacto?para=empresa` | link en la sección Empresas de `/eventos` |
 | Mayorista | `/contacto?para=mayorista` | selector de `/contacto` |
 
-**Para dar acceso al panel a alguien:** `node scripts/crear-admin.mjs email "Nombre"`
-(imprime la contraseña una sola vez). En el dashboard de Supabase conviene apagar
-"Allow new users to sign up" (Auth → Providers → Email); la allowlist protege igual.
+**Para dar acceso al panel a alguien (hoy, hasta la Fase E):** `node scripts/crear-admin.mjs email "Nombre"`
+crea el usuario, lo suma a la allowlist e imprime la contraseña **una sola vez**; se le pasa a la
+persona y **apenas entra la cambia** desde el panel (botón *Cambiar contraseña* → `/admin/restablecer`).
+Si la olvida: `node scripts/crear-admin.mjs email --nueva-contrasena` (misma mecánica).
+
+**Recuperación por email (`/admin/login` → *¿Olvidaste tu contraseña?*):** el código está completo y
+probado end-to-end en el staging (enlace → `/admin/restablecer` → contraseña guardada → panel). ⚠️ Pero
+el **email por defecto de Supabase solo llega a miembros del equipo del proyecto** (Adrián sí; Giu
+recibiría *Email address not authorized*, y el formulario, a propósito, no lo dice). Queda operativo
+para todas en la **Fase E**, con SMTP propio (Resend + dominio). Hasta entonces, `--sin-contrasena`
+solo sirve para gente del equipo de Supabase.
+
+**Configuración de Supabase Auth (hecha el 23-09-2026 por Playwright):**
+- URL Configuration → **Site URL** = `https://giuliett-patisserie-nu.vercel.app` (cambiar al dominio en Fase E).
+- URL Configuration → **Redirect URLs** = `https://giuliett-patisserie-nu.vercel.app/**` y
+  `http://localhost:3000/**` (agregar `https://giuliettpatisserie.com/**` en Fase E). Si el enlace del
+  email cae en `/admin/login?motivo=enlace-invalido`, lo primero a revisar es esta lista.
+- Sign In / Providers → Email → **"Allow new users to sign up" apagado** (la allowlist protege igual).
+- **Plantillas de email:** Supabase solo deja editarlas con **SMTP propio**; con el email por defecto
+  van en inglés ("Reset your password", remitente `noreply@mail.app.supabase.io`). En Fase E:
+  SMTP de Resend con el dominio → plantilla en español cuyo enlace sea
+  `{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=recovery` (el callback ya lo acepta).
+- El callback acepta los dos formatos: `token_hash`+`type=recovery` y `code` (PKCE, el que usa hoy
+  el botón del login).
 
 ---
 
@@ -309,16 +350,18 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
    valida tipos.
 3. ~~3 botones flotantes de WhatsApp y 3 `<h1>` en `/eventos`~~ → **resuelto**: un botón por
    página; la primera propuesta es `h1`, las otras `h2`, mismo estilo visual.
-4. **Falta metadata por página**: sin `metadataBase`, canonical, Twitter/X, `robots.txt`,
-   `sitemap.xml` ni metadata dinámica por producto. Fase C.
+4. ~~Falta metadata por página~~ → **resuelto en Fase C** (`lib/seo.ts`, robots, sitemap, OG, JSON-LD).
 5. **La paleta del código no coincide con el brief** (ver Reglas → Paleta). Esperando la
    respuesta de Marco en el PR #1: es identidad, no un bug.
 6. ~~`my-project`, dos lockfiles, sin ESLint~~ → **resuelto**: `giuliett-patisserie`, solo
    `package-lock.json`, ESLint instalado con `eslint.config.mjs`.
-7. **Avisos de lint conocidos (no frenan):** `setState` dentro de efectos en `reveal.tsx`,
-   `sections/products.tsx` y `contact-form.tsx` (sincronizan con IntersectionObserver /
-   sessionStorage; corregirlos es refactor); `<img>` en `trusted-clients.tsx` y
-   `why-choose-us.tsx`; `window.location.assign` en `hero-carousel.tsx`.
+7. **Avisos de lint conocidos (6, no frenan):** `setState` dentro de efectos en `reveal.tsx` y
+   `contact-form.tsx` (sincronizan con IntersectionObserver / sessionStorage; corregirlos es
+   refactor); `<img>` en `trusted-clients.tsx` y `why-choose-us.tsx`; `window.location.assign` en
+   `hero-carousel.tsx`. **Código sin uso (punto 1):** limpiado el 23-09-2026 con knip — 10
+   componentes huérfanos, `getProductBySlug` y 4 dependencias fuera; quedan como *aviso* los exports
+   sin uso de `atoms.tsx`, `line-art.tsx`, `Prose`, `AUDIENCES` y `STEPS` (sistema de diseño de
+   Marco y datos del Master Plan: se dejan).
 8. ~~Email decía obligatorio pero no se validaba~~ → resuelto: opcional y validado.
 9. ~~El formulario no registraba nada~~ → resuelto en Fase B.
 10. **Vercel en plan Hobby** (según sus términos, uso no comercial): pasar a **Pro** al lanzar
@@ -355,10 +398,15 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
 - [x] **Prueba real contra Supabase (22-09-2026):** la API guarda, el doble envío no duplica,
       el flag de WhatsApp se marca; panel: login, lista con conteos, detalle, cambio de estado
       y notas, todo persistido. Datos de prueba borrados (fila y usuario descartable).
-- [ ] Usuario de Giu con `scripts/crear-admin.mjs` (esperando su email). Apagar
-      "Allow new users to sign up" en Auth → Providers → Email.
-- [ ] Aviso a Giu por cada consulta nueva (email vía Resend o Telegram) — se pidió panel primero.
-- [ ] PR #2 (`feat/supabase-consultas` → `main` del **repo de Marco**) con Marco como reviewer.
+- [x] **Recuperación y cambio de contraseña** (23-09-2026, PR #5): `/admin/recuperar`, callback,
+      `/admin/restablecer`, botón *Cambiar contraseña* en el panel; `proxy.ts` solo abre login,
+      recuperar y callback. Sign-ups apagados en Supabase. El email de recuperación llega a todas
+      recién con SMTP propio (Fase E); hasta entonces la contraseña inicial la da el script.
+- [ ] Usuario de Giu: `node scripts/crear-admin.mjs <email> "Giuliana"` (esperando su email),
+      pasarle la contraseña y que la cambie al entrar.
+- [x] Aviso a Giu por consulta nueva: **código listo y testeado** (PR #5), apagado hasta tener
+      Resend con el dominio verificado (Fase E).
+- [x] PR #2 (`feat/supabase-consultas`) abierto en el repo de Marco con Marco como reviewer.
 - [ ] Organización de GitHub `giuliett-patisserie` (esperando el OK de Marco) y, después,
       reconectar el Vercel al repo de la organización.
 
@@ -374,7 +422,10 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
 - [x] **Seguridad (punto 10):** `npm audit` en 0 (Next 16.3.6 cerró una crítica de bypass del
       proxy); cabeceras `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
       `Permissions-Policy` en todo el sitio y `noindex` + `no-store` en `/admin`
-      (`next.config.mjs`). Sin CSP todavía (JSON-LD inline).
+      (`next.config.mjs`). **CSP en bloqueo desde el 23-09-2026** (PR #5): calibrada primero en modo
+      reporte sobre el staging (9 páginas + panel logueado, 0 avisos) y después enforzada (0 avisos,
+      0 requests fallidas). `'unsafe-inline'` en scripts es inevitable hoy (hidratación de Next +
+      JSON-LD inline). Para volver al modo reporte: cambiar la clave de la cabecera.
 - [x] Un solo `h1` por página (`/giu` tenía cuatro, `/galeria` ninguno).
 - [x] Test de integridad del catálogo (`test/catalogo.test.ts`).
 - [x] **Lighthouse (build de producción local, móvil 4G simulado):** Home **91 / 91 / 96 / 100**,
@@ -418,6 +469,13 @@ al apex) → cargar en Namecheap los registros que Vercel indique (A / CNAME) �
 `NEXT_PUBLIC_SITE_URL=https://giuliettpatisserie.com` en Vercel → redeploy → Lighthouse en
 producción → Search Console y GA4 → capacitación del panel. Hasta que el DNS apunte, **no**
 poner el dominio en `NEXT_PUBLIC_SITE_URL` (canonical y sitemap apuntarían a algo que no responde).
+
+Con el mismo DNS, en la misma tanda: **(a)** verificar `giuliettpatisserie.com` en Resend (registros
+DKIM/SPF que indique Resend) → `RESEND_API_KEY` + `AVISOS_EMAIL_DESTINO` en Vercel → se prende el aviso
+por consulta nueva; **(b)** Supabase → Auth → SMTP con Resend → la recuperación por email pasa a llegar
+a cualquiera (hoy solo a miembros del equipo de Supabase) → plantilla "Reset password" en español con
+`{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=recovery`; **(c)** Supabase → URL Configuration:
+Site URL al dominio y `https://giuliettpatisserie.com/**` en Redirect URLs.
 
 ---
 
