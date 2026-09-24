@@ -1,22 +1,24 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { RUTA_LOGIN, esRutaPublicaAdmin } from '@/lib/admin/rutas'
 
 /* Protege /admin: refresca la sesión de Supabase en cada request y manda al
    login a quien no la tenga. En Next 16 este archivo se llama proxy.ts
-   (antes middleware.ts). */
-
-const LOGIN = '/admin/login'
+   (antes middleware.ts). Las únicas rutas que se cruzan sin sesión son las de
+   RUTAS_PUBLICAS_ADMIN: login, pedir recuperación y el callback del email. */
 
 export async function proxy(request: NextRequest) {
-  const esLogin = request.nextUrl.pathname === LOGIN
+  const pathname = request.nextUrl.pathname
+  const esPublica = esRutaPublicaAdmin(pathname)
+  const esLogin = pathname === RUTA_LOGIN
   let respuesta = NextResponse.next({ request })
 
   const url = process.env.SUPABASE_URL
   const key = process.env.SUPABASE_PUBLISHABLE_KEY
   if (!url || !key) {
     // Sin configuración no hay panel. El login explica qué falta.
-    if (esLogin) return respuesta
-    return NextResponse.redirect(new URL(`${LOGIN}?motivo=sin-config`, request.url))
+    if (esPublica) return respuesta
+    return NextResponse.redirect(new URL(`${RUTA_LOGIN}?motivo=sin-config`, request.url))
   }
 
   const supabase = createServerClient(url, key, {
@@ -35,8 +37,8 @@ export async function proxy(request: NextRequest) {
   const { data } = await supabase.auth.getClaims()
   const autenticado = Boolean(data?.claims)
 
-  if (!autenticado && !esLogin) {
-    return NextResponse.redirect(new URL(LOGIN, request.url))
+  if (!autenticado && !esPublica) {
+    return NextResponse.redirect(new URL(RUTA_LOGIN, request.url))
   }
 
   if (autenticado && esLogin) {

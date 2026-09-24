@@ -1,10 +1,14 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { requerirAdministrador } from '@/lib/admin/auth'
+import { MENSAJE_ENLACE_ENVIADO, normalizarEmail, validarNuevaContrasena } from '@/lib/admin/recuperacion'
+import { RUTA_CALLBACK, RUTA_LOGIN, RUTA_RESTABLECER } from '@/lib/admin/rutas'
 import { ESTADOS } from '@/lib/consultas/tipos'
+import { resolverUrlSitio } from '@/lib/seo'
 import { crearClienteServidor } from '@/lib/supabase/server'
 
 export type EstadoLogin = { error?: string }
@@ -36,7 +40,74 @@ export async function iniciarSesion(_previo: EstadoLogin, formData: FormData): P
 export async function cerrarSesion() {
   const supabase = await crearClienteServidor()
   await supabase.auth.signOut()
-  redirect('/admin/login')
+  redirect(RUTA_LOGIN)
+}
+
+/** La URL desde la que se pidió (staging, producción o localhost): el enlace del email vuelve al mismo lugar. */
+async function origenDelPedido() {
+  const cabeceras = await headers()
+  const host = cabeceras.get('x-forwarded-host') ?? cabeceras.get('host')
+  if (!host) return resolverUrlSitio()
+  const protocolo = cabeceras.get('x-forwarded-proto') ?? (host.startsWith('localhost') ? 'http' : 'https')
+  return `${protocolo}://${host}`
+}
+
+export type EstadoRecuperacion = { error?: string; mensaje?: string }
+
+/**
+ * Pide a Supabase el email con el enlace para elegir una contraseña nueva.
+ * La respuesta es siempre la misma, exista o no el email: el formulario no
+ * sirve para averiguar quién tiene acceso al panel.
+ */
+export async function solicitarRecuperacion(_previo: EstadoRecuperacion, formData: FormData): Promise<EstadoRecuperacion> {
+  const email = normalizarEmail(formData.get('email'))
+  if (!email) return { error: 'Escribí un email válido.' }
+
+  let supabase
+  try {
+    supabase = await crearClienteServidor()
+  } catch {
+    return { error: 'El panel todavía no está configurado (faltan las variables de Supabase).' }
+  }
+
+  // La plantilla del email (Supabase → Auth → Email Templates → Reset password) arma el enlace
+  // como {{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=recovery: por eso `next` va en la query.
+  const redirectTo = `${await origenDelPedido()}${RUTA_CALLBACK}?next=${encodeURIComponent(RUTA_RESTABLECER)}`
+  const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo })
+  if (error) console.error('[admin] no se pudo pedir la recuperación:', error.message)
+
+  return { mensaje: MENSAJE_ENLACE_ENVIADO }
+}
+
+export type EstadoContrasena = { error?: string }
+
+/** Guarda la contraseña nueva. Exige la sesión que dio el enlace del email. */
+export async function cambiarContrasena(_previo: EstadoContrasena, formData: FormData): Promise<EstadoContrasena> {
+  const validacion = validarNuevaContrasena(formData.get('password'), formData.get('password2'))
+  if (!validacion.ok) return { error: validacion.error }
+
+  const supabase = await crearClienteServidor()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) redirect(`${RUTA_LOGIN}?motivo=enlace-invalido`)
+
+  const { error } = await supabase.auth.updateUser({ password: validacion.password })
+  if (error) {
+    return {
+      error: /same|different/i.test(error.message)
+        ? 'Elegí una contraseña distinta de la anterior.'
+        : 'No se pudo guardar la contraseña. Pedí un enlace nuevo e intentá otra vez.',
+    }
+  }
+
+  const { data: esAdmin } = await supabase.rpc('es_administrador')
+  if (!esAdmin) {
+    await supabase.auth.signOut()
+    redirect(`${RUTA_LOGIN}?motivo=sin-acceso`)
+  }
+
+  redirect('/admin?contrasena=guardada')
 }
 
 const cambiosSchema = z.object({

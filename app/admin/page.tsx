@@ -5,7 +5,7 @@ import { getProductos } from '@/lib/catalogo'
 import { cerrarSesion } from './acciones'
 import { EtiquetaEstado, EtiquetaOrigen, botonSecundarioClassName, formatearFechaEvento, formatearFechaHora } from './ui'
 
-type Props = { searchParams: Promise<{ estado?: string }> }
+type Props = { searchParams: Promise<{ estado?: string; contrasena?: string }> }
 
 type Fila = Pick<
   Consulta,
@@ -17,7 +17,7 @@ function esEstado(valor: string | undefined): valor is Estado {
 }
 
 export default async function AdminPage({ searchParams }: Props) {
-  const { estado } = await searchParams
+  const { estado, contrasena } = await searchParams
   const filtro = esEstado(estado) ? estado : null
   const { supabase, user } = await requerirAdministrador()
 
@@ -53,6 +53,12 @@ export default async function AdminPage({ searchParams }: Props) {
           </button>
         </form>
       </header>
+
+      {contrasena === 'guardada' ? (
+        <p role="status" className="mt-6 rounded-sm bg-lilac-soft px-4 py-3 text-[14px] text-primary">
+          Contraseña guardada. Ya podés entrar con ella la próxima vez.
+        </p>
+      ) : null}
 
       <nav aria-label="Filtrar por estado" className="mt-8 flex flex-wrap gap-2">
         <FiltroChip href="/admin" activo={!filtro} etiqueta="Todas" cantidad={total} />

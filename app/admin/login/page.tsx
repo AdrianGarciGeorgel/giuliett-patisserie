@@ -1,8 +1,11 @@
+import Link from 'next/link'
+import { RUTA_RECUPERAR } from '@/lib/admin/rutas'
 import { FormularioLogin } from './formulario-login'
 
 const MOTIVOS: Record<string, string> = {
   'sin-acceso': 'Esa cuenta existe pero no tiene acceso al panel. Pedile a Adrián que la habilite.',
   'sin-config': 'El panel todavía no está configurado: faltan las variables de Supabase en el servidor.',
+  'enlace-invalido': 'Ese enlace venció o ya se usó. Pedí uno nuevo desde "¿Olvidaste tu contraseña?".',
 }
 
 type Props = { searchParams: Promise<{ motivo?: string }> }
@@ -26,6 +29,13 @@ export default async function LoginPage({ searchParams }: Props) {
       <div className="mt-8">
         <FormularioLogin />
       </div>
+
+      <Link
+        href={RUTA_RECUPERAR}
+        className="underline-write mt-6 inline-flex min-h-[44px] items-center self-start text-[14px] text-primary/70 hover:text-primary"
+      >
+        ¿Olvidaste tu contraseña?
+      </Link>
     </main>
   )
 }
