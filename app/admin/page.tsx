@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { requerirAdministrador } from '@/lib/admin/auth'
+import { RUTA_RESTABLECER } from '@/lib/admin/rutas'
 import { ESTADOS, ETIQUETA_ESTADO, type Consulta, type Estado } from '@/lib/consultas/tipos'
 import { getProductos } from '@/lib/catalogo'
 import { cerrarSesion } from './acciones'
@@ -47,11 +48,16 @@ export default async function AdminPage({ searchParams }: Props) {
           <h1 className="mt-3 text-[26px] font-light text-primary">Consultas</h1>
           <p className="mt-1 text-[13px] text-muted-foreground">{user.email}</p>
         </div>
-        <form action={cerrarSesion}>
-          <button type="submit" className={botonSecundarioClassName}>
-            Cerrar sesión
-          </button>
-        </form>
+        <div className="flex flex-wrap gap-2">
+          <Link href={RUTA_RESTABLECER} className={botonSecundarioClassName}>
+            Cambiar contraseña
+          </Link>
+          <form action={cerrarSesion}>
+            <button type="submit" className={botonSecundarioClassName}>
+              Cerrar sesión
+            </button>
+          </form>
+        </div>
       </header>
 
       {contrasena === 'guardada' ? (
