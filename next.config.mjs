@@ -1,6 +1,7 @@
-/* Content-Security-Policy, primero en modo REPORTE (Content-Security-Policy-Report-Only):
-   el navegador avisa en consola qué bloquearía, sin bloquear nada. Cuando el staging
-   no muestre avisos en todas las páginas, se cambia la clave a 'Content-Security-Policy'.
+/* Content-Security-Policy. Se calibró en modo reporte sobre el staging (9 páginas,
+   0 avisos: 23-09-2026) y después se pasó a bloquear. Si alguna vez una página deja de
+   cargar algo, primero mirar la consola del navegador ("Refused to…"); para volver al
+   modo reporte alcanza con cambiar la clave a 'Content-Security-Policy-Report-Only'.
    'unsafe-inline' en scripts es inevitable hoy: Next hidrata con scripts inline y el
    JSON-LD también lo es; igual la política frena scripts de cualquier otro origen. */
 const esDesarrollo = process.env.NODE_ENV === 'development'
@@ -31,7 +32,7 @@ const nextConfig = {
       {
         source: '/(.*)',
         headers: [
-          { key: 'Content-Security-Policy-Report-Only', value: politicaContenido },
+          { key: 'Content-Security-Policy', value: politicaContenido },
           // El navegador no adivina tipos de archivo (evita ejecutar algo que no es script).
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           // Nadie puede meter la web dentro de un iframe (clickjacking).
