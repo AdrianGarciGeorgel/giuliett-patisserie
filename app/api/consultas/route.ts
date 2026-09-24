@@ -1,5 +1,7 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, after } from 'next/server'
 import { consultaEntradaSchema, erroresPorCampo } from '@/lib/consultas/schema'
+import { enviarAvisoConsulta } from '@/lib/notificaciones/consulta-nueva'
+import { resolverUrlSitio } from '@/lib/seo'
 import { ConfiguracionFaltante, crearClienteAdmin } from '@/lib/supabase/admin'
 
 /* POST /api/consultas — guarda una consulta y devuelve su id.
@@ -81,6 +83,13 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase.from('consultas').insert(fila).select('id').single()
     if (error) throw error
+
+    // El aviso a Giu sale después de responder: no demora al usuario y, si falla, no lo afecta.
+    after(() =>
+      enviarAvisoConsulta({ ...fila, id: data.id }, resolverUrlSitio()).catch((e) =>
+        console.error('[api/consultas] no se pudo mandar el aviso:', e),
+      ),
+    )
 
     return NextResponse.json({ id: data.id }, { status: 201 })
   } catch (error) {

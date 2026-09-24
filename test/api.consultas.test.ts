@@ -8,6 +8,15 @@ vi.mock('@/lib/supabase/admin', () => {
   return { crearClienteAdmin: vi.fn(), ConfiguracionFaltante }
 })
 
+// Fuera de Next no hay request en curso: `after` corre la tarea al instante.
+vi.mock('next/server', async (importOriginal) => {
+  const original = await importOriginal<typeof import('next/server')>()
+  return { ...original, after: (tarea: () => unknown) => void tarea() }
+})
+
+vi.mock('@/lib/notificaciones/consulta-nueva', () => ({ enviarAvisoConsulta: vi.fn(async () => true) }))
+
+import { enviarAvisoConsulta } from '@/lib/notificaciones/consulta-nueva'
 import { ConfiguracionFaltante, crearClienteAdmin } from '@/lib/supabase/admin'
 import { POST } from '@/app/api/consultas/route'
 
@@ -48,6 +57,7 @@ const valida = () => ({
 
 beforeEach(() => {
   vi.mocked(crearClienteAdmin).mockReset()
+  vi.mocked(enviarAvisoConsulta).mockClear()
 })
 
 describe('POST /api/consultas', () => {
@@ -135,5 +145,31 @@ describe('POST /api/consultas', () => {
     }
     const res = await POST(pedido(valida(), { ip }))
     expect(res.status).toBe(429)
+  })
+})
+
+describe('aviso a Giu por consulta nueva', () => {
+  it('después de guardar dispara el aviso con los datos y el id nuevo', async () => {
+    supabaseFalso()
+    const res = await POST(pedido(valida()))
+    expect(res.status).toBe(201)
+    expect(enviarAvisoConsulta).toHaveBeenCalledTimes(1)
+    const [consulta, urlSitio] = vi.mocked(enviarAvisoConsulta).mock.calls[0]
+    expect(consulta).toMatchObject({ id: ID_NUEVA, nombre: 'Ana Pérez', origen: 'particular', opcion_especial: 'sin_tacc' })
+    expect(urlSitio).toMatch(/^https?:\/\//)
+  })
+
+  it('una consulta repetida no vuelve a avisar', async () => {
+    supabaseFalso({ previa: { id: ID_PREVIA } })
+    const res = await POST(pedido(valida()))
+    expect(res.status).toBe(200)
+    expect(enviarAvisoConsulta).not.toHaveBeenCalled()
+  })
+
+  it('si el aviso falla, la consulta igual se guarda y responde 201', async () => {
+    supabaseFalso()
+    vi.mocked(enviarAvisoConsulta).mockRejectedValueOnce(new Error('Resend caído'))
+    const res = await POST(pedido(valida()))
+    expect(res.status).toBe(201)
   })
 })
