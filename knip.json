@@ -1,0 +1,8 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["app/**/*.{ts,tsx}", "proxy.ts", "scripts/*.mjs", "test/**/*.test.{ts,tsx}"],
+  "project": ["**/*.{ts,tsx,mjs}"],
+  "ignore": ["test/stubs/**"],
+  "ignoreDependencies": ["postcss-load-config", "tailwindcss"],
+  "rules": { "exports": "warn", "types": "warn" }
+}

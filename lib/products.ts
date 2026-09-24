@@ -299,6 +299,3 @@ export function isProductCategory(value: string | null): value is ProductCategor
   return PRODUCT_CATEGORY_OPTIONS.some((category) => category.value === value)
 }
 
-export function getProductBySlug(slug: string) {
-  return PRODUCTS.find((product) => product.slug === slug)
-}
