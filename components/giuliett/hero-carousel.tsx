@@ -2,12 +2,38 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRef, useState, type PointerEvent } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore, type FocusEvent, type PointerEvent, type WheelEvent } from 'react'
 import { PRODUCTS } from '@/lib/giuliett'
 import { cn } from '@/lib/utils'
 import { productCategories } from '@/lib/giuliett'
+import {
+  INTERVALO_AUTOPLAY_MS,
+  anteriorIndice,
+  debeAvanzar,
+  esGestoHorizontal,
+  siguienteIndice,
+} from '@/lib/carrusel'
 import { CakeSlice, Truck } from 'lucide-react'
 import { IconArrow } from './line-art'
+
+/** prefers-reduced-motion como estado de React (se actualiza si la persona lo cambia). */
+function usePrefiereMovimientoReducido() {
+  return useSyncExternalStore(
+    (avisar) => {
+      const consulta = window.matchMedia('(prefers-reduced-motion: reduce)')
+      consulta.addEventListener('change', avisar)
+      return () => consulta.removeEventListener('change', avisar)
+    },
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    () => false,
+  )
+}
+
+/** Un clic en un link o botón adentro del carrusel no inicia un arrastre: la captura del puntero se tragaba
+ *  el clic, y "Ver producto" no navegaba con el mouse (visto en producción el 26-09-2026). */
+function esControl(objetivo: EventTarget | null) {
+  return objetivo instanceof Element && objetivo.closest('a, button') !== null
+}
 
 type DragState = {
   pointerId: number
@@ -41,6 +67,10 @@ type HeroCarouselProps = {
    * en una página con varios carruseles, los de más abajo compiten por la red con la foto principal.
    */
   priority?: boolean
+  /** Las fotos avanzan solas (solo la home, pedido del 26-09-2026). Sin botón de pausa. */
+  autoplay?: boolean
+  /** En la computadora, un clic en el costado izquierdo o derecho retrocede o avanza (solo la home). */
+  navegacionLateral?: boolean
 }
 
 const productSlides: readonly CarouselSlide[] = PRODUCTS.map((product) => ({
@@ -66,20 +96,103 @@ export function HeroCarousel({
   ariaLabel = 'Productos Giuliett',
   variant = 'default',
   priority = true,
+  autoplay = false,
+  navegacionLateral = false,
 }: HeroCarouselProps) {
   const carouselSlides = slides ?? productSlides
+  const total = variant === 'home' ? productCategories.length : carouselSlides.length
   const viewportRef = useRef<HTMLDivElement>(null)
   const dragRef = useRef<DragState | null>(null)
   const animationFrame = useRef<number | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [dragging, setDragging] = useState(false)
+  const movimientoReducido = usePrefiereMovimientoReducido()
+
+  // Lo que el movimiento automático consulta en cada tic. En refs: cambian seguido y no deben re-renderizar.
+  const indiceActual = useRef(0)
+  const senales = useRef({ visible: false, foco: false, ultimaInteraccion: 0 })
+  const girando = autoplay && total > 1 && !movimientoReducido
 
   const updateActiveSlide = () => {
     const viewport = viewportRef.current
     if (!viewport) return
 
-    const nextIndex = Math.round(viewport.scrollLeft / viewport.clientWidth)
-    setActiveIndex(Math.min(carouselSlides.length - 1, Math.max(0, nextIndex)))
+    const nextIndex = Math.min(total - 1, Math.max(0, Math.round(viewport.scrollLeft / viewport.clientWidth)))
+    indiceActual.current = nextIndex
+    setActiveIndex(nextIndex)
+  }
+
+  const irA = (indice: number) => {
+    const viewport = viewportRef.current
+    if (!viewport) return
+    const destino = indice * viewport.clientWidth
+    const inicio = viewport.scrollLeft
+    viewport.scrollTo({ left: destino, behavior: movimientoReducido ? 'auto' : 'smooth' })
+    // Respaldo: si el navegador no anima el desplazamiento (ventana tapada, ahorro de energía), salta directo.
+    // Solo si no se movió nada: si la persona empezó a deslizar, no se le pelea.
+    if (!movimientoReducido && inicio !== destino) {
+      window.setTimeout(() => {
+        if (viewport.scrollLeft === inicio) viewport.scrollTo({ left: destino, behavior: 'auto' })
+      }, 900)
+    }
+  }
+
+  /** Hora del gesto en ms de reloj: event.timeStamp cuenta desde que abrió la página (performance.timeOrigin). */
+  const marcarInteraccion = (evento: { timeStamp: number }) => {
+    senales.current.ultimaInteraccion = performance.timeOrigin + evento.timeStamp
+  }
+
+  const irAlCostado = (sentido: 'anterior' | 'siguiente', evento: { timeStamp: number }) => {
+    marcarInteraccion(evento)
+    const actual = indiceActual.current
+    irA(sentido === 'anterior' ? anteriorIndice(actual, total) : siguienteIndice(actual, total))
+  }
+
+  // Solo se mueve si al menos la mitad del carrusel está en pantalla (al bajar por la página, se frena).
+  useEffect(() => {
+    const viewport = viewportRef.current
+    if (!autoplay || !viewport || typeof IntersectionObserver === 'undefined') return
+    const observador = new IntersectionObserver(([entrada]) => {
+      senales.current.visible = entrada.isIntersecting
+    }, { threshold: 0.5 })
+    observador.observe(viewport)
+    return () => observador.disconnect()
+  }, [autoplay])
+
+  useEffect(() => {
+    if (!girando) return
+    const tic = window.setInterval(() => {
+      const s = senales.current
+      const avanzar = debeAvanzar({
+        habilitado: true,
+        movimientoReducido,
+        visible: s.visible,
+        pestanaVisible: document.visibilityState === 'visible',
+        foco: s.foco,
+        arrastrando: dragRef.current !== null,
+        ultimaInteraccion: s.ultimaInteraccion,
+        ahora: Date.now(),
+      })
+      if (avanzar) irA(siguienteIndice(indiceActual.current, total))
+    }, INTERVALO_AUTOPLAY_MS)
+    return () => window.clearInterval(tic)
+    // irA solo depende de movimientoReducido, que ya está en la lista.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [girando, movimientoReducido, total])
+
+  // Mientras el teclado está adentro del carrusel no se mueve: quien lee o navega con Tab no pierde el lugar.
+  // Un clic con el mouse no cuenta como foco de teclado.
+  const alrededor = {
+    onFocus: (event: FocusEvent<HTMLDivElement>) => {
+      if (event.target instanceof Element && event.target.matches(':focus-visible')) senales.current.foco = true
+    },
+    onBlur: (event: FocusEvent<HTMLDivElement>) => {
+      if (!event.currentTarget.contains(event.relatedTarget as Node | null)) senales.current.foco = false
+    },
+  }
+
+  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
+    if (esGestoHorizontal(event.deltaX, event.deltaY)) marcarInteraccion(event)
   }
 
   const handleScroll = () => {
@@ -92,7 +205,9 @@ export function HeroCarousel({
   }
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== 'mouse') return
+    // Deslizar con el dedo o arrastrar con el mouse cuenta como usar el carrusel: frena el movimiento un rato.
+    marcarInteraccion(event)
+    if (event.pointerType !== 'mouse' || esControl(event.target)) return
 
     const viewport = viewportRef.current
     if (!viewport) return
@@ -127,13 +242,14 @@ export function HeroCarousel({
 
   if (variant === 'home') {
     return (
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden" {...(autoplay ? alrededor : {})}>
         <div
           ref={viewportRef}
           role="region"
           aria-roledescription="carrusel"
           aria-label={ariaLabel}
           onScroll={handleScroll}
+          onWheel={autoplay ? handleWheel : undefined}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={endDrag}
@@ -215,6 +331,25 @@ export function HeroCarousel({
             </figure>
           ))}
         </div>
+
+        {/* En la computadora: un clic en el costado izquierdo retrocede y en el derecho avanza. Son zonas
+            invisibles sobre los bordes de la foto; en pantallas táctiles no existen, así no tapan el deslizar. */}
+        {navegacionLateral ? (
+          <>
+            <button
+              type="button"
+              aria-label="Foto anterior"
+              onClick={(evento) => irAlCostado('anterior', evento)}
+              className="absolute inset-y-0 left-0 z-20 hidden w-1/4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/40 [@media(hover:hover)_and_(pointer:fine)]:block"
+            />
+            <button
+              type="button"
+              aria-label="Foto siguiente"
+              onClick={(evento) => irAlCostado('siguiente', evento)}
+              className="absolute inset-y-0 right-0 z-20 hidden w-1/4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/40 [@media(hover:hover)_and_(pointer:fine)]:block"
+            />
+          </>
+        ) : null}
       </div>
     )
   }

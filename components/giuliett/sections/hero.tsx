@@ -13,7 +13,8 @@ export function Hero() {
     <section id="inicio" className="relative overflow-hidden bg-[#FFF8E9] text-[#51375C]">
       {/* El único h1 de la home. Visualmente lo cuentan el logo y la bajada del carrusel. */}
       <h1 className="sr-only">Giuliett Pâtisserie · Pastelería francesa artesanal en Mendoza</h1>
-      <HeroCarousel variant="home" ariaLabel="Productos destacados Giuliett" />
+      {/* Las fotos avanzan solas, sin botón de pausa; en la computadora, clic en un costado para ir y volver. */}
+      <HeroCarousel variant="home" ariaLabel="Productos destacados Giuliett" autoplay navegacionLateral />
       <HomeFooter />
 
       <a
