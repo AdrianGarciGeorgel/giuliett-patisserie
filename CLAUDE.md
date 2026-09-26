@@ -441,6 +441,44 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
 
 ---
 
+## Auditoría de seguridad y QA (26-09-2026)
+
+Revisión de código independiente, pruebas de ataque de solo lectura contra producción y Supabase, QA en
+WebKit (Safari: iPhone, iPad, escritorio), Chromium móvil y Firefox, 8 tamaños de pantalla y axe.
+**Sin puertas graves:** no hubo bypass de acceso, XSS, inyección SQL, SSRF ni secretos en la historia de git.
+
+**Arreglado (PR #11, sin cambios visuales):** API de consultas cerrada mientras no la use ningún formulario;
+tarjetas OG generadas en el build (antes: cualquier slug gastaba CPU); panel sin textos de la URL, sin error
+500 por `?motivo=__proto__`, recuperación con tiempo parejo y enlace solo a orígenes conocidos; JSON-LD
+escapado; analítica fuera de `/admin`; sin `X-Powered-By`; 404 con un solo `noindex`; `.gitignore` con `.env*`.
+
+**Antes de reabrir la API (`CONSULTAS_API_ACTIVA=1`), arreglar:** `utm` sin límite de claves (una fila de 4 MB
+pasa la validación); cuerpo sin tope de tamaño; aceptar solo `application/json` y `sec-fetch-site: same-origin`
+(hoy otro sitio puede mandar consultas con `text/plain`); límite por IP compartido (hoy vive en la memoria de
+cada instancia); borrador restaurado + envío en menos de 2 s = consulta descartada en silencio; filtrar
+caracteres de control y de dirección de texto.
+
+**Bloqueado por permisos de la sesión (lo decide Adrián):** migración de menor privilegio en Supabase
+(revocar los permisos de tabla de `anon`/`authenticated`, `update` solo de `estado` y `notas_internas`,
+`es_administrador()` sin SECURITY DEFINER con una policy "cada administradora ve su fila"). El clasificador
+frenó escribir la migración y los intentos de inserción de prueba.
+
+**Pendiente de configuración (dashboards, Adrián):** Supabase → largo mínimo de contraseña 6 → 10 o más (ojo:
+no endurecer los caracteres exigidos sin probar el login de Giu); "Secure password change"; borrar la
+secreta `default`; sacar `localhost` de las Redirect URLs; MFA para el panel (opcional, requiere código). Plan
+Free: **pausa el proyecto tras 7 días de poca actividad**, sin backups descargables y sin chequeo de
+contraseñas filtradas → Pro (USD 25/mes) o un chequeo diario. Namecheap → registro DMARC (junto con Resend).
+
+**Para Marco (visual, regla 8):** las secciones con `Reveal` arrancan invisibles hasta que React se activa, y
+con las fotos originales eso tarda: /eventos se ve vacía varios segundos en celulares (medido: 8 s en Chrome y
+13 s en WebKit sobre una conexión rápida); desborde de 27 px en /eventos a 320 px (la palabra "Celebraciones"
+a 30 px); /productos sin botón flotante de WhatsApp; 404 de fábrica de Next en inglés (propuesta lista en la
+rama local `propuesta/404-espanol`); contraste del menú; alt de las fotos de categoría.
+
+**Falta:** probar en un iPhone y un Android reales (punto 8 del checklist).
+
+---
+
 ## Roadmap
 
 ### Fase A — Frontend y performance ✅
