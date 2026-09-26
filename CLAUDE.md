@@ -119,6 +119,12 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
   página precarga (next/image `priority`) **una sola** foto, la principal. Un `<img>` sin `lazy` en
   una página que el menú pre-carga se descarga en TODAS las páginas (React 19 le genera una pista
   de precarga en el RSC y Next la ejecuta al pre-cargar el link).
+- **Fotos: los archivos originales de Marco, tal cual** (`images.unoptimized: true`; decisión de Adrián
+  del 26-09-2026; `test/imagenes.config.test.ts`). Es la **excepción consciente** a esta regla (ver
+  regla 8): en PageSpeed móvil la home bajó de **99 a 75** (LCP 2,3 s → **13,1 s**) y /productos pesa
+  16 MB (LCP **45,9 s**). Alternativa lista si algún día se prioriza la velocidad: sacar `unoptimized` y
+  poner `images.qualities: [100]` (las mismas fotos, achicadas al tamaño de cada pantalla a calidad
+  máxima; el hero baja de 2,1 MB a ~240 KB en un celular). Es decisión de Adrián, no técnica.
 
 ### 4. Git
 
@@ -135,7 +141,8 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
 - Marco sigue siendo **reviewer**. PRs abiertos en su repo, **apilados** (cada uno con base en el
   anterior; se mergean en orden): #1 imágenes → #2 consultas → #3 SEO → #4 capa de datos + fix Atrás
   → #5 recuperación de contraseña + aviso + CSP → #6 código sin uso → #7 un solo h1 → #8 imágenes
-  (performance). El `main` del fork se lleva a la
+  (performance) → #9 fotos originales de Marco + color del menú → #10 carruseles automáticos. Cada rama
+  vive en los dos remotos: `origin` (cabeza del PR) y `upstream` (base del PR siguiente). El `main` del fork se lleva a la
   punta de la rama más nueva (`git push origin <rama>:main`; si hubo rebase, `--force-with-lease`).
   ⚠️ **Desde el 26-09-2026 el `main` del fork es PRODUCCIÓN:** cada push sale en vivo en
   https://giuliettpatisserie.com. Antes de empujar: `npm test`, `npm run lint` y `npm run build` en verde.
@@ -160,6 +167,22 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
 - Los módulos de reglas (`lib/consultas/*`, `app/api/*`) tienen tests en `test/`.
 - **Prueba de mutación** al cerrar un módulo: romper 5-15 reglas a propósito y confirmar
   que la suite las caza. Una suite que no caza la mutación es decorativa.
+
+### 8. Lo visual es de Marco: no se toca
+
+> ✅ **Regla de Adrián (26-09-2026):** *"no modificar nada de la parte visual que ellos nos enviaron.
+> Sólo trabajamos en lo nuestro."*
+
+- **Es de Marco:** las fotos (archivo, calidad, formato, recorte), colores, tipografías, espaciados,
+  componentes y cómo se ven y se mueven. **Es nuestro:** backend, formularios, panel, SEO, deploy,
+  seguridad y la performance que no cambia lo que se ve.
+- Si algo visual conviene cambiarlo (accesibilidad, velocidad, un pedido de Giu), **no se aplica directo**:
+  se le pregunta a Adrián. Si decide avanzar, el PR lo avisa a Marco con `@maap00`; si no, se le propone a
+  Marco armado y probado, y decide él.
+- "Mejorar la calidad" de una foto quiere decir **volver al archivo de Marco**, nunca recomprimirlo.
+- En las fotos esta regla le gana a la regla 3, por decisión de Adrián (ver regla 3, *Fotos*).
+- Casos del 26-09-2026: fotos originales y color del menú de Marco restaurados (PR #9); carruseles
+  automáticos hechos por decisión de Adrián, con aviso a Marco (PR #10).
 
 ---
 
@@ -218,6 +241,7 @@ lib/
 │   ├── rutas.ts                  # rutas públicas del panel, destinoSeguro() (anti open-redirect)
 │   └── recuperacion.ts           # reglas de la recuperación de contraseña (puras, testeadas)
 ├── notificaciones/consulta-nueva.ts  # email a Giu por consulta nueva (Resend por HTTP; apagado sin variables)
+├── carrusel.ts                   # reglas del carrusel automático: cuándo avanza y cuándo se frena (puras)
 ├── catalogo.ts                   # ÚNICA puerta a productos/eventos desde app/ y components/
 ├── giuliett.ts                   # CONTACT, waLink(), EVENTOS (datos crudos)
 └── products.ts                   # catálogo PRODUCTS (datos crudos, precios incluidos)
@@ -355,8 +379,14 @@ solo sirve para gente del equipo de Supabase.
 
 Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (decisión de Adrián).
 
-1. ~~`images: { unoptimized: true }`~~ → **resuelto**: `next/image` optimiza (WebP/AVIF y
-   tamaños por dispositivo). Los `<Image fill sizes=…>` de Marco ya estaban listos para esto.
+1. **`images: { unoptimized: true }` volvió el 26-09-2026, a propósito** (regla 8). La Fase A lo había
+   sacado y había pasado las fotos a WebP q82; Next las volvía a comprimir y se veían empastadas. Hoy se
+   sirven los originales de Marco (costo medido en la regla 3). ⚠️ **Límite de funciones de Vercel Hobby:**
+   con 222 MB de fotos en `public/`, el rastreo de archivos de Next metía toda la carpeta en cada función
+   (`lib/og.ts` lee la foto con una ruta dinámica), Vercel ya no podía agruparlas y el deploy falló con
+   `exceeded_serverless_functions_per_deployment` (máximo 12 en Hobby). Arreglo:
+   `outputFileTracingExcludes: { '*': ['public/**/*'] }` en `next.config.mjs`, con test. Las tarjetas OG
+   leen la foto por HTTP, un respaldo que ya existía en `lib/og.ts`.
 2. ~~`ignoreBuildErrors: true` tapaba 7 errores de tipos~~ → **resuelto**: `SectionLockup`
    acepta `id`; `social-proof.tsx` renderiza `client.text`. La bandera se apagó: el build
    valida tipos.
@@ -387,6 +417,10 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
     (`.env.local` y Vercel, probada). `servidor_web` fue borrada. La secreta `default` de Supabase
     **no se puede borrar desde el menú de la fila** (Supabase la protege): queda sin usar. Si algún
     día hace falta rotar de nuevo: New secret key → `.env.local` → Vercel (lo pega Adrián) → borrar.
+12. **`/productos` es dinámica (ƒ en el build)**, no estática como pide la regla 3: lee `searchParams` en
+    el servidor para la categoría inicial, igual que en la versión original de Marco. Desde el PR #4,
+    `ProductCatalog` ya deriva la categoría de `useSearchParams()` en el cliente, así que podría pasar a
+    estática con un `<Suspense>`. No es visual; queda para un PR propio (anotado el 26-09-2026).
 
 ---
 
@@ -395,6 +429,8 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
 ### Fase A — Frontend y performance ✅
 Maquetado de Marco + optimización de imágenes 232MB → 15MB (−93%).
 PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review de Marco).
+**La optimización de imágenes se revirtió el 26-09-2026 (PR #9):** vuelven las fotos originales de Marco
+(regla 8). Del PR #1 quedan el `CLAUDE.md` y el resto.
 
 ### Fase B — Supabase, 4 formularios, Sin TACC legal, registro y panel 🟡
 **Código listo y testeado (49 tests + prueba de mutación 15/15 + build verde + Playwright).**
@@ -452,6 +488,9 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
 - [x] Contraste del nav móvil corregido (etiquetas de 10 px: taupe `#9C8065` → `#7D6650`, 5,1:1)
       y `role="group"` en los indicadores de los tres carruseles (`aria-label` en un `div` sin
       rol está prohibido). **Accesibilidad Lighthouse: 100** en la home (era 91).
+      ↩️ **El color se revirtió el 26-09-2026 (regla 8, PR #9):** vuelve el `#9C8065` de Marco (3,5:1 en
+      letras de 10 px; AA pide 4,5:1). Queda como sugerencia para Marco. Accesibilidad en PageSpeed: **96**,
+      y es la única falla. El `role="group"` sigue.
 - [x] **Auditoría de rutas sobre el staging (23-09-2026, puntos 2 y 3 del checklist):** todas las
       rutas fijas en 200, `/admin` → `/admin/login` (307), `/no-existe` y `/productos/no-existe` en
       404, `/api/consultas` por GET en 405, las **24 URLs del sitemap en 200**, `?categoria=inventada`
@@ -471,7 +510,17 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
       **home móvil 99 / 100 / 100 / 100** (LCP **2,3 s**, TBT 30 ms, CLS 0, Speed Index 1,5 s) y **ficha
       móvil 98 / 100 / 100 / 100** (LCP 2,5 s). Escritorio (Lighthouse local contra producción): 99.
       Imágenes que baja la home en un celular: 13 (658 KB) → **4 (116 KB)**.
-      **Core Web Vitals en verde en producción.**
+      **Core Web Vitals en verde en producción** (hasta el PR #9).
+- [x] **Después del PR #9 (fotos originales de Marco, 26-09-2026), PageSpeed móvil sobre el dominio:**
+
+  | Página | Rendimiento / Accesib. / Prácticas / SEO | LCP | TBT | CLS |
+  |---|---|---|---|---|
+  | Home | 75 / 96 / 100 / 100 | 13,1 s | 40 ms | 0 |
+  | /productos | 75 / 96 / 100 / 100 | 45,9 s | 80 ms | 0 |
+
+  /productos pesa 16 MB; PageSpeed estima que achicar las fotos ahorraría 15,9 MB. **Core Web Vitals
+  en rojo en móvil (LCP)**: es el costo aceptado de la regla 8. PageSpeed simula un 4G lento; en WiFi
+  se nota mucho menos, pero Google usa esta vara.
 
 Notas: el 404 de `/_vercel/insights/script.js` que aparece en local es Vercel Analytics, que solo
 existe en Vercel. El viejo aviso de consola "*…was preloaded using link preload but not used*" (torre,
@@ -510,6 +559,15 @@ de previews en Settings → Deployment Protection.
   (*Sharing & Transfer → Share Access*, permiso de DNS) y que cambie su contraseña.
 - El registro vence el **20-07-2027**, con renovación automática y privacidad WHOIS activas.
 - "No veo la web nueva en mi PC": es la caché DNS del equipo (TTL de 30 min). `ipconfig /flushdns` o esperar.
+
+**Ajustes que pidió Adrián mirando la web publicada (26-09-2026):**
+- *"Las imágenes perdieron muchísima calidad"*: era la recompresión de la Fase A. Vuelven los archivos
+  originales de Marco, tal cual (PR #9, regla 8).
+- *"Los carruseles no se mueven solos"* y *"aparece una mano en vez del cursor"*: ahora avanzan cada 5 s
+  (home, galería y eventos; la ficha de producto no), con botón de pausa, puntitos clickeables y cursor
+  normal (PR #10, con aviso a Marco). Reglas en `lib/carrusel.ts`, con tests: nunca con
+  `prefers-reduced-motion`; se frenan fuera de pantalla, con la pestaña oculta, con foco de teclado,
+  mientras se arrastra, durante 8 s después de tocarlos y, salvo en la home, con el mouse encima.
 
 **Pendiente de la Fase E:**
 - [ ] **Emails del dominio** (aviso por consulta nueva + recuperación de contraseña para cualquier
