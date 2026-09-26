@@ -1,4 +1,5 @@
 import { NextResponse, after } from 'next/server'
+import { apiConsultasActiva } from '@/lib/consultas/api-activa'
 import { consultaEntradaSchema, erroresPorCampo } from '@/lib/consultas/schema'
 import { enviarAvisoConsulta } from '@/lib/notificaciones/consulta-nueva'
 import { resolverUrlSitio } from '@/lib/seo'
@@ -31,6 +32,9 @@ function respuestaSilenciosa() {
 }
 
 export async function POST(request: Request) {
+  // Cerrada mientras ningún formulario de la web la use (ver lib/consultas/api-activa.ts).
+  if (!apiConsultasActiva()) return new Response(null, { status: 404 })
+
   let cuerpo: unknown
   try {
     cuerpo = await request.json()

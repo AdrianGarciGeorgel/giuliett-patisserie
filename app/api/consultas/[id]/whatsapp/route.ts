@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { apiConsultasActiva } from '@/lib/consultas/api-activa'
 import { crearClienteAdmin } from '@/lib/supabase/admin'
 
 /* POST /api/consultas/:id/whatsapp — marca que el usuario sí abrió WhatsApp.
@@ -6,6 +7,9 @@ import { crearClienteAdmin } from '@/lib/supabase/admin'
    único que se puede tocar sin sesión, y solo sabiendo el uuid. */
 
 export async function POST(_request: Request, contexto: { params: Promise<{ id: string }> }) {
+  // Cerrada mientras ningún formulario de la web la use (ver lib/consultas/api-activa.ts).
+  if (!apiConsultasActiva()) return new Response(null, { status: 404 })
+
   const { id } = await contexto.params
   if (!z.uuid().safeParse(id).success) {
     return new Response(null, { status: 400 })

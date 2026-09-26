@@ -20,6 +20,11 @@ import { enviarAvisoConsulta } from '@/lib/notificaciones/consulta-nueva'
 import { ConfiguracionFaltante, crearClienteAdmin } from '@/lib/supabase/admin'
 import { POST } from '@/app/api/consultas/route'
 
+// La API está cerrada por defecto desde el 26-09-2026 (lib/consultas/api-activa.ts): acá se prueba su lógica.
+beforeEach(() => {
+  vi.stubEnv('CONSULTAS_API_ACTIVA', '1')
+})
+
 const ID_NUEVA = 'a3bb189e-8bf9-4c8b-9a3d-1c2d3e4f5a6b'
 const ID_PREVIA = '7c9e6679-7425-40de-944b-e07fc1f90ae7'
 
