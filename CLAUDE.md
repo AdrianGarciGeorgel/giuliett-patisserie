@@ -146,7 +146,7 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
 - Marco sigue siendo **reviewer**. PRs abiertos en su repo, **apilados** (cada uno con base en el
   anterior; se mergean en orden): #1 imágenes → #2 consultas → #3 SEO → #4 capa de datos + fix Atrás
   → #5 recuperación de contraseña + aviso + CSP → #6 código sin uso → #7 un solo h1 → #8 imágenes
-  (performance) → #9 fotos originales de Marco + color del menú → #11 seguridad y QA. El #10
+  (performance) → #9 fotos originales de Marco + color del menú → #11 seguridad y QA → #12 home. El #10
   (carruseles automáticos) se cerró sin mergear por reclamo de la clienta (regla 8). Cada rama
   vive en los dos remotos: `origin` (cabeza del PR) y `upstream` (base del PR siguiente). El `main` del fork se lleva a la
   punta de la rama más nueva (`git push origin <rama>:main`; si hubo rebase, `--force-with-lease`).
@@ -194,6 +194,15 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
   diseño y el mismo día se volvió al carrusel de Marco, tal cual. El PR #10 se cerró sin mergear. Por el
   mismo reclamo volvió también **el formulario de Marco tal cual** (decisión de Adrián, PR #11): salieron el
   selector de recorridos, el campo Sin TACC, la sección "Tu evento" y el formulario de las fichas.
+- **Cómo se trabaja desde el 26-09-2026: página por página.** Adrián pide un cambio → se arma en una rama y se
+  muestra en una **vista previa de Vercel** (sin tocar el dominio) → Adrián la revisa → con su OK se publica y
+  el PR se lo avisa a Marco. Lo que Adrián aprueba así es una excepción consciente a esta regla y se anota acá.
+- **Excepciones aprobadas por Adrián:**
+  - **Home (26-09-2026, PR #12):** el carrusel avanza solo cada 5 s, **sin botón de pausa**; en la computadora,
+    un clic en el cuarto izquierdo o derecho de la pantalla retrocede o avanza (zonas invisibles que en
+    pantallas táctiles no existen); y **el texto queda quieto**: logo, bajada, "Ver producto", nombre y
+    puntitos van en una capa fija y solo se desliza la foto (el nombre cambia con un fundido). Reglas en
+    `lib/carrusel.ts`. Galería y eventos siguen como los diseñó Marco.
 
 ---
 
@@ -253,6 +262,7 @@ lib/
 │   ├── rutas.ts                  # rutas públicas del panel, destinoSeguro() (anti open-redirect)
 │   └── recuperacion.ts           # reglas de la recuperación de contraseña (puras, testeadas)
 ├── notificaciones/consulta-nueva.ts  # email a Giu por consulta nueva (Resend por HTTP; apagado sin variables)
+├── carrusel.ts                   # reglas del carrusel de la home: avance automático y costados (puras)
 ├── catalogo.ts                   # ÚNICA puerta a productos/eventos desde app/ y components/
 ├── giuliett.ts                   # CONTACT, waLink(), EVENTOS (datos crudos)
 └── products.ts                   # catálogo PRODUCTS (datos crudos, precios incluidos)
@@ -623,7 +633,8 @@ de previews en Settings → Deployment Protection.
 - *"Los carruseles no se mueven solos"* y *"aparece una mano en vez del cursor"*: se hicieron girar solos,
   con pausa, puntitos clickeables y cursor normal (PR #10). **Revertido el mismo día por reclamo de la
   clienta:** los carruseles volvieron a ser los de Marco, tal cual, sin movimiento automático y con su
-  cursor de "mano". El PR #10 se cerró sin mergear. Ver regla 8.
+  cursor de "mano". El PR #10 se cerró sin mergear. Ver regla 8. **Después, trabajando la home con Adrián,
+  el carrusel de la home volvió a moverse solo, de otra forma y aprobado por él (PR #12, regla 8).**
 
 **Pendiente de la Fase E:**
 - [ ] **Emails del dominio** (aviso por consulta nueva + recuperación de contraseña para cualquier
