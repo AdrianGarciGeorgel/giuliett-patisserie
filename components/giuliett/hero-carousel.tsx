@@ -77,6 +77,8 @@ type HeroCarouselProps = {
   cursorNormal?: boolean
   /** "Ver producto" queda quieto sobre la foto y lleva a la foto actual, en lugar de uno por foto que se desliza. */
   botonFijo?: boolean
+  /** La leyenda de cada foto queda quieta sobre la foto y su texto cambia con un fundido (eventos). */
+  leyendaFija?: boolean
 }
 
 const productSlides: readonly CarouselSlide[] = PRODUCTS.map((product) => ({
@@ -107,6 +109,7 @@ export function HeroCarousel({
   navegacionLateral = false,
   cursorNormal = false,
   botonFijo = false,
+  leyendaFija = false,
 }: HeroCarouselProps) {
   const carouselSlides = slides ?? productSlides
   const total = variant === 'home' ? productCategories.length : carouselSlides.length
@@ -382,7 +385,10 @@ export function HeroCarousel({
   // "Ver producto" lleva al destino de cada foto; si la foto no tiene, se arma con el nombre como antes.
   const destinoDe = (slide: CarouselSlide) => slide.href ?? `/productos?categoria=${slide.label}`
   const fotoActual = carouselSlides[activeIndex] ?? carouselSlides[0]
-  const conControles = navegacionLateral || (botonFijo && showProductButton)
+  const conControles = navegacionLateral || (botonFijo && showProductButton) || leyendaFija
+  // Con cosas quietas sobre la foto, la clase de afuera (sombra, borde redondeado y la subida al pasar el mouse
+  // en eventos) va en la caja que las contiene: así la foto, la leyenda y los costados suben juntos.
+  const envolverConClase = conControles && Boolean(className)
 
   const visor = (
       <div
@@ -401,10 +407,11 @@ export function HeroCarousel({
         className={cn(
           'flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden rounded-[32px] bg-[#BFB4DC]/20',
           '[touch-action:pan-x_pan-y] select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
-          'shadow-[0_20px_48px_-20px_rgb(81_55_92/0.22)]',
-          // La "mano" de Marco, salvo donde se pidió el cursor normal (galería).
+          // Con la clase en la caja de afuera, la foto toma su borde redondeado y la sombra queda en la caja.
+          envolverConClase ? 'rounded-[inherit]' : 'shadow-[0_20px_48px_-20px_rgb(81_55_92/0.22)]',
+          // La "mano" de Marco, salvo donde se pidió el cursor normal (galería y eventos).
           !cursorNormal && (dragging ? 'cursor-grabbing' : 'cursor-grab'),
-          className,
+          !envolverConClase && className,
         )}
       >
         {carouselSlides.map((slide, index) => (
@@ -429,7 +436,7 @@ export function HeroCarousel({
             </div>
             <div>
 
-            {slide.text ? (
+            {slide.text && !leyendaFija ? (
               <figcaption className="absolute bottom-3 left-3 right-3 truncate rounded-sm bg-white/82 px-3 py-2 text-center text-[12px] font-medium text-primary backdrop-blur-sm" style={{backgroundColor:'color-mix(in oklab, #beb4dc 82%, #d04d4d00)'}}>
                 {slide.text}
               </figcaption>
@@ -456,8 +463,36 @@ export function HeroCarousel({
   return (
     <div className="w-full" {...(autoplay ? alrededor : {})}>
       {conControles ? (
-        <div className="relative">
+        <div className={cn('relative', envolverConClase && className)}>
           {visor}
+
+          {/* La leyenda quieta sobre la foto (como el texto de la home): pasa la foto por debajo y el texto cambia
+              con un fundido. Mismo aspecto que la de Marco; deja pasar el dedo y el mouse hacia la foto. */}
+          {leyendaFija && carouselSlides.some((slide) => slide.text) ? (
+            <p
+              data-leyenda-fija="true"
+              className={cn(
+                'pointer-events-none absolute bottom-3 left-3 right-3 z-10 grid rounded-sm bg-white/82 px-3 py-2 text-center text-[12px] font-medium text-primary backdrop-blur-sm',
+                // Una foto sin texto no muestra la caja (como en el diseño de Marco).
+                'transition-opacity duration-500 ease-out',
+                fotoActual?.text ? 'opacity-100' : 'opacity-0',
+              )}
+              style={{backgroundColor:'color-mix(in oklab, #beb4dc 82%, #d04d4d00)'}}
+            >
+              {carouselSlides.map((slide, index) => (
+                <span
+                  key={`${slide.id}-${index}`}
+                  aria-hidden={index !== activeIndex ? true : undefined}
+                  className={cn(
+                    '[grid-area:1/1] min-w-0 truncate transition-opacity duration-500 ease-out',
+                    index === activeIndex ? 'opacity-100' : 'opacity-0',
+                  )}
+                >
+                  {slide.text}
+                </span>
+              ))}
+            </p>
+          ) : null}
 
           {/* "Ver producto" quieto sobre la foto (como el texto de la home): uno solo, que lleva a la foto actual.
               Mismo aspecto que el botón de Marco; es un link, así navega como link (y sin recargar la página). */}
@@ -479,13 +514,19 @@ export function HeroCarousel({
                 type="button"
                 aria-label="Foto anterior"
                 onClick={(evento) => irAlCostado('anterior', evento)}
-                className="absolute inset-y-0 left-0 z-20 hidden w-1/4 rounded-l-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/40 [@media(hover:hover)_and_(pointer:fine)]:block"
+                className={cn(
+                  'absolute inset-y-0 left-0 z-20 hidden w-1/4 rounded-l-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/40 [@media(hover:hover)_and_(pointer:fine)]:block',
+                  envolverConClase && 'rounded-l-[inherit]',
+                )}
               />
               <button
                 type="button"
                 aria-label="Foto siguiente"
                 onClick={(evento) => irAlCostado('siguiente', evento)}
-                className="absolute inset-y-0 right-0 z-20 hidden w-1/4 rounded-r-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/40 [@media(hover:hover)_and_(pointer:fine)]:block"
+                className={cn(
+                  'absolute inset-y-0 right-0 z-20 hidden w-1/4 rounded-r-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/40 [@media(hover:hover)_and_(pointer:fine)]:block',
+                  envolverConClase && 'rounded-r-[inherit]',
+                )}
               />
             </>
           ) : null}

@@ -10,6 +10,7 @@ vi.mock('next/navigation', () => ({
 import { HeroCarousel } from '@/components/giuliett/hero-carousel'
 import { Hero } from '@/components/giuliett/sections/hero'
 import GaleriaPage from '@/app/galeria/page'
+import EventosPage from '@/app/eventos/page'
 import { productCategories } from '@/lib/giuliett'
 
 /**
@@ -91,9 +92,9 @@ describe('home: el texto queda quieto y solo se desliza la foto (prueba del 26-0
   })
 })
 
-describe('carrusel de eventos (sin cambios: como lo diseñó Marco)', () => {
+describe('carrusel sin opciones (como lo diseñó Marco)', () => {
   const fotos = [
-    { id: 'a', image: '/images/EVENTOS/BODAS/BODA_1.png', alt: 'Boda 1' },
+    { id: 'a', image: '/images/EVENTOS/BODAS/BODA_1.png', alt: 'Boda 1', text: 'Boda en la finca' },
     { id: 'b', image: '/images/EVENTOS/BODAS/BODA_2.png', alt: 'Boda 2' },
   ]
   const html = renderToStaticMarkup(<HeroCarousel slides={fotos} ariaLabel="Fotos de bodas" showProductButton={false} />)
@@ -106,6 +107,11 @@ describe('carrusel de eventos (sin cambios: como lo diseñó Marco)', () => {
   it('mantiene el cursor y los puntitos de Marco', () => {
     expect(viewport(html)).toMatch(/cursor-grab/)
     expect(html.match(/<span aria-hidden="true" class="h-1\.5 rounded-full bg-\[#51375C\]/g)).toHaveLength(2)
+  })
+
+  it('la leyenda va dentro de su foto y se desliza con ella, como la diseñó Marco', () => {
+    expect(html.match(/<figure\b[\s\S]*?<\/figure>/g)?.[0]).toMatch(/<figcaption[^>]*>Boda en la finca<\/figcaption>/)
+    expect(html).not.toMatch(/data-leyenda-fija/)
   })
 })
 
@@ -133,5 +139,57 @@ describe('carrusel de la galería (pedido de Adrián del 26-09-2026: como el de 
     expect(enlaces).toHaveLength(1)
     expect(enlaces[0]).toMatch(/href="\/productos\?categoria=tortas-clasicas"/)
     expect(enlaces[0]).toMatch(/aria-label="Ver producto: Macarons"/)
+  })
+
+  it('la foto conserva el borde redondeado y la sombra de Marco', () => {
+    expect(viewport(pagina)).toMatch(/rounded-\[32px\]/)
+    expect(viewport(pagina)).toMatch(/shadow-\[0_20px_48px_-20px_rgb\(81_55_92\/0\.22\)\]/)
+  })
+})
+
+describe('carruseles de eventos (pedido de Adrián del 26-09-2026: como la home y la galería)', async () => {
+  const pagina = renderToStaticMarkup(await EventosPage())
+  const visores = [...pagina.matchAll(/<div[^>]*aria-roledescription="carrusel"[^>]*>/g)].map((m) => m[0])
+  const figuras = [...pagina.matchAll(/<figure\b[\s\S]*?<\/figure>/g)].map((m) => m[0])
+  const leyendas = [...pagina.matchAll(/<p\b[^>]*data-leyenda-fija="true"[^>]*>[\s\S]*?<\/p>/g)].map((m) => m[0])
+
+  it('son tres, sin botón de pausa y sin la "mano" como cursor', () => {
+    expect(visores).toHaveLength(3)
+    expect(pagina).not.toMatch(/Pausar el carrusel|Reanudar el carrusel/)
+    for (const v of visores) expect(v).not.toMatch(/cursor-grab/)
+  })
+
+  it('en la computadora, cada uno se maneja con clic en los costados (en pantallas táctiles no existen)', () => {
+    const costados = botones(pagina).filter((b) => /aria-label="Foto (anterior|siguiente)"/.test(b))
+    expect(costados).toHaveLength(6)
+    for (const b of costados) expect(b).toMatch(/\bhidden\b[\s\S]*\[@media\(hover:hover\)_and_\(pointer:fine\)\]:block/)
+  })
+
+  it('la leyenda queda quieta: ninguna foto la lleva adentro, hay una por carrusel y deja pasar el dedo', () => {
+    expect(figuras.length).toBe(18)
+    for (const figura of figuras) expect(figura).not.toMatch(/<figcaption/)
+    expect(leyendas).toHaveLength(3)
+    for (const l of leyendas) expect(l).toMatch(/pointer-events-none/)
+  })
+
+  it('el texto de la leyenda cambia con un fundido: se ve el de la foto actual y los otros quedan ocultos', () => {
+    for (const l of leyendas) {
+      const textos = [...l.matchAll(/<span\b([^>]*)>([^<]*)<\/span>/g)].map((m) => ({ atributos: m[1], texto: m[2] }))
+      expect(textos).toHaveLength(6)
+      expect(textos[0].atributos).toMatch(/opacity-100/)
+      expect(textos[0].atributos).not.toMatch(/aria-hidden="true"/)
+      for (const otro of textos.slice(1)) {
+        expect(otro.atributos).toMatch(/opacity-0/)
+        expect(otro.atributos).toMatch(/aria-hidden="true"/)
+      }
+    }
+  })
+
+  it('al pasar el mouse sube la tarjeta entera (foto, leyenda y costados juntos), como la diseñó Marco', () => {
+    for (const v of visores) {
+      expect(v).toMatch(/rounded-\[inherit\]/)
+      expect(v).not.toMatch(/hover:-translate-y-1/)
+    }
+    expect(pagina.match(/<div class="relative w-full rounded-lg [^"]*lg:hover:-translate-y-1"/g)).toHaveLength(3)
   })
 })

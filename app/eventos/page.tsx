@@ -112,6 +112,8 @@ function EventSection({ proposal, first }: { proposal: EventProposal; first: boo
           className={`order-1 w-full ${proposal.imageFirstOnDesktop ? 'lg:order-1' : 'lg:order-2'}`}
           delay={40}
         >
+          {/* Como la home y la galería (pedido de Adrián del 26-09-2026): avanza solo sin pausa, clic en los
+              costados en la computadora, cursor normal y la leyenda quieta sobre la foto. */}
           <HeroCarousel
             slides={proposal.slides}
             ratio="4/5"
@@ -119,6 +121,10 @@ function EventSection({ proposal, first }: { proposal: EventProposal; first: boo
             showIndicators={true}
             ariaLabel={`Fotografías de ${proposal.eyebrow}`}
             priority={first}
+            autoplay
+            navegacionLateral
+            cursorNormal
+            leyendaFija
             className="w-full rounded-lg shadow-[var(--shadow-giuliett)] transition-transform duration-[350ms] ease-out lg:hover:-translate-y-1"
             sizes="(min-width: 1024px) 50vw, calc(100vw - 48px)"
           />
