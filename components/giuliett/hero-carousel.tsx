@@ -187,9 +187,10 @@ export function HeroCarousel({
                   </span>
                 </Link>
 
-                <h1 className="mt-5 text-balance text-[25px] font-medium leading-tight text-primary sm:text-[29px] lg:mt-6 lg:text-[34px]">
+                {/* h2: el título de la página es el h1 de sections/hero.tsx. Un h1 por slide daba 4 en la home. */}
+                <h2 className="mt-5 text-balance text-[25px] font-medium leading-tight text-primary sm:text-[29px] lg:mt-6 lg:text-[34px]">
                   {slide.name}
-                </h1>
+                </h2>
 
                 {/* role="group": un div sin rol no puede llevar aria-label (Lighthouse: aria-prohibited-attr). */}
                 <div role="group" className="mt-6 flex justify-center gap-2" aria-label={`Producto ${activeIndex + 1} de ${productCategories.length}`}>
