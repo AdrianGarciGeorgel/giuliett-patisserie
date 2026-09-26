@@ -52,7 +52,12 @@ Después de cambios significativos, actualizar Notion via MCP.
 Según el **Master Plan v2 de Giuliana**: Giuliett **no elabora Sin TACC en su taller**.
 Las opciones Sin TACC se **tercerizan** a un proveedor habilitado, **según disponibilidad**.
 
-En la web esto se traduce en:
+> ⚠️ **Desde el 26-09-2026 el campo NO está en la web.** Tras el reclamo de la clienta por cambios de
+> diseño, Adrián decidió volver al formulario de Marco tal cual (regla 8), que no tiene el campo
+> "¿Necesitás una opción especial?". El Master Plan v2 lo pide: **Giu tiene que saberlo**. El texto legal y
+> las reglas siguen en el código para cuando vuelva, dentro de un formulario que apruebe Marco.
+
+Cómo estaba (y cómo vuelve, si se reactiva):
 
 - Los **4 formularios** llevan el campo **obligatorio** "¿Necesitás una opción especial?"
   (No, ninguna / Sí, Sin TACC / Sí, otra) con la aclaración legal debajo.
@@ -186,7 +191,9 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
 - En las fotos esta regla le gana a la regla 3, por decisión de Adrián (ver regla 3, *Fotos*).
 - **Casos del 26-09-2026:** fotos originales y color del menú de Marco restaurados (PR #9). El PR #10 hizo
   girar solos los carruseles, con botón de pausa y puntitos nuevos; **la clienta reclamó** por los cambios de
-  diseño y el mismo día se volvió al carrusel de Marco, tal cual. El PR #10 se cerró sin mergear.
+  diseño y el mismo día se volvió al carrusel de Marco, tal cual. El PR #10 se cerró sin mergear. Por el
+  mismo reclamo volvió también **el formulario de Marco tal cual** (decisión de Adrián, PR #11): salieron el
+  selector de recorridos, el campo Sin TACC, la sección "Tu evento" y el formulario de las fichas.
 
 ---
 
@@ -229,10 +236,11 @@ app/
     ├── auth/callback/route.ts    # canjea el enlace del email por una sesión
     └── consultas/[id]/           # detalle + seguimiento
 components/giuliett/
-├── contact-form.tsx              # UN formulario, 4 recorridos, guarda → WhatsApp
+├── contact-form.tsx              # el formulario de Marco, tal cual: manda directo a WhatsApp (desde el 26-09)
 └── …                             # componentes de Marco
 lib/
 ├── consultas/
+│   ├── api-activa.ts             # interruptor: la API de consultas está cerrada salvo CONSULTAS_API_ACTIVA=1
 │   ├── tipos.ts                  # recorridos, estados, opción especial, AVISO_SIN_TACC (sin Zod)
 │   ├── schema.ts                 # validación Zod (servidor)
 │   ├── formularios.ts            # qué campos tiene cada recorrido
@@ -293,6 +301,7 @@ la configuración se toca en el dashboard, o con Playwright sobre la sesión de 
 | `SUPABASE_PUBLISHABLE_KEY` | clave publicable (`sb_publishable_…`) | panel y `proxy.ts` (sesión) |
 | `SUPABASE_SECRET_KEY` | clave secreta (`sb_secret_…`) | **solo** `lib/supabase/admin.ts` y el script de admins |
 | `NEXT_PUBLIC_SITE_URL` | URL pública del sitio (opcional; el dominio final) | `lib/seo.ts`: canonical, sitemap, OG, enlaces de los emails. Si falta, usa la URL de producción de Vercel |
+| `CONSULTAS_API_ACTIVA` | `1` para abrir la API de consultas (opcional; sin ella responde 404) | `lib/consultas/api-activa.ts`. Cerrada desde el 26-09-2026: ningún formulario la usa |
 | `RESEND_API_KEY` | clave de Resend (opcional) | `lib/notificaciones/consulta-nueva.ts`: aviso a Giu por consulta nueva |
 | `AVISOS_EMAIL_DESTINO` | a quién avisar, separado por comas (opcional) | ídem; sin esta y la anterior **no se manda nada** |
 | `AVISOS_EMAIL_REMITENTE` | remitente (opcional; por defecto `Giuliett Web <avisos@giuliettpatisserie.com>`) | ídem; debe ser un dominio verificado en Resend (Fase E) |
@@ -319,6 +328,12 @@ El repo usa **npm** (un solo lockfile, `package-lock.json`). No agregar `pnpm-lo
 ---
 
 ## Cómo funcionan las consultas (Fase B)
+
+> ⏸️ **En pausa desde el 26-09-2026.** La clienta reclamó por cambios de diseño y Adrián decidió que la web
+> quede igual a la de Marco: /contacto usa su formulario, que manda directo a WhatsApp, y salieron la
+> sección "Tu evento" de /eventos y el formulario de las fichas. **Las consultas ya no se registran:** la
+> API responde 404 (salvo `CONSULTAS_API_ACTIVA=1`) y el panel sigue andando, pero no recibe nada nuevo.
+> Todo lo de abajo describe cómo funcionaba y cómo vuelve, si Marco integra los campos en su diseño.
 
 1. El usuario completa uno de los **4 recorridos** (`particular`, `evento`, `empresa`,
    `mayorista`) — un solo componente, `<ContactForm origen=…>`.
@@ -400,9 +415,8 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
    respuesta de Marco en el PR #1: es identidad, no un bug.
 6. ~~`my-project`, dos lockfiles, sin ESLint~~ → **resuelto**: `giuliett-patisserie`, solo
    `package-lock.json`, ESLint instalado con `eslint.config.mjs`.
-7. **Avisos de lint conocidos (6, no frenan):** `setState` dentro de efectos en `reveal.tsx` y
-   `contact-form.tsx` (sincronizan con IntersectionObserver / sessionStorage; corregirlos es
-   refactor); `<img>` en `trusted-clients.tsx` y `why-choose-us.tsx`; `window.location.assign` en
+7. **Avisos de lint conocidos (4, no frenan, todos en componentes de Marco):** `setState` dentro de un efecto en
+   `reveal.tsx`; `<img>` en `trusted-clients.tsx` y `why-choose-us.tsx`; `window.location.assign` en
    `hero-carousel.tsx`. **Código sin uso (punto 1):** limpiado el 23-09-2026 con knip — 10
    componentes huérfanos, `getProductBySlug` y 4 dependencias fuera; quedan como *aviso* los exports
    sin uso de `atoms.tsx`, `line-art.tsx`, `Prose`, `AUDIENCES` y `STEPS` (sistema de diseño de
@@ -436,6 +450,8 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
 (regla 8). Del PR #1 quedan el `CLAUDE.md` y el resto.
 
 ### Fase B — Supabase, 4 formularios, Sin TACC legal, registro y panel 🟡
+> ⏸️ **Desde el 26-09-2026 la web usa el formulario de Marco** (ver *Cómo funcionan las consultas*): el
+> registro, los cuatro recorridos y el campo Sin TACC quedan en el código, apagados hasta que Marco los integre.
 **Código listo y testeado (49 tests + prueba de mutación 15/15 + build verde + Playwright).**
 - [x] Proyecto de Supabase creado: `evpuimzqgkxfwbifnbgf` (São Paulo), 22-09-2026.
 - [x] Migración aplicada (+ `revoke execute … from anon` sobre `es_administrador()`).
