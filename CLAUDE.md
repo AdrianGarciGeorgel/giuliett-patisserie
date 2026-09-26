@@ -111,7 +111,14 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
 - **Zod no viaja al navegador**: el formulario valida a mano; Zod solo en servidor.
 - Las páginas públicas son **estáticas** (○ en el build). Un formulario nunca debe
   volverlas dinámicas: los parámetros de URL se leen en el cliente, no con `searchParams`.
-- Medir con **Lighthouse sobre build de producción**, no en dev.
+- Medir con **Lighthouse sobre build de producción**, no en dev. La vara oficial es **PageSpeed
+  Insights** (pagespeed.web.dev, desde los servidores de Google): Lighthouse en esta PC da números muy
+  ruidosos en móvil (el mismo build dio 89 y 58 seguidos por el TBT). La API pública da 429 sin clave:
+  usar la web de PSI con Playwright.
+- **Imágenes (test/imagenes.test.tsx):** todo `<img>` hecho a mano va con `loading="lazy"`, y cada
+  página precarga (next/image `priority`) **una sola** foto, la principal. Un `<img>` sin `lazy` en
+  una página que el menú pre-carga se descarga en TODAS las páginas (React 19 le genera una pista
+  de precarga en el RSC y Next la ejecuta al pre-cargar el link).
 
 ### 4. Git
 
@@ -127,7 +134,8 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
   Adrián, que sirve el dominio oficial, y se sincroniza con `upstream` (`git pull upstream main`).
 - Marco sigue siendo **reviewer**. PRs abiertos en su repo, **apilados** (cada uno con base en el
   anterior; se mergean en orden): #1 imágenes → #2 consultas → #3 SEO → #4 capa de datos + fix Atrás
-  → #5 recuperación de contraseña + aviso + CSP → #6 código sin uso. El `main` del fork se lleva a la
+  → #5 recuperación de contraseña + aviso + CSP → #6 código sin uso → #7 un solo h1 → #8 imágenes
+  (performance). El `main` del fork se lleva a la
   punta de la rama más nueva (`git push origin <rama>:main`; si hubo rebase, `--force-with-lease`).
   ⚠️ **Desde el 26-09-2026 el `main` del fork es PRODUCCIÓN:** cada push sale en vivo en
   https://giuliettpatisserie.com. Antes de empujar: `npm test`, `npm run lint` y `npm run build` en verde.
@@ -432,11 +440,15 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
       reporte sobre el staging (9 páginas + panel logueado, 0 avisos) y después enforzada (0 avisos,
       0 requests fallidas). `'unsafe-inline'` en scripts es inevitable hoy (hidratación de Next +
       JSON-LD inline). Para volver al modo reporte: cambiar la clave de la cabecera.
-- [x] Un solo `h1` por página (`/giu` tenía cuatro, `/galeria` ninguno).
+- [x] Un solo `h1` por página. El 22-09 se corrigió `/giu` (tenía cuatro); el **26-09**, en el barrido
+      post-deploy sobre el dominio, aparecieron la **home con 4** (uno por slide del carrusel) y
+      **galería con 2** (error propio de la Fase C: convertí el `h2` invisible de Marco en `h1` sin ver
+      su "Hecho para disfrutar"). Corregido y **cubierto por `test/encabezados.test.tsx`**, que
+      renderiza las 7 páginas públicas (PR #7).
 - [x] Test de integridad del catálogo (`test/catalogo.test.ts`).
 - [x] **Lighthouse (build de producción local, móvil 4G simulado):** Home **91 / 91 / 96 / 100**,
       ficha **91 / 91 / 96 / 100**, desktop **97 / 96 / 96 / 100** (Performance / Accesibilidad /
-      Buenas prácticas / SEO). CLS 0, TBT ≤ 100 ms. Pendiente medir en producción con dominio.
+      Buenas prácticas / SEO). CLS 0, TBT ≤ 100 ms.
 - [x] Contraste del nav móvil corregido (etiquetas de 10 px: taupe `#9C8065` → `#7D6650`, 5,1:1)
       y `role="group"` en los indicadores de los tres carruseles (`aria-label` en un `div` sin
       rol está prohibido). **Accesibilidad Lighthouse: 100** en la home (era 91).
@@ -452,13 +464,19 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
       el 26-09-2026: canonical, sitemap, robots, tarjetas OG y JSON-LD apuntan al dominio.
 - [ ] GA4 / Search Console: el dominio ya está; falta decidir la cuenta de Google (ideal: la del
       negocio) y verificar con un registro TXT en Namecheap.
-- [ ] Medir Lighthouse en producción y revisar el LCP móvil (3,4 s simulado: hero image).
+- [x] **Lighthouse en producción (26-09-2026, PageSpeed Insights sobre el dominio).** Primera medición:
+      home móvil **83** (LCP 4,4 s, Speed Index 3,8 s). Causa: ~450 KB de imágenes de /contacto que
+      bajaban en todas las páginas (ver regla 3, *Imágenes*) + /eventos precargando 3 fotos. Arreglado
+      en el PR #8 (`loading="lazy"` en dos `<img>` y `priority` opcional en `HeroCarousel`). Después:
+      **home móvil 99 / 100 / 100 / 100** (LCP **2,3 s**, TBT 30 ms, CLS 0, Speed Index 1,5 s) y **ficha
+      móvil 98 / 100 / 100 / 100** (LCP 2,5 s). Escritorio (Lighthouse local contra producción): 99.
+      Imágenes que baja la home en un celular: 13 (658 KB) → **4 (116 KB)**.
+      **Core Web Vitals en verde en producción.**
 
 Notas: el 404 de `/_vercel/insights/script.js` que aparece en local es Vercel Analytics, que solo
-existe en Vercel. En `/productos` la consola avisa que se precargan 8 imágenes del home (`torre`,
-`camion`, `alfajores`, `giu`, `LOGOS/*`) que la página no usa: no vienen en el HTML servido, las
-inyecta el cliente (probablemente el prefetch de "Inicio"). Es un warning, no un error, y Lighthouse
-ya dio 91 con eso puesto; queda anotado por si se busca exprimir el LCP móvil. Las **previews de Vercel están detrás del login** (`vercel.com/sso-api`);
+existe en Vercel. El viejo aviso de consola "*…was preloaded using link preload but not used*" (torre,
+camión, alfajores, giu, logos) venía de /contacto pre-cargado desde el menú: resuelto el 26-09 (PR #8).
+Las **previews de Vercel están detrás del login** (`vercel.com/sso-api`);
 producción es pública. Para compartir una preview con Giu o Marco hay que apagar la protección
 de previews en Settings → Deployment Protection.
 
@@ -505,6 +523,9 @@ de previews en Settings → Deployment Protection.
 - [ ] Search Console + GA4 (ver Fase C).
 - [ ] Vercel Pro (deuda técnica 10).
 - [ ] Capacitación del panel a Giu.
+- [ ] **Textos alternativos de las 4 fotos de categoría** (`productCategories` en `lib/giuliett.ts`, las usan
+      la home y galería): no describen su foto ("Tortas clásicas" dice *"Cookies artesanales glaseadas…"*).
+      Revisarlos mirando cada foto, junto con una pasada de `alt` en todo el catálogo (checklist, punto 9).
 
 ---
 
