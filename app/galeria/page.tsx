@@ -93,7 +93,9 @@ export default function GaleriaPage() {
 
                  <Reveal className="w-full lg:w-[80%]" delay={60}>
                   <div className="mx-auto w-full max-w-[480px] lg:max-w-[90rem] ">
-                    <HeroCarousel />
+                    {/* Como la home (pedido de Adrián del 26-09-2026): avanza solo sin pausa, clic en los costados en la
+                        computadora, cursor normal y "Ver producto" quieto que lleva a la categoría de la foto actual. */}
+                    <HeroCarousel autoplay navegacionLateral cursorNormal botonFijo />
                   </div>
                 </Reveal>
               </div>

@@ -48,6 +48,8 @@ type CarouselSlide = {
   text?: string
   label?: string
   script?: string
+  /** Adónde lleva "Ver producto" (si falta, se arma con el nombre como antes). */
+  href?: string
 }
 
 type HeroCarouselProps = {
@@ -69,8 +71,12 @@ type HeroCarouselProps = {
   priority?: boolean
   /** Las fotos avanzan solas (solo la home, pedido del 26-09-2026). Sin botón de pausa. */
   autoplay?: boolean
-  /** En la computadora, un clic en el costado izquierdo o derecho retrocede o avanza (solo la home). */
+  /** En la computadora, un clic en el costado izquierdo o derecho retrocede o avanza (home y galería). */
   navegacionLateral?: boolean
+  /** Cursor normal sobre la foto, sin la "mano" (galería, pedido del 26-09-2026). La home ya no la usa. */
+  cursorNormal?: boolean
+  /** "Ver producto" queda quieto sobre la foto y lleva a la foto actual, en lugar de uno por foto que se desliza. */
+  botonFijo?: boolean
 }
 
 const productSlides: readonly CarouselSlide[] = PRODUCTS.map((product) => ({
@@ -79,6 +85,7 @@ const productSlides: readonly CarouselSlide[] = PRODUCTS.map((product) => ({
   alt: product.alt,
   label: product.label,
   script: product.script,
+  href: product.destino,
 }))
 
 /**
@@ -98,6 +105,8 @@ export function HeroCarousel({
   priority = true,
   autoplay = false,
   navegacionLateral = false,
+  cursorNormal = false,
+  botonFijo = false,
 }: HeroCarouselProps) {
   const carouselSlides = slides ?? productSlides
   const total = variant === 'home' ? productCategories.length : carouselSlides.length
@@ -370,14 +379,21 @@ export function HeroCarousel({
     )
   }
 
-  return (
-    <div className="w-full">
+  // "Ver producto" lleva al destino de cada foto; si la foto no tiene, se arma con el nombre como antes.
+  const destinoDe = (slide: CarouselSlide) => slide.href ?? `/productos?categoria=${slide.label}`
+  const fotoActual = carouselSlides[activeIndex] ?? carouselSlides[0]
+  const conControles = navegacionLateral || (botonFijo && showProductButton)
+
+  const visor = (
       <div
         ref={viewportRef}
         role="region"
         aria-roledescription="carrusel"
         aria-label={ariaLabel}
         onScroll={handleScroll}
+        onWheel={autoplay ? handleWheel : undefined}
+        // Deslizar con el dedo cuenta como usar el carrusel: frena el movimiento un rato.
+        onPointerDown={autoplay ? marcarInteraccion : undefined}
         // onPointerDown={handlePointerDown}
         // onPointerMove={handlePointerMove}
         // onPointerUp={endDrag}
@@ -386,7 +402,8 @@ export function HeroCarousel({
           'flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden rounded-[32px] bg-[#BFB4DC]/20',
           '[touch-action:pan-x_pan-y] select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
           'shadow-[0_20px_48px_-20px_rgb(81_55_92/0.22)]',
-          dragging ? 'cursor-grabbing' : 'cursor-grab',
+          // La "mano" de Marco, salvo donde se pidió el cursor normal (galería).
+          !cursorNormal && (dragging ? 'cursor-grabbing' : 'cursor-grab'),
           className,
         )}
       >
@@ -420,10 +437,10 @@ export function HeroCarousel({
             </div>
             <div>
 
-            {showProductButton ? (
+            {showProductButton && !botonFijo ? (
               <button
               type="button"
-              onClick={() => window.location.assign(`/productos?categoria=${slide.label}`)}
+              onClick={() => window.location.assign(destinoDe(slide))}
               aria-label={`Ver producto: ${slide.label}`}
               className="absolute bottom-15 left-1/2 min-h-[40px] -translate-x-1/2 rounded-full bg-[#FFF8E9]/82 px-5 text-[12px] font-medium text-[#51375C] shadow-[0_8px_20px_-10px_rgb(63_42_80/0.35)] backdrop-blur-md transition-colors duration-200 hover:bg-[#FFF8E9]"
               >
@@ -434,6 +451,48 @@ export function HeroCarousel({
           </figure>
         ))}
       </div>
+  )
+
+  return (
+    <div className="w-full" {...(autoplay ? alrededor : {})}>
+      {conControles ? (
+        <div className="relative">
+          {visor}
+
+          {/* "Ver producto" quieto sobre la foto (como el texto de la home): uno solo, que lleva a la foto actual.
+              Mismo aspecto que el botón de Marco; es un link, así navega como link (y sin recargar la página). */}
+          {botonFijo && showProductButton && fotoActual ? (
+            <Link
+              href={destinoDe(fotoActual)}
+              aria-label={`Ver producto: ${fotoActual.label}`}
+              className="absolute bottom-15 left-1/2 z-30 inline-flex min-h-[40px] -translate-x-1/2 items-center justify-center rounded-full bg-[#FFF8E9]/82 px-5 text-[12px] font-medium text-[#51375C] shadow-[0_8px_20px_-10px_rgb(63_42_80/0.35)] backdrop-blur-md transition-colors duration-200 hover:bg-[#FFF8E9]"
+            >
+              Ver producto
+            </Link>
+          ) : null}
+
+          {/* En la computadora: clic en el costado izquierdo para volver y en el derecho para avanzar. Zonas
+              invisibles sobre la foto; en pantallas táctiles no existen, así no tapan el deslizar. */}
+          {navegacionLateral ? (
+            <>
+              <button
+                type="button"
+                aria-label="Foto anterior"
+                onClick={(evento) => irAlCostado('anterior', evento)}
+                className="absolute inset-y-0 left-0 z-20 hidden w-1/4 rounded-l-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/40 [@media(hover:hover)_and_(pointer:fine)]:block"
+              />
+              <button
+                type="button"
+                aria-label="Foto siguiente"
+                onClick={(evento) => irAlCostado('siguiente', evento)}
+                className="absolute inset-y-0 right-0 z-20 hidden w-1/4 rounded-r-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/40 [@media(hover:hover)_and_(pointer:fine)]:block"
+              />
+            </>
+          ) : null}
+        </div>
+      ) : (
+        visor
+      )}
 
       {showIndicators ? (
         <div role="group" className="mt-4 flex justify-center gap-1.5" aria-label={`Producto ${activeIndex + 1} de ${carouselSlides.length}`}>

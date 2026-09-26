@@ -151,6 +151,9 @@ export type Product = {
   desire: string
   fact: string
   waMessage: string
+  /** Adónde lleva "Ver producto" en el carrusel de la galería. Antes se armaba con el nombre visible
+   *  (/productos?categoria=Boxes) y los cinco botones caían en Tortas clásicas (QA del 26-09-2026). */
+  destino: string
 }
 
 export const PRODUCTS: Product[] = [
@@ -163,6 +166,7 @@ export const PRODUCTS: Product[] = [
     desire: 'Receta francesa. Sin conservantes.',
     fact: 'Desde 24 unidades.',
     waMessage: 'Hola Giuliett, quiero consultar por macarons.',
+    destino: '/productos?categoria=boxes',
   },
   {
     id: 'giu',
@@ -173,6 +177,7 @@ export const PRODUCTS: Product[] = [
     desire: 'Tu logo, glaseado a mano, una por una.',
     fact: 'Desde 20 unidades.',
     waMessage: 'Hola Giuliett, me interesan las cookies con mi logo.',
+    destino: '/productos?categoria=tortas-personalizadas',
   },
   {
     id: 'tortas',
@@ -183,6 +188,7 @@ export const PRODUCTS: Product[] = [
     desire: 'Tu logo, glaseado a mano, una por una.',
     fact: 'Desde 20 unidades.',
     waMessage: 'Hola Giuliett, me interesan las tortas clásicas con mi logo.',
+    destino: '/productos?categoria=tortas-clasicas',
   },
   {
     id: 'mesas',
@@ -193,6 +199,7 @@ export const PRODUCTS: Product[] = [
     desire: 'Elegís los sabores, nosotros la presentación.',
     fact: 'Desde 10 cajas.',
     waMessage: 'Hola Giuliett, me interesan los kits personalizados.',
+    destino: '/eventos',
   },
   {
     id: 'boxes',
@@ -203,6 +210,7 @@ export const PRODUCTS: Product[] = [
     desire: 'Montamos todo. Vos recibís a tu gente.',
     fact: 'Consultamos según evento.',
     waMessage: 'Hola Giuliett, estoy organizando un evento.',
+    destino: '/productos?categoria=boxes',
   },
 ]
 

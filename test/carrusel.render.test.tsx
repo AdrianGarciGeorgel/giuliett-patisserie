@@ -1,8 +1,15 @@
 // @vitest-environment node
 import { renderToStaticMarkup } from 'react-dom/server'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => '/galeria',
+  useRouter: () => ({ push: () => {}, replace: () => {}, prefetch: () => {}, back: () => {} }),
+}))
 import { HeroCarousel } from '@/components/giuliett/hero-carousel'
 import { Hero } from '@/components/giuliett/sections/hero'
+import GaleriaPage from '@/app/galeria/page'
 import { productCategories } from '@/lib/giuliett'
 
 /**
@@ -84,7 +91,7 @@ describe('home: el texto queda quieto y solo se desliza la foto (prueba del 26-0
   })
 })
 
-describe('carrusel de galería y eventos (sin cambios)', () => {
+describe('carrusel de eventos (sin cambios: como lo diseñó Marco)', () => {
   const fotos = [
     { id: 'a', image: '/images/EVENTOS/BODAS/BODA_1.png', alt: 'Boda 1' },
     { id: 'b', image: '/images/EVENTOS/BODAS/BODA_2.png', alt: 'Boda 2' },
@@ -99,5 +106,32 @@ describe('carrusel de galería y eventos (sin cambios)', () => {
   it('mantiene el cursor y los puntitos de Marco', () => {
     expect(viewport(html)).toMatch(/cursor-grab/)
     expect(html.match(/<span aria-hidden="true" class="h-1\.5 rounded-full bg-\[#51375C\]/g)).toHaveLength(2)
+  })
+})
+
+describe('carrusel de la galería (pedido de Adrián del 26-09-2026: como el de la home)', () => {
+  const pagina = renderToStaticMarkup(GaleriaPage())
+  const carrusel = pagina.slice(pagina.indexOf('aria-roledescription="carrusel"') - 200)
+  const figuras = [...carrusel.matchAll(/<figure\b[\s\S]*?<\/figure>/g)].map((m) => m[0])
+
+  it('sin botón de pausa y sin la "mano" como cursor', () => {
+    expect(pagina).not.toMatch(/Pausar el carrusel|Reanudar el carrusel/)
+    expect(viewport(pagina)).not.toBe('')
+    expect(viewport(pagina)).not.toMatch(/cursor-grab/)
+  })
+
+  it('en la computadora, un costado retrocede y el otro avanza; en pantallas táctiles no existen', () => {
+    const costados = botones(pagina).filter((b) => /aria-label="Foto (anterior|siguiente)"/.test(b))
+    expect(costados).toHaveLength(2)
+    for (const b of costados) expect(b).toMatch(/\bhidden\b[\s\S]*\[@media\(hover:hover\)_and_\(pointer:fine\)\]:block/)
+  })
+
+  it('"Ver producto" queda quieto (uno solo, fuera de las fotos) y lleva a la categoría de la foto actual', () => {
+    expect(figuras.length).toBeGreaterThan(1)
+    for (const figura of figuras) expect(figura).not.toMatch(/Ver producto/)
+    const enlaces = [...carrusel.matchAll(/<a\b[^>]*>Ver producto<\/a>/g)].map((m) => m[0])
+    expect(enlaces).toHaveLength(1)
+    expect(enlaces[0]).toMatch(/href="\/productos\?categoria=boxes"/)
+    expect(enlaces[0]).toMatch(/aria-label="Ver producto: Macarons"/)
   })
 })
