@@ -1,7 +1,16 @@
 import { ImageResponse } from 'next/og'
 import { comprimirTarjeta, fotoParaTarjeta } from '@/lib/og'
-import { getProductoPorSlug } from '@/lib/catalogo'
+import { getProductoPorSlug, getProductos } from '@/lib/catalogo'
 import { etiquetaCategoria } from '@/lib/seo'
+
+/* Se generan en el build, una por producto del catálogo. Antes se armaban en cada pedido y con
+   cualquier slug: /productos/lo-que-sea/opengraph-image devolvía 200 y gastaba CPU con sharp
+   (auditoría del 26-09-2026). Un slug que no existe ahora da 404 sin tocar el servidor. */
+export async function generateStaticParams() {
+  return (await getProductos()).map((producto) => ({ slug: producto.slug }))
+}
+
+export const dynamicParams = false
 
 /* Tarjeta 1200×630 que ven WhatsApp, Instagram y Google al compartir una ficha.
    JPEG liviano (WebP no siempre se previsualiza; PNG pesa demasiado) con la
