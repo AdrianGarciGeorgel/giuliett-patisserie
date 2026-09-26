@@ -1,5 +1,4 @@
-import { PrimaryAction, QuietLink } from '@/components/giuliett/atoms'
-import { ContactForm } from '@/components/giuliett/contact-form'
+import { PrimaryAction } from '@/components/giuliett/atoms'
 import { HeroCarousel } from '@/components/giuliett/hero-carousel'
 import { IconWhatsApp } from '@/components/giuliett/line-art'
 import { Reveal } from '@/components/giuliett/reveal'
@@ -26,7 +25,6 @@ type Propuesta = {
   tone: 'cream' | 'white' | 'lilac-soft'
   imageFirstOnDesktop: boolean
   closing?: string
-  secondary?: { href: string; label: string }
 }
 
 /** Las fotos vienen de lib/catalogo (hoy estáticas, mañana CMS); el copy sigue acá. */
@@ -45,7 +43,6 @@ function armarPropuestas(eventos: Eventos): Propuesta[] {
       tone: 'cream',
       imageFirstOnDesktop: false,
       closing: undefined,
-      secondary: undefined,
     },
     {
       id: 'empresas',
@@ -61,8 +58,6 @@ function armarPropuestas(eventos: Eventos): Propuesta[] {
       tone: 'white',
       imageFirstOnDesktop: true,
       closing: undefined,
-      /* Recorrido Empresa del Master Plan: deja la consulta registrada. */
-      secondary: { href: '/contacto?para=empresa', label: 'Prefiero dejar los datos de mi empresa' },
     },
     {
       id: 'celebraciones',
@@ -78,7 +73,6 @@ function armarPropuestas(eventos: Eventos): Propuesta[] {
       slides: eventos.celebraciones,
       tone: 'lilac-soft',
       imageFirstOnDesktop: false,
-      secondary: undefined,
     },
   ]
 }
@@ -91,26 +85,6 @@ export default async function EventosPage() {
       {propuestas.map((proposal, index) => (
         <EventSection key={proposal.id} proposal={proposal} first={index === 0} />
       ))}
-
-      {/* Recorrido Evento del Master Plan: la consulta queda registrada antes de ir a WhatsApp. */}
-      <Section tone="cream" id="consulta-evento" aria-labelledby="consulta-evento-titulo">
-        <div className="mx-auto max-w-[640px]">
-          <Reveal>
-            <p className="tracked text-[30px] font-medium text-muted-foreground">04 · Tu evento</p>
-          </Reveal>
-          <Reveal delay={60}>
-            <h2
-              id="consulta-evento-titulo"
-              className="mt-5 max-w-[18ch] text-balance text-[30px] font-light leading-[1.18] text-primary md:text-[40px]"
-            >
-              Contanos tu evento y te armamos una propuesta.
-            </h2>
-          </Reveal>
-          <Reveal delay={120} className="mt-12">
-            <ContactForm origen="evento" />
-          </Reveal>
-        </div>
-      </Section>
 
       {/* Botón flotante de WhatsApp: uno por página (antes se renderizaba una vez por sección). */}
       <a
@@ -173,13 +147,6 @@ function EventSection({ proposal, first }: { proposal: EventProposal; first: boo
               {proposal.cta}
             </PrimaryAction>
           </Reveal>
-          {proposal.secondary ? (
-            <Reveal delay={320}>
-              <QuietLink href={proposal.secondary.href} external={false} className="mt-4">
-                {proposal.secondary.label}
-              </QuietLink>
-            </Reveal>
-          ) : null}
         </div>
       </div>
 
