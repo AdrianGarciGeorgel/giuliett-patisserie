@@ -1,3 +1,4 @@
+import 'server-only'
 import { ETIQUETA_OPCION_ESPECIAL, ETIQUETA_ORIGEN, type OpcionEspecial, type Origen } from '@/lib/consultas/tipos'
 import { formatearFecha } from '@/lib/consultas/whatsapp'
 

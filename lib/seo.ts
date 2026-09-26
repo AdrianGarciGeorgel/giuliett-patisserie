@@ -114,6 +114,12 @@ export function metadataProducto(producto: Product, base: string = resolverUrlSi
 
 /* ---------------- JSON-LD (Schema.org) ---------------- */
 
+/** JSON-LD listo para un <script>: escapa `<`, así un texto con `</script>` no puede cerrar el bloque e
+ *  inyectar código. Hoy los datos son fijos; con el CMS podrían venir de un formulario (auditoría 26-09). */
+export function jsonLdSeguro(datos: unknown): string {
+  return JSON.stringify(datos).replace(/</g, '\\u003c')
+}
+
 export function jsonLdPasteleria(base: string = resolverUrlSitio()) {
   return {
     '@context': 'https://schema.org',
