@@ -144,6 +144,7 @@ function EventSection({ proposal, first }: { proposal: EventProposal; first: boo
             showProductButton={false}
             showIndicators={true}
             ariaLabel={`Fotografías de ${proposal.eyebrow}`}
+            priority={first}
             className="w-full rounded-lg shadow-[var(--shadow-giuliett)] transition-transform duration-[350ms] ease-out lg:hover:-translate-y-1"
             sizes="(min-width: 1024px) 50vw, calc(100vw - 48px)"
           />

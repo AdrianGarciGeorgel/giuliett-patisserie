@@ -22,7 +22,7 @@ export function TrustedClients() {
               return (
                 <Reveal as="li" key={reason.id} delay={index * 80} className="relative flex min-h-[142px] flex-col items-center justify-start px-2 text-center lg:px-0 lg:self-center">
                   {index > 0 ? <span aria-hidden="true" className=" absolute bottom-2 left-0 top-2 hidden lg:block" /> : null}
-                  <img className="h-[96px] w-[132px] object-contain lg:size-[180px]" src={reason.Image} alt="" />
+                  <img className="h-[96px] w-[132px] object-contain lg:size-[180px]" src={reason.Image} alt="" loading="lazy" decoding="async" />
                 </Reveal>
               )
             })}

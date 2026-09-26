@@ -36,6 +36,11 @@ type HeroCarouselProps = {
   ariaLabel?: string
   /** Presentación inmersiva reservada para la portada. */
   variant?: 'default' | 'home'
+  /**
+   * Precarga la primera foto (next/image `priority`). Solo para el carrusel que se ve al entrar:
+   * en una página con varios carruseles, los de más abajo compiten por la red con la foto principal.
+   */
+  priority?: boolean
 }
 
 const productSlides: readonly CarouselSlide[] = PRODUCTS.map((product) => ({
@@ -60,6 +65,7 @@ export function HeroCarousel({
   showIndicators = true,
   ariaLabel = 'Productos Giuliett',
   variant = 'default',
+  priority = true,
 }: HeroCarouselProps) {
   const carouselSlides = slides ?? productSlides
   const viewportRef = useRef<HTMLDivElement>(null)
@@ -151,7 +157,7 @@ export function HeroCarousel({
                 src={slide.src}
                 alt={slide.alt}
                 fill
-                priority={index === 0}
+                priority={priority && index === 0}
                 sizes="100vw"
                 draggable={false}
                 className="-z-20 object-cover"
@@ -246,7 +252,7 @@ export function HeroCarousel({
                 src={slide.image}
                 alt={slide.alt}
                 fill
-                priority={index === 0}
+                priority={priority && index === 0}
                 sizes={sizes}
                 draggable={false}
                 className="object-cover"
