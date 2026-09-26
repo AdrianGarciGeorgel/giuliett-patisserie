@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
+import { metadata } from '../app/layout'
 
 // El layout raíz importa fuentes, CSS y componentes de cliente: acá solo interesa su `metadata`.
+// Vitest sube estos vi.mock por encima de los imports, así que aplican al import de arriba.
 vi.mock('next/font/google', () => ({
   Poppins: () => ({ variable: '', className: '' }),
   Ephesis: () => ({ variable: '', className: '' }),
@@ -8,8 +10,6 @@ vi.mock('next/font/google', () => ({
 vi.mock('@vercel/analytics/next', () => ({ Analytics: () => null }))
 vi.mock('@/components/giuliett/mobile-bottom-nav', () => ({ GlobalNavigation: () => null }))
 vi.mock('../app/globals.css', () => ({}))
-
-const { metadata } = await import('../app/layout')
 
 describe('metadata del layout raíz', () => {
   it('no fija "robots": indexar es lo que pasa por defecto, y fijarlo choca con el noindex de la página 404', () => {
