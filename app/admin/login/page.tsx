@@ -1,18 +1,13 @@
 import Link from 'next/link'
+import { avisoDeLogin } from '@/lib/admin/avisos'
 import { RUTA_RECUPERAR } from '@/lib/admin/rutas'
 import { FormularioLogin } from './formulario-login'
-
-const MOTIVOS: Record<string, string> = {
-  'sin-acceso': 'Esa cuenta existe pero no tiene acceso al panel. Pedile a Adrián que la habilite.',
-  'sin-config': 'El panel todavía no está configurado: faltan las variables de Supabase en el servidor.',
-  'enlace-invalido': 'Ese enlace venció o ya se usó. Pedí uno nuevo desde "¿Olvidaste tu contraseña?".',
-}
 
 type Props = { searchParams: Promise<{ motivo?: string }> }
 
 export default async function LoginPage({ searchParams }: Props) {
   const { motivo } = await searchParams
-  const aviso = motivo ? MOTIVOS[motivo] : undefined
+  const aviso = avisoDeLogin(motivo)
 
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-[420px] flex-col justify-center px-6 py-16">

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { mensajeDeErrorConsulta } from '@/lib/admin/avisos'
 import { requerirAdministrador } from '@/lib/admin/auth'
 import { ESTADOS, ETIQUETA_ESTADO, ETIQUETA_OPCION_ESPECIAL, type Consulta } from '@/lib/consultas/tipos'
 import { linkWhatsappA } from '@/lib/consultas/whatsapp'
@@ -21,7 +22,9 @@ type Props = {
 }
 
 export default async function ConsultaPage({ params, searchParams }: Props) {
-  const [{ id }, { guardado, error: errorGuardado }] = await Promise.all([params, searchParams])
+  const [{ id }, { guardado, error: codigoError }] = await Promise.all([params, searchParams])
+  // Solo mensajes fijos: un texto armado en el link no se muestra (auditoría del 26-09-2026).
+  const errorGuardado = mensajeDeErrorConsulta(codigoError)
   const { supabase } = await requerirAdministrador()
 
   const { data, error } = await supabase.from('consultas').select('*').eq('id', id).maybeSingle()

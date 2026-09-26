@@ -5,6 +5,7 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { requerirAdministrador } from '@/lib/admin/auth'
+import { codigoDeErrorConsulta, esperaParaRespuestaPareja, origenParaEnlaces } from '@/lib/admin/avisos'
 import { MENSAJE_ENLACE_ENVIADO, normalizarEmail, validarNuevaContrasena } from '@/lib/admin/recuperacion'
 import { RUTA_CALLBACK, RUTA_LOGIN, RUTA_RESTABLECER } from '@/lib/admin/rutas'
 import { ESTADOS } from '@/lib/consultas/tipos'
@@ -43,14 +44,16 @@ export async function cerrarSesion() {
   redirect(RUTA_LOGIN)
 }
 
-/** La URL desde la que se pidió (staging, producción o localhost): el enlace del email vuelve al mismo lugar. */
+/** A qué sitio vuelve el enlace del email: al de origen si es uno conocido; si no, al sitio oficial.
+ *  Nunca al Host que mande quien hace el pedido (auditoría del 26-09-2026). */
 async function origenDelPedido() {
   const cabeceras = await headers()
   const host = cabeceras.get('x-forwarded-host') ?? cabeceras.get('host')
-  if (!host) return resolverUrlSitio()
-  const protocolo = cabeceras.get('x-forwarded-proto') ?? (host.startsWith('localhost') ? 'http' : 'https')
-  return `${protocolo}://${host}`
+  return origenParaEnlaces(host, cabeceras.get('x-forwarded-proto'), resolverUrlSitio(), process.env.NODE_ENV === 'development')
 }
+
+/** Pedir la recuperación tarda al menos esto, exista o no la cuenta: el tiempo no delata quién tiene acceso. */
+const RESPUESTA_RECUPERACION_MS = 1500
 
 export type EstadoRecuperacion = { error?: string; mensaje?: string }
 
@@ -62,6 +65,7 @@ export type EstadoRecuperacion = { error?: string; mensaje?: string }
 export async function solicitarRecuperacion(_previo: EstadoRecuperacion, formData: FormData): Promise<EstadoRecuperacion> {
   const email = normalizarEmail(formData.get('email'))
   if (!email) return { error: 'Escribí un email válido.' }
+  const inicio = Date.now()
 
   let supabase
   try {
@@ -76,6 +80,7 @@ export async function solicitarRecuperacion(_previo: EstadoRecuperacion, formDat
   const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo })
   if (error) console.error('[admin] no se pudo pedir la recuperación:', error.message)
 
+  await new Promise((listo) => setTimeout(listo, esperaParaRespuestaPareja(inicio, Date.now(), RESPUESTA_RECUPERACION_MS)))
   return { mensaje: MENSAJE_ENLACE_ENVIADO }
 }
 
@@ -125,7 +130,8 @@ export async function actualizarConsulta(id: string, formData: FormData) {
     notas_internas: formData.get('notas_internas') ?? '',
   })
   if (!cambios.success) {
-    redirect(`/admin/consultas/${id}?error=${encodeURIComponent(cambios.error.issues[0]?.message ?? 'Datos inválidos.')}`)
+    // Un código en la URL, nunca el texto: la página traduce el código a un mensaje fijo.
+    redirect(`/admin/consultas/${id}?error=${codigoDeErrorConsulta(cambios.error.issues[0]?.path[0])}`)
   }
 
   const { error } = await supabase
@@ -133,7 +139,7 @@ export async function actualizarConsulta(id: string, formData: FormData) {
     .update({ estado: cambios.data.estado, notas_internas: cambios.data.notas_internas || null })
     .eq('id', id)
 
-  if (error) redirect(`/admin/consultas/${id}?error=${encodeURIComponent('No se pudo guardar. Probá de nuevo.')}`)
+  if (error) redirect(`/admin/consultas/${id}?error=guardar`)
 
   revalidatePath('/admin')
   revalidatePath(`/admin/consultas/${id}`)
