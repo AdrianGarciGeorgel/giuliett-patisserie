@@ -141,7 +141,8 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
 - Marco sigue siendo **reviewer**. PRs abiertos en su repo, **apilados** (cada uno con base en el
   anterior; se mergean en orden): #1 imágenes → #2 consultas → #3 SEO → #4 capa de datos + fix Atrás
   → #5 recuperación de contraseña + aviso + CSP → #6 código sin uso → #7 un solo h1 → #8 imágenes
-  (performance) → #9 fotos originales de Marco + color del menú → #10 carruseles automáticos. Cada rama
+  (performance) → #9 fotos originales de Marco + color del menú → #11 seguridad y QA. El #10
+  (carruseles automáticos) se cerró sin mergear por reclamo de la clienta (regla 8). Cada rama
   vive en los dos remotos: `origin` (cabeza del PR) y `upstream` (base del PR siguiente). El `main` del fork se lleva a la
   punta de la rama más nueva (`git push origin <rama>:main`; si hubo rebase, `--force-with-lease`).
   ⚠️ **Desde el 26-09-2026 el `main` del fork es PRODUCCIÓN:** cada push sale en vivo en
@@ -176,13 +177,16 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
 - **Es de Marco:** las fotos (archivo, calidad, formato, recorte), colores, tipografías, espaciados,
   componentes y cómo se ven y se mueven. **Es nuestro:** backend, formularios, panel, SEO, deploy,
   seguridad y la performance que no cambia lo que se ve.
-- Si algo visual conviene cambiarlo (accesibilidad, velocidad, un pedido de Giu), **no se aplica directo**:
-  se le pregunta a Adrián. Si decide avanzar, el PR lo avisa a Marco con `@maap00`; si no, se le propone a
-  Marco armado y probado, y decide él.
+- **La referencia de cómo se ve la web es el Vercel de Marco: https://giuliett-patisserie.vercel.app.**
+  Producción tiene que verse igual, página por página. Antes de publicar, comparar las dos.
+- Si algo visual conviene cambiarlo (accesibilidad, velocidad, un pedido de Giu), **no se publica** hasta
+  tener el OK de Marco, y el de Giu si cambia lo que ven los clientes. Avisar en el PR **no alcanza**:
+  se le propone armado y probado en una rama `propuesta/...` sin publicar, y decide él.
 - "Mejorar la calidad" de una foto quiere decir **volver al archivo de Marco**, nunca recomprimirlo.
 - En las fotos esta regla le gana a la regla 3, por decisión de Adrián (ver regla 3, *Fotos*).
-- Casos del 26-09-2026: fotos originales y color del menú de Marco restaurados (PR #9); carruseles
-  automáticos hechos por decisión de Adrián, con aviso a Marco (PR #10).
+- **Casos del 26-09-2026:** fotos originales y color del menú de Marco restaurados (PR #9). El PR #10 hizo
+  girar solos los carruseles, con botón de pausa y puntitos nuevos; **la clienta reclamó** por los cambios de
+  diseño y el mismo día se volvió al carrusel de Marco, tal cual. El PR #10 se cerró sin mergear.
 
 ---
 
@@ -241,7 +245,6 @@ lib/
 │   ├── rutas.ts                  # rutas públicas del panel, destinoSeguro() (anti open-redirect)
 │   └── recuperacion.ts           # reglas de la recuperación de contraseña (puras, testeadas)
 ├── notificaciones/consulta-nueva.ts  # email a Giu por consulta nueva (Resend por HTTP; apagado sin variables)
-├── carrusel.ts                   # reglas del carrusel automático: cuándo avanza y cuándo se frena (puras)
 ├── catalogo.ts                   # ÚNICA puerta a productos/eventos desde app/ y components/
 ├── giuliett.ts                   # CONTACT, waLink(), EVENTOS (datos crudos)
 └── products.ts                   # catálogo PRODUCTS (datos crudos, precios incluidos)
@@ -563,11 +566,10 @@ de previews en Settings → Deployment Protection.
 **Ajustes que pidió Adrián mirando la web publicada (26-09-2026):**
 - *"Las imágenes perdieron muchísima calidad"*: era la recompresión de la Fase A. Vuelven los archivos
   originales de Marco, tal cual (PR #9, regla 8).
-- *"Los carruseles no se mueven solos"* y *"aparece una mano en vez del cursor"*: ahora avanzan cada 5 s
-  (home, galería y eventos; la ficha de producto no), con botón de pausa, puntitos clickeables y cursor
-  normal (PR #10, con aviso a Marco). Reglas en `lib/carrusel.ts`, con tests: nunca con
-  `prefers-reduced-motion`; se frenan fuera de pantalla, con la pestaña oculta, con foco de teclado,
-  mientras se arrastra, durante 8 s después de tocarlos y, salvo en la home, con el mouse encima.
+- *"Los carruseles no se mueven solos"* y *"aparece una mano en vez del cursor"*: se hicieron girar solos,
+  con pausa, puntitos clickeables y cursor normal (PR #10). **Revertido el mismo día por reclamo de la
+  clienta:** los carruseles volvieron a ser los de Marco, tal cual, sin movimiento automático y con su
+  cursor de "mano". El PR #10 se cerró sin mergear. Ver regla 8.
 
 **Pendiente de la Fase E:**
 - [ ] **Emails del dominio** (aviso por consulta nueva + recuperación de contraseña para cualquier
