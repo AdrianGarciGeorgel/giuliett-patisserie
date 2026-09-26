@@ -146,7 +146,8 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
 - Marco sigue siendo **reviewer**. PRs abiertos en su repo, **apilados** (cada uno con base en el
   anterior; se mergean en orden): #1 imágenes → #2 consultas → #3 SEO → #4 capa de datos + fix Atrás
   → #5 recuperación de contraseña + aviso + CSP → #6 código sin uso → #7 un solo h1 → #8 imágenes
-  (performance) → #9 fotos originales de Marco + color del menú → #11 seguridad y QA → #12 home → #13 galería. El #10
+  (performance) → #9 fotos originales de Marco + color del menú → #11 seguridad y QA → #12 home → #13 galería
+  → #14 eventos. El #10
   (carruseles automáticos) se cerró sin mergear por reclamo de la clienta (regla 8). Cada rama
   vive en los dos remotos: `origin` (cabeza del PR) y `upstream` (base del PR siguiente). El `main` del fork se lleva a la
   punta de la rama más nueva (`git push origin <rama>:main`; si hubo rebase, `--force-with-lease`).
@@ -203,13 +204,20 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
     pantallas táctiles no existen); y **el texto queda quieto**: logo, bajada, "Ver producto", nombre y
     puntitos van en una capa fija y solo se desliza la foto (el nombre cambia con un fundido); y **cursor
     normal sobre la foto**, sin la "mano" de Marco, también al arrastrar. Reglas en `lib/carrusel.ts`.
-    Eventos sigue como lo diseñó Marco.
   - **Galería / "Nuestros productos" (26-09-2026, PR #13):** el primer carrusel (el de los macarons) funciona
     como el de la home: avanza solo sin pausa, clic en los costados en la computadora, cursor normal y
     "Ver producto" quieto sobre la foto (un link, no un botón por foto). Arreglo: cada foto lleva su destino
     (`destino` en `PRODUCTS` de `lib/giuliett.ts`); antes todos caían en Tortas clásicas por mandar el nombre
     visible. Macarons y Mesas dulces van a Tortas clásicas por decisión de Adrián. Todo son props opcionales
-    de `HeroCarousel` que activa solo la galería: los carruseles de eventos no cambian.
+    de `HeroCarousel` que activa solo la galería.
+  - **Eventos (26-09-2026, PR #14):** los tres carruseles (Bodas, Empresas, Celebraciones) funcionan como los
+    de la home y la galería: avanzan solos sin pausa (cada uno solo mientras se ve), clic en los costados en
+    la computadora y cursor normal. **La leyenda queda quieta** sobre la foto y su texto cambia con un fundido
+    (prop `leyendaFija`; no la pidió Adrián: se propuso por coherencia con la home y él la aprobó en la vista
+    previa). La
+    clase de Marco (sombra, borde y subida al pasar el mouse) pasa a la caja que contiene foto, leyenda y
+    costados, así sube la tarjeta entera. Con la foto quieta se ve idéntica a la de Marco (captura píxel a
+    píxel). Un `HeroCarousel` sin opciones sigue siendo el de Marco, tal cual.
 
 ---
 
@@ -239,9 +247,9 @@ app/
 ├── layout.tsx                    # metadata global, fuentes, nav
 ├── globals.css                   # TOKENS de color, radios, sombras, easings
 ├── page.tsx · giu/ · galeria/    # páginas estáticas
-├── productos/[slug]/page.tsx     # ficha + formulario "particular" plegado (<details>)
-├── eventos/page.tsx              # 3 propuestas + sección "Tu evento" con el formulario
-├── contacto/page.tsx             # formulario con selector de los 4 recorridos
+├── productos/[slug]/page.tsx     # ficha de producto (sin formulario desde el 26-09)
+├── eventos/page.tsx              # 3 propuestas (Bodas, Empresas, Celebraciones), cada una con su carrusel
+├── contacto/page.tsx             # el formulario de Marco (<ContactForm />), que manda directo a WhatsApp
 ├── api/consultas/route.ts        # POST: valida, anti-spam, guarda en Supabase
 ├── api/consultas/[id]/whatsapp/  # POST: marca que el usuario abrió WhatsApp
 └── admin/                        # panel de consultas (login + lista + detalle)
@@ -269,7 +277,7 @@ lib/
 │   ├── rutas.ts                  # rutas públicas del panel, destinoSeguro() (anti open-redirect)
 │   └── recuperacion.ts           # reglas de la recuperación de contraseña (puras, testeadas)
 ├── notificaciones/consulta-nueva.ts  # email a Giu por consulta nueva (Resend por HTTP; apagado sin variables)
-├── carrusel.ts                   # reglas del carrusel de la home: avance automático y costados (puras)
+├── carrusel.ts                   # reglas de los carruseles (home, galería, eventos): avance automático y costados (puras)
 ├── catalogo.ts                   # ÚNICA puerta a productos/eventos desde app/ y components/
 ├── giuliett.ts                   # CONTACT, waLink(), EVENTOS (datos crudos)
 └── products.ts                   # catálogo PRODUCTS (datos crudos, precios incluidos)
@@ -432,9 +440,9 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
    respuesta de Marco en el PR #1: es identidad, no un bug.
 6. ~~`my-project`, dos lockfiles, sin ESLint~~ → **resuelto**: `giuliett-patisserie`, solo
    `package-lock.json`, ESLint instalado con `eslint.config.mjs`.
-7. **Avisos de lint conocidos (4, no frenan, todos en componentes de Marco):** `setState` dentro de un efecto en
-   `reveal.tsx`; `<img>` en `trusted-clients.tsx` y `why-choose-us.tsx`; `window.location.assign` en
-   `hero-carousel.tsx`. **Código sin uso (punto 1):** limpiado el 23-09-2026 con knip — 10
+7. **Avisos de lint conocidos (3, no frenan, todos en componentes de Marco):** `setState` dentro de un efecto en
+   `reveal.tsx`; `<img>` en `trusted-clients.tsx` y `why-choose-us.tsx`. (El de `window.location.assign` en
+   `hero-carousel.tsx` desapareció con el PR #13.) **Código sin uso (punto 1):** limpiado el 23-09-2026 con knip — 10
    componentes huérfanos, `getProductBySlug` y 4 dependencias fuera; quedan como *aviso* los exports
    sin uso de `atoms.tsx`, `line-art.tsx`, `Prose`, `AUDIENCES` y `STEPS` (sistema de diseño de
    Marco y datos del Master Plan: se dejan).
