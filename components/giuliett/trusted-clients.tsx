@@ -29,7 +29,7 @@ export function TrustedClients() {
         </ul>
       <Reveal delay={180} className="mx-auto w-full max-w-[1040px] lg:size-[200px] lg:max-w-none lg:self-center">
           <Image
-            src="/images/gui_wine.webp"
+            src="/images/gui_wine.png"
             alt="Ilustración de Giu, fundadora de Giuliett"
             width={4500}
             height={4500}

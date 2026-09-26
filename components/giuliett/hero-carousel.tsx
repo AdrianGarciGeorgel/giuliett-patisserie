@@ -169,7 +169,7 @@ export function HeroCarousel({
 
               <div className="relative z-10 flex w-full max-w-[680px] flex-col items-center px-6 pb-[108px] pt-10 text-center text-primary sm:px-10 sm:pb-12 lg:px-12">
                 <Image
-                  src="/images/giuliett-logo.webp"
+                  src="/images/giuliett-logo.png"
                   alt="Giuliett Pâtisserie"
                   width={3500}
                   height={1700}

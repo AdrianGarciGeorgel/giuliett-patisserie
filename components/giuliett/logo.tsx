@@ -5,7 +5,7 @@ export function Logo() {
   return (
     <span className="flex flex-col items-center justify-center">
       <Image
-        src="/images/giuliett-logo.webp"
+        src="/images/giuliett-logo.png"
         alt="Giuliett Pâtisserie"
         width={3500}
         height={1700}

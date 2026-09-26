@@ -23,7 +23,7 @@ export default function ContactoPage() {
       <section className="relative overflow-hidden bg-primary" aria-labelledby="contacto-titulo">
         <div className="relative h-[280px] sm:h-[340px] md:h-[420px]">
           <Image
-            src="/images/cierre-mesa-dulce.webp"
+            src="/images/cierre-mesa-dulce.png"
             alt="Mesa dulce con macarons, tartas y cookies sobre stands de cerámica lila"
             fill
             priority

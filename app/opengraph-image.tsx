@@ -10,7 +10,7 @@ export const size = { width: 1200, height: 630 }
 export const contentType = 'image/jpeg'
 
 export default async function Image() {
-  const foto = await fotoParaTarjeta('/images/cierre-mesa-dulce.webp', 540, 630)
+  const foto = await fotoParaTarjeta('/images/cierre-mesa-dulce.png', 540, 630)
 
   return comprimirTarjeta(
     new ImageResponse(

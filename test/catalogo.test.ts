@@ -53,10 +53,13 @@ describe('catálogo de productos', () => {
     }
   })
 
-  it('las imágenes son WebP (regla de performance)', () => {
+  // Antes: "las imágenes son WebP". Desde el 26-09-2026 las fotos son las ORIGINALES de Marco (PNG/JPG),
+  // sin recomprimir: regla de Adrián de no tocar lo visual. La existencia exacta la vigila
+  // test/imagenes.referencias.test.ts; acá solo que el catálogo apunte a fotos y no a otra cosa.
+  it('las imágenes del catálogo son fotos (formatos de imagen)', () => {
     for (const p of PRODUCTS) {
       for (const ruta of [p.imagePrimary, p.imageSecondary, ...(p.gallery ?? [])]) {
-        expect(ruta, p.slug).toMatch(/\.webp$/)
+        expect(ruta, p.slug).toMatch(/\.(png|jpe?g|webp)$/i)
       }
     }
   })
