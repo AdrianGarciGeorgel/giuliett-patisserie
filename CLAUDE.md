@@ -13,8 +13,11 @@ sugerencia (mía o de una herramienta), **gana este archivo**.
 Web de **Giuliett Pâtisserie** — pastelería francesa artesanal en Mendoza, Argentina.
 No es una landing genérica: es una experiencia premium de boutique francesa.
 
-Producción hoy (Vercel de Marco): https://giuliett-patisserie.vercel.app/
-Staging (Vercel de Adrián, desde el fork): https://giuliett-patisserie-nu.vercel.app/
+**Producción (dominio propio, desde el 26-09-2026): https://giuliettpatisserie.com/** — Vercel de
+Adrián, proyecto `giuliett-patisserie`, desplegado desde el `main` del fork; `www` redirige (308) al
+dominio. La misma build responde también en https://giuliett-patisserie-nu.vercel.app/ (URL técnica).
+El Vercel de Marco (https://giuliett-patisserie.vercel.app/) quedó con la versión vieja de su `main`:
+**no es la web oficial**.
 Repo de trabajo: `maap00/giuliett-patisserie` hasta que exista la organización (ver Git).
 
 ## Equipo
@@ -120,13 +123,14 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
   la organización de GitHub `giuliett-patisserie` (recomendación aceptada por Adrián; falta el
   OK de Marco para transferir su repo allí). Mientras tanto **los PRs van al repo de Marco**
   (`upstream` = `maap00/giuliett-patisserie`), que es la única verdad. El fork
-  `AdrianGarciGeorgel/giuliett-patisserie` (`origin`) es **staging**: alimenta el Vercel de
-  Adrián y se sincroniza con `upstream` (`git pull upstream main`).
+  `AdrianGarciGeorgel/giuliett-patisserie` (`origin`) es **lo que se publica**: alimenta el Vercel de
+  Adrián, que sirve el dominio oficial, y se sincroniza con `upstream` (`git pull upstream main`).
 - Marco sigue siendo **reviewer**. PRs abiertos en su repo, **apilados** (cada uno con base en el
   anterior; se mergean en orden): #1 imágenes → #2 consultas → #3 SEO → #4 capa de datos + fix Atrás
-  → #5 recuperación de contraseña + aviso + CSP → #6 código sin uso. El `main` del fork es **staging**
-  y se lleva a la punta de la rama más nueva (`git push origin <rama>:main`; si hubo rebase,
-  `--force-with-lease`).
+  → #5 recuperación de contraseña + aviso + CSP → #6 código sin uso. El `main` del fork se lleva a la
+  punta de la rama más nueva (`git push origin <rama>:main`; si hubo rebase, `--force-with-lease`).
+  ⚠️ **Desde el 26-09-2026 el `main` del fork es PRODUCCIÓN:** cada push sale en vivo en
+  https://giuliettpatisserie.com. Antes de empujar: `npm test`, `npm run lint` y `npm run build` en verde.
 
 ### 5. Copy
 
@@ -325,9 +329,9 @@ para todas en la **Fase E**, con SMTP propio (Resend + dominio). Hasta entonces,
 solo sirve para gente del equipo de Supabase.
 
 **Configuración de Supabase Auth (hecha el 23-09-2026 por Playwright):**
-- URL Configuration → **Site URL** = `https://giuliett-patisserie-nu.vercel.app` (cambiar al dominio en Fase E).
-- URL Configuration → **Redirect URLs** = `https://giuliett-patisserie-nu.vercel.app/**` y
-  `http://localhost:3000/**` (agregar `https://giuliettpatisserie.com/**` en Fase E). Si el enlace del
+- URL Configuration → **Site URL** = `https://giuliettpatisserie.com` (desde el 26-09-2026).
+- URL Configuration → **Redirect URLs** = `https://giuliettpatisserie.com/**`,
+  `https://giuliett-patisserie-nu.vercel.app/**` y `http://localhost:3000/**`. Si el enlace del
   email cae en `/admin/login?motivo=enlace-invalido`, lo primero a revisar es esta lista.
 - Sign In / Providers → Email → **"Allow new users to sign up" apagado** (la allowlist protege igual).
 - **Plantillas de email:** Supabase solo deja editarlas con **SMTP propio**; con el email por defecto
@@ -364,8 +368,9 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
    Marco y datos del Master Plan: se dejan).
 8. ~~Email decía obligatorio pero no se validaba~~ → resuelto: opcional y validado.
 9. ~~El formulario no registraba nada~~ → resuelto en Fase B.
-10. **Vercel en plan Hobby** (según sus términos, uso no comercial): pasar a **Pro** al lanzar
-    con dominio. **Región de Functions: `gru1` (São Paulo), verificada el 23-09-2026** en el header
+10. ⚠️ **Vercel en plan Hobby con el dominio comercial ya conectado (26-09-2026).** Los términos de
+    Hobby son para uso personal no comercial: pasar a **Pro** (USD 20/mes) es decisión de Adrián y Giu,
+    pendiente. La web funciona igual mientras tanto. **Región de Functions: `gru1` (São Paulo), verificada el 23-09-2026** en el header
     `X-Vercel-Id: gru1::gru1::…` de una ruta dinámica. Lo que pasó antes: el plan Hobby permite **una
     sola región** y habían quedado tildadas `iad1` y `gru1` a la vez, con lo que el botón Save no se
     habilitaba; hubo que destildar `iad1`, guardar y redeployar. Si algún día vuelve a `iad1`,
@@ -402,8 +407,9 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
       `/admin/restablecer`, botón *Cambiar contraseña* en el panel; `proxy.ts` solo abre login,
       recuperar y callback. Sign-ups apagados en Supabase. El email de recuperación llega a todas
       recién con SMTP propio (Fase E); hasta entonces la contraseña inicial la da el script.
-- [ ] Usuario de Giu: `node scripts/crear-admin.mjs <email> "Giuliana"` (esperando su email),
-      pasarle la contraseña y que la cambie al entrar.
+- [x] **Usuario de Giu creado (26-09-2026)** con `scripts/crear-admin.mjs`, con el email del negocio
+      (el de su cuenta de Namecheap; está en Notion, no en el repo). La contraseña inicial se le pasó a
+      Adrián para que se la mande; **Giu la cambia al entrar** (botón *Cambiar contraseña*).
 - [x] Aviso a Giu por consulta nueva: **código listo y testeado** (PR #5), apagado hasta tener
       Resend con el dominio verificado (Fase E).
 - [x] PR #2 (`feat/supabase-consultas`) abierto en el repo de Marco con Marco como reviewer.
@@ -442,9 +448,10 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
       mostraba Boxes) → corregido: `ProductCatalog` deriva la categoría de `useSearchParams()` en vez
       de un `useState` (`test/product-catalog.test.tsx`, render SSR con `next/navigation` mockeado).
       Verificado en escritorio (1280) y móvil (390) con Playwright, en las dos direcciones.
-- [ ] `NEXT_PUBLIC_SITE_URL` en Vercel cuando exista el dominio (hoy usa la URL de producción de
-      Vercel sola).
-- [ ] GA4 / Search Console (necesita el dominio y una cuenta de Google de Giuliett).
+- [x] `NEXT_PUBLIC_SITE_URL=https://giuliettpatisserie.com` en Vercel (Production, tipo *Config*) desde
+      el 26-09-2026: canonical, sitemap, robots, tarjetas OG y JSON-LD apuntan al dominio.
+- [ ] GA4 / Search Console: el dominio ya está; falta decidir la cuenta de Google (ideal: la del
+      negocio) y verificar con un registro TXT en Namecheap.
 - [ ] Medir Lighthouse en producción y revisar el LCP móvil (3,4 s simulado: hero image).
 
 Notas: el 404 de `/_vercel/insights/script.js` que aparece en local es Vercel Analytics, que solo
@@ -463,20 +470,41 @@ de previews en Settings → Deployment Protection.
   (23-09-2026): se define con Marco y Giu; no se arranca por cuenta propia.**
 - [ ] Roles (Giu / Jime), carga de fotos, previsualización.
 
-### Fase E — Dominio, lanzamiento y capacitación 🔲
-**Dominio: `giuliettpatisserie.com`** (Namecheap, a nombre de Giuliana; confirmado el 23-09-2026).
-Plan: agregar el dominio al proyecto de Vercel de Adrián (Domains → Add, con `www` redirigiendo
-al apex) → cargar en Namecheap los registros que Vercel indique (A / CNAME) → SSL automático →
-`NEXT_PUBLIC_SITE_URL=https://giuliettpatisserie.com` en Vercel → redeploy → Lighthouse en
-producción → Search Console y GA4 → capacitación del panel. Hasta que el DNS apunte, **no**
-poner el dominio en `NEXT_PUBLIC_SITE_URL` (canonical y sitemap apuntarían a algo que no responde).
+### Fase E — Dominio, lanzamiento y capacitación 🟡
+**Dominio conectado el 26-09-2026: https://giuliettpatisserie.com** (Namecheap, a nombre de Giuliana).
 
-Con el mismo DNS, en la misma tanda: **(a)** verificar `giuliettpatisserie.com` en Resend (registros
-DKIM/SPF que indique Resend) → `RESEND_API_KEY` + `AVISOS_EMAIL_DESTINO` en Vercel → se prende el aviso
-por consulta nueva; **(b)** Supabase → Auth → SMTP con Resend → la recuperación por email pasa a llegar
-a cualquiera (hoy solo a miembros del equipo de Supabase) → plantilla "Reset password" en español con
-`{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=recovery`; **(c)** Supabase → URL Configuration:
-Site URL al dominio y `https://giuliettpatisserie.com/**` en Redirect URLs.
+**DNS** (Namecheap → Domain List → Manage → Advanced DNS; nameservers *Namecheap BasicDNS*):
+
+| Tipo | Host | Valor | Para qué |
+|---|---|---|---|
+| A | `@` | `216.198.79.1` | la web (Vercel) |
+| CNAME | `www` | `9bcfa4d79efbb484.vercel-dns-017.com.` | `www` → Vercel, que redirige 308 al dominio |
+| MX ×5 + TXT (SPF) | `@` | `eforward1…5.registrar-servers.com` · `v=spf1 include:spf.efwd.registrar-servers.com ~all` | **correo**: *Mail Settings = Email Forwarding*; `hola@` reenvía al Gmail del negocio. **No tocar.** |
+
+- Se borró la redirección de estacionamiento que traía Namecheap (`@ → http://www.giuliettpatisserie.com/`,
+  que llevaba a un `www` que no existía: por eso el dominio "no cargaba nada").
+- Vercel: `giuliettpatisserie.com` → Production; `www.giuliettpatisserie.com` → redirección 308. Certificado
+  Let's Encrypt emitido solo (lo renueva Vercel). `http` sube a `https` y hay HSTS.
+- Vercel recomienda los valores nuevos (`216.198.79.1`, `…vercel-dns-017.com`); los viejos
+  (`76.76.21.21`, `cname.vercel-dns.com`) siguen andando.
+- **Namecheap pide verificación de dispositivo** (código al email de la cuenta de Giu) en cada navegador
+  nuevo. Lo profesional: que Giu comparta el dominio con una cuenta de Namecheap de Adrián
+  (*Sharing & Transfer → Share Access*, permiso de DNS) y que cambie su contraseña.
+- El registro vence el **20-07-2027**, con renovación automática y privacidad WHOIS activas.
+- "No veo la web nueva en mi PC": es la caché DNS del equipo (TTL de 30 min). `ipconfig /flushdns` o esperar.
+
+**Pendiente de la Fase E:**
+- [ ] **Emails del dominio** (aviso por consulta nueva + recuperación de contraseña para cualquier
+      administradora): Resend + dominio verificado. ⚠️ Resend pide MX/TXT en `send.` y un TXT DKIM; en
+      Namecheap los MX solo se cargan pasando *Mail Settings* a **Custom MX**, y eso borra el reenvío de
+      `hola@` **salvo que se vuelvan a cargar a mano los 5 MX `eforward` y el SPF**. Hacerlo con una prueba
+      de envío a `hola@` antes y después. Decidir antes de quién es la cuenta de Resend (plan gratis: 3
+      dominios, 3.000 mails/mes, 100/día).
+- [ ] Supabase → Auth → SMTP con Resend → plantilla "Reset password" en español con
+      `{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=recovery` (el callback ya lo acepta).
+- [ ] Search Console + GA4 (ver Fase C).
+- [ ] Vercel Pro (deuda técnica 10).
+- [ ] Capacitación del panel a Giu.
 
 ---
 
