@@ -24,6 +24,9 @@ const politicaContenido = [
 const nextConfig = {
   // El build valida tipos: `npx tsc --noEmit` tiene que estar limpio.
 
+  // Sin "X-Powered-By: Next.js": no le regalamos a un atacante qué tecnología buscar (auditoría 26-09-2026).
+  poweredByHeader: false,
+
   // Fotos: los archivos ORIGINALES de Marco, tal cual, sin redimensionar ni recomprimir (como en su
   // versión). Decisión de Adrián del 26-09-2026: "la calidad tiene que ser la misma que nos pasó Marco".
   // Costo conocido y aceptado: cada foto se descarga entera (el hero pesa 2,1 MB en cualquier celular).
