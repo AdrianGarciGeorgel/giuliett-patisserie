@@ -14,4 +14,8 @@ describe('next.config: fotos originales de Marco, sin procesar', () => {
   it('images.unoptimized está activo', () => {
     expect(configNext.images?.unoptimized).toBe(true)
   })
+
+  it('las fotos no se empaquetan dentro de las funciones del servidor (límite de 12 funciones en Hobby)', () => {
+    expect(configNext.outputFileTracingExcludes?.['*']).toContain('public/**/*')
+  })
 })

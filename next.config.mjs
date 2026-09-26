@@ -31,6 +31,14 @@ const nextConfig = {
     unoptimized: true,
   },
 
+  // Las fotos NO viajan dentro de las funciones del servidor. lib/og.ts las lee con una ruta dinámica y
+  // el rastreo de archivos metía toda public/ (222 MB de originales) en cada función: Vercel ya no podía
+  // agruparlas y el plan Hobby rechaza más de 12 ("exceeded_serverless_functions_per_deployment",
+  // 26-09-2026). Las tarjetas OG leen la foto por HTTP (respaldo que ya existía en lib/og.ts).
+  outputFileTracingExcludes: {
+    '*': ['public/**/*'],
+  },
+
   // Cabeceras de seguridad para todo el sitio (punto 10 del checklist).
   // HSTS lo agrega Vercel solo.
   async headers() {
