@@ -32,7 +32,8 @@ export const metadata: Metadata = {
     descripcion:
       'Pastelería francesa artesanal en Mendoza. Tortas de autor, macarons, galletas personalizadas, boxes y mesas dulces para particulares, eventos y empresas.',
   }),
-  robots: { index: true, follow: true },
+  // Sin `robots`: indexar es el comportamiento por defecto. Fijarlo acá chocaba con el noindex
+  // que Next pone en la 404 (salían las dos metas). El panel fija su noindex en admin/layout.
   icons: {
     icon: [
       { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
