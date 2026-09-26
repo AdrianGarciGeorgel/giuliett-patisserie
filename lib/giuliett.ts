@@ -166,7 +166,7 @@ export const PRODUCTS: Product[] = [
     desire: 'Receta francesa. Sin conservantes.',
     fact: 'Desde 24 unidades.',
     waMessage: 'Hola Giuliett, quiero consultar por macarons.',
-    destino: '/productos?categoria=boxes',
+    destino: '/productos?categoria=tortas-clasicas', // sin categoría propia: Tortas clásicas (decisión de Adrián)
   },
   {
     id: 'giu',
@@ -199,7 +199,7 @@ export const PRODUCTS: Product[] = [
     desire: 'Elegís los sabores, nosotros la presentación.',
     fact: 'Desde 10 cajas.',
     waMessage: 'Hola Giuliett, me interesan los kits personalizados.',
-    destino: '/eventos',
+    destino: '/productos?categoria=tortas-clasicas', // sin categoría propia: Tortas clásicas (decisión de Adrián)
   },
   {
     id: 'boxes',

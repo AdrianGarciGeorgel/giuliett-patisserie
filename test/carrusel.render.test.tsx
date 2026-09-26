@@ -131,7 +131,7 @@ describe('carrusel de la galería (pedido de Adrián del 26-09-2026: como el de 
     for (const figura of figuras) expect(figura).not.toMatch(/Ver producto/)
     const enlaces = [...carrusel.matchAll(/<a\b[^>]*>Ver producto<\/a>/g)].map((m) => m[0])
     expect(enlaces).toHaveLength(1)
-    expect(enlaces[0]).toMatch(/href="\/productos\?categoria=boxes"/)
+    expect(enlaces[0]).toMatch(/href="\/productos\?categoria=tortas-clasicas"/)
     expect(enlaces[0]).toMatch(/aria-label="Ver producto: Macarons"/)
   })
 })

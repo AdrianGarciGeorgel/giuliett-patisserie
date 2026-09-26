@@ -19,13 +19,14 @@ describe('destinos del carrusel de la galería', () => {
     }
   })
 
+  // Macarons y Mesas dulces no tienen categoría propia: van a Tortas clásicas (decisión de Adrián del 26-09-2026).
   it('cada foto va adonde corresponde', () => {
     const destinos = Object.fromEntries(PRODUCTS.map((f) => [f.label, f.destino]))
     expect(destinos).toEqual({
-      Macarons: '/productos?categoria=boxes',
+      Macarons: '/productos?categoria=tortas-clasicas',
       'Tortas personalizadas': '/productos?categoria=tortas-personalizadas',
       'Tortas clasicas': '/productos?categoria=tortas-clasicas',
-      'Mesas dulces': '/eventos',
+      'Mesas dulces': '/productos?categoria=tortas-clasicas',
       Boxes: '/productos?categoria=boxes',
     })
   })

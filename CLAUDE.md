@@ -146,7 +146,7 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
 - Marco sigue siendo **reviewer**. PRs abiertos en su repo, **apilados** (cada uno con base en el
   anterior; se mergean en orden): #1 imágenes → #2 consultas → #3 SEO → #4 capa de datos + fix Atrás
   → #5 recuperación de contraseña + aviso + CSP → #6 código sin uso → #7 un solo h1 → #8 imágenes
-  (performance) → #9 fotos originales de Marco + color del menú → #11 seguridad y QA → #12 home. El #10
+  (performance) → #9 fotos originales de Marco + color del menú → #11 seguridad y QA → #12 home → #13 galería. El #10
   (carruseles automáticos) se cerró sin mergear por reclamo de la clienta (regla 8). Cada rama
   vive en los dos remotos: `origin` (cabeza del PR) y `upstream` (base del PR siguiente). El `main` del fork se lleva a la
   punta de la rama más nueva (`git push origin <rama>:main`; si hubo rebase, `--force-with-lease`).
@@ -203,7 +203,13 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
     pantallas táctiles no existen); y **el texto queda quieto**: logo, bajada, "Ver producto", nombre y
     puntitos van en una capa fija y solo se desliza la foto (el nombre cambia con un fundido); y **cursor
     normal sobre la foto**, sin la "mano" de Marco, también al arrastrar. Reglas en `lib/carrusel.ts`.
-    Galería y eventos siguen como los diseñó Marco.
+    Eventos sigue como lo diseñó Marco.
+  - **Galería / "Nuestros productos" (26-09-2026, PR #13):** el primer carrusel (el de los macarons) funciona
+    como el de la home: avanza solo sin pausa, clic en los costados en la computadora, cursor normal y
+    "Ver producto" quieto sobre la foto (un link, no un botón por foto). Arreglo: cada foto lleva su destino
+    (`destino` en `PRODUCTS` de `lib/giuliett.ts`); antes todos caían en Tortas clásicas por mandar el nombre
+    visible. Macarons y Mesas dulces van a Tortas clásicas por decisión de Adrián. Todo son props opcionales
+    de `HeroCarousel` que activa solo la galería: los carruseles de eventos no cambian.
 
 ---
 
