@@ -38,13 +38,48 @@ describe('carrusel de la home', () => {
     }
   })
 
-  it('los puntitos son los de Marco, sin tocar: adornos, uno por categoría en cada foto', () => {
-    expect(puntitos(html)).toHaveLength(productCategories.length * productCategories.length)
-    expect(botones(html).some((b) => /aria-label="Ver (Tortas|Galletas|Boxes)/.test(b))).toBe(false)
-  })
-
   it('conserva el cursor de Marco', () => {
     expect(viewport(html)).toMatch(/cursor-grab/)
+  })
+})
+
+describe('home: el texto queda quieto y solo se desliza la foto (prueba del 26-09-2026)', () => {
+  const html = renderToStaticMarkup(<Hero />)
+  const figuras = [...html.matchAll(/<figure\b[\s\S]*?<\/figure>/g)].map((m) => m[0])
+
+  it('cada foto lleva solo la imagen: nada de texto ni botones adentro', () => {
+    expect(figuras).toHaveLength(productCategories.length)
+    for (const figura of figuras) {
+      expect(figura).not.toMatch(/Ver producto|Pastelería Francesa|giuliett-logo|<h2/)
+    }
+  })
+
+  it('logo, bajada, botón, nombre y puntitos aparecen una sola vez, en una capa fija encima', () => {
+    // Una sola imagen del logo (el nombre del archivo se repite dentro de su srcset, por eso se cuentan las <img>).
+    expect(html.match(/<img\b[^>]*alt="Giuliett Pâtisserie"/g)).toHaveLength(1)
+    expect(html.match(/Pastelería Francesa · Mendoza, Argentina/g)).toHaveLength(1)
+    expect(html.match(/>Ver producto</g)).toHaveLength(1)
+    expect(html.match(/<h2\b/g)).toHaveLength(1)
+    expect(puntitos(html)).toHaveLength(productCategories.length)
+  })
+
+  it('la capa fija deja pasar el dedo y el mouse a la foto, salvo el botón', () => {
+    expect(html).toMatch(/class="pointer-events-none absolute inset-0 z-10/)
+    const boton = html.match(/<a\b[^>]*>(?=Ver producto)/)?.[0] ?? ''
+    expect(boton).toMatch(/class="pointer-events-auto /)
+    expect(boton).toMatch(/href="\/productos\?categoria=tortas-clasicas"/)
+  })
+
+  it('el nombre de la categoría cambia con un fundido: se ve el de la foto actual y los otros quedan ocultos', () => {
+    const h2 = html.match(/<h2\b[\s\S]*?<\/h2>/)?.[0] ?? ''
+    const nombres = [...h2.matchAll(/<span\b([^>]*)>([^<]*)<\/span>/g)].map((m) => ({ atributos: m[1], nombre: m[2] }))
+    expect(nombres.map((n) => n.nombre)).toEqual(productCategories.map((c) => c.name))
+    expect(nombres[0].atributos).toMatch(/opacity-100/)
+    expect(nombres[0].atributos).not.toMatch(/aria-hidden="true"/)
+    for (const otro of nombres.slice(1)) {
+      expect(otro.atributos).toMatch(/opacity-0/)
+      expect(otro.atributos).toMatch(/aria-hidden="true"/)
+    }
   })
 })
 

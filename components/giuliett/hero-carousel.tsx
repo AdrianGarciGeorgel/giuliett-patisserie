@@ -269,6 +269,7 @@ export function HeroCarousel({
               aria-label={`${index + 1} de ${productCategories.length}: ${slide.name}`}
               className="relative isolate flex min-h-[680px] min-w-full snap-center items-center justify-center overflow-hidden sm:min-h-[720px] lg:min-h-[calc(100svh-76px)]"
             >
+              {/* Cada foto lleva solo la imagen: el texto va en la capa fija de abajo (prueba del 26-09-2026). */}
               <Image
                 src={slide.src}
                 alt={slide.alt}
@@ -278,58 +279,73 @@ export function HeroCarousel({
                 draggable={false}
                 className="-z-20 object-cover"
               />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(255,248,233,0.92)_0%,rgba(255,248,233,0.72)_35%,rgba(255,248,233,0.18)_61%,transparent_76%)]"
-              />
-
-              <div className="relative z-10 flex w-full max-w-[680px] flex-col items-center px-6 pb-[108px] pt-10 text-center text-primary sm:px-10 sm:pb-12 lg:px-12">
-                <Image
-                  src="/images/giuliett-logo.png"
-                  alt="Giuliett Pâtisserie"
-                  width={3500}
-                  height={1700}
-                  sizes="(min-width: 1024px) 370px, 250px"
-                  className="h-auto w-[230px] object-contain sm:w-[280px] lg:w-[370px]"
-                />
-                <p className="tracked mt-4 text-[10px] font-medium leading-relaxed sm:text-[11px] lg:mt-5 lg:text-[12px]">
-                  Pastelería Francesa · Mendoza, Argentina
-                </p>
-                <span aria-hidden="true" className="mt-5 h-px w-8 bg-primary/55 lg:mt-6" />
-
-             
-
-                <Link
-                  href={`/productos?categoria=${slide.category}`}
-                  className="mt-8 inline-flex min-h-[50px] items-center gap-3 rounded-full bg-primary px-6 text-[14px] font-medium text-primary-foreground shadow-[0_12px_28px_-14px_rgb(63_42_80/0.5)] transition-[background-color,box-shadow,transform] duration-200 ease-out hover:bg-lilac-ink hover:shadow-[var(--shadow-giuliett)] active:scale-[0.985] lg:mt-9"
-                >
-                  Ver producto
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full border border-current">
-                    <IconArrow className="h-3 w-3" strokeWidth={1.8} />
-                  </span>
-                </Link>
-
-                {/* h2: el título de la página es el h1 de sections/hero.tsx. Un h1 por slide daba 4 en la home. */}
-                <h2 className="mt-5 text-balance text-[25px] font-medium leading-tight text-primary sm:text-[29px] lg:mt-6 lg:text-[34px]">
-                  {slide.name}
-                </h2>
-
-                {/* role="group": un div sin rol no puede llevar aria-label (Lighthouse: aria-prohibited-attr). */}
-                <div role="group" className="mt-6 flex justify-center gap-2" aria-label={`Producto ${activeIndex + 1} de ${productCategories.length}`}>
-                  {productCategories.map((category, indicatorIndex) => (
-                    <span
-                      key={category.name}
-                      aria-hidden="true"
-                      className={cn(
-                        'h-2 w-2 rounded-full bg-primary transition-[opacity,transform] duration-200 ease-out',
-                        indicatorIndex === activeIndex ? 'scale-100 opacity-100' : 'scale-75 opacity-30',
-                      )}
-                    />
-                  ))}
-                </div>
-              </div>
             </figure>
           ))}
+        </div>
+
+        {/* Capa fija: el halo claro, el logo, la bajada, el botón, el nombre y los puntitos no se desplazan con la
+            foto. Deja pasar el dedo y el mouse a la foto de abajo (pointer-events-none), salvo el botón. */}
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,248,233,0.92)_0%,rgba(255,248,233,0.72)_35%,rgba(255,248,233,0.18)_61%,transparent_76%)]"
+          />
+
+          <div className="relative flex w-full max-w-[680px] flex-col items-center px-6 pb-[108px] pt-10 text-center text-primary sm:px-10 sm:pb-12 lg:px-12">
+            <Image
+              src="/images/giuliett-logo.png"
+              alt="Giuliett Pâtisserie"
+              width={3500}
+              height={1700}
+              sizes="(min-width: 1024px) 370px, 250px"
+              className="h-auto w-[230px] object-contain sm:w-[280px] lg:w-[370px]"
+            />
+            <p className="tracked mt-4 text-[10px] font-medium leading-relaxed sm:text-[11px] lg:mt-5 lg:text-[12px]">
+              Pastelería Francesa · Mendoza, Argentina
+            </p>
+            <span aria-hidden="true" className="mt-5 h-px w-8 bg-primary/55 lg:mt-6" />
+
+            <Link
+              href={`/productos?categoria=${productCategories[activeIndex]?.category ?? productCategories[0].category}`}
+              className="pointer-events-auto mt-8 inline-flex min-h-[50px] items-center gap-3 rounded-full bg-primary px-6 text-[14px] font-medium text-primary-foreground shadow-[0_12px_28px_-14px_rgb(63_42_80/0.5)] transition-[background-color,box-shadow,transform] duration-200 ease-out hover:bg-lilac-ink hover:shadow-[var(--shadow-giuliett)] active:scale-[0.985] lg:mt-9"
+            >
+              Ver producto
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-current">
+                <IconArrow className="h-3 w-3" strokeWidth={1.8} />
+              </span>
+            </Link>
+
+            {/* h2: el título de la página es el h1 de sections/hero.tsx. Los cuatro nombres se apilan en la misma
+                celda y cambian con un fundido: el título no salta a mitad del desplazamiento ni cambia de alto. */}
+            <h2 className="mt-5 grid text-balance text-[25px] font-medium leading-tight text-primary sm:text-[29px] lg:mt-6 lg:text-[34px]">
+              {productCategories.map((category, indice) => (
+                <span
+                  key={category.name}
+                  aria-hidden={indice !== activeIndex ? true : undefined}
+                  className={cn(
+                    '[grid-area:1/1] transition-opacity duration-500 ease-out',
+                    indice === activeIndex ? 'opacity-100' : 'opacity-0',
+                  )}
+                >
+                  {category.name}
+                </span>
+              ))}
+            </h2>
+
+            {/* role="group": un div sin rol no puede llevar aria-label (Lighthouse: aria-prohibited-attr). */}
+            <div role="group" className="mt-6 flex justify-center gap-2" aria-label={`Producto ${activeIndex + 1} de ${productCategories.length}`}>
+              {productCategories.map((category, indicatorIndex) => (
+                <span
+                  key={category.name}
+                  aria-hidden="true"
+                  className={cn(
+                    'h-2 w-2 rounded-full bg-primary transition-[opacity,transform] duration-200 ease-out',
+                    indicatorIndex === activeIndex ? 'scale-100 opacity-100' : 'scale-75 opacity-30',
+                  )}
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* En la computadora: un clic en el costado izquierdo retrocede y en el derecho avanza. Son zonas
