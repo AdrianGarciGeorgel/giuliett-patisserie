@@ -151,6 +151,9 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
   (carruseles automáticos) se cerró sin mergear por reclamo de la clienta (regla 8). Cada rama
   vive en los dos remotos: `origin` (cabeza del PR) y `upstream` (base del PR siguiente). El `main` del fork se lleva a la
   punta de la rama más nueva (`git push origin <rama>:main`; si hubo rebase, `--force-with-lease`).
+- ✅ **Decisión de Adrián (26-09-2026, después del #15): "los PR a Marco no hacen falta".** Desde ahí, lo que
+  Adrián aprueba se publica desde su rama al `main` del fork (solo `origin`); no se abren PRs ni se suben ramas
+  al repo de Marco. Los PRs #1 a #15 quedan abiertos como están. Primer caso: la foto de la Tarta Cabsha.
   ⚠️ **Desde el 26-09-2026 el `main` del fork es PRODUCCIÓN:** cada push sale en vivo en
   https://giuliettpatisserie.com. Antes de empujar: `npm test`, `npm run lint` y `npm run build` en verde.
 
@@ -196,8 +199,13 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
   mismo reclamo volvió también **el formulario de Marco tal cual** (decisión de Adrián, PR #11): salieron el
   selector de recorridos, el campo Sin TACC, la sección "Tu evento" y el formulario de las fichas.
 - **Cómo se trabaja desde el 26-09-2026: página por página.** Adrián pide un cambio → se arma en una rama y se
-  muestra en una **vista previa de Vercel** (sin tocar el dominio) → Adrián la revisa → con su OK se publica y
-  el PR se lo avisa a Marco. Lo que Adrián aprueba así es una excepción consciente a esta regla y se anota acá.
+  muestra en una **vista previa de Vercel** (sin tocar el dominio) → Adrián la revisa → con su OK se publica (hasta
+  el #15 con un PR que se lo avisaba a Marco; después, sin PR: ver regla 4). Lo que Adrián aprueba así es una
+  excepción consciente a esta regla y se anota acá.
+- **Fotos de los productos = las de Marco, con test:** `test/productos.fotos.test.ts` compara la foto principal,
+  la del mouse y la galería de los 18 productos con las de su repo (`test/fixtures/fotos-productos-marco.json`).
+  El 26-09 la Tarta Cabsha mostraba `CABSHA_1.png`, una versión que Marco había reemplazado el 15-09 por
+  `CABSHA_1.jpeg` (quedó así desde el PR #9); lo vio Adrián y volvió a la de Marco.
 - **Excepciones aprobadas por Adrián:**
   - **Home (26-09-2026, PR #12):** el carrusel avanza solo cada 5 s, **sin botón de pausa**; en la computadora,
     un clic en el cuarto izquierdo o derecho de la pantalla retrocede o avanza (zonas invisibles que en
