@@ -540,6 +540,10 @@ a 30 px); /productos sin botón flotante de WhatsApp; 404 de fábrica de Next en
 rama local `propuesta/404-espanol`); contraste del menú; alt de las fotos de categoría. En /contacto (revisión del
 26-09): en el pie, el teléfono tiene el ícono de WhatsApp pero el link es `tel:` (llama, no abre WhatsApp); y las
 opciones de "¿Qué estás buscando?" no muestran el foco al recorrerlas con el teclado (el checkbox es `sr-only`).
+**Box Macarons (revisión de las 18 fichas, 27-09):** 3 de sus 4 fotos (`BOX_MACARONS_1/3/4.jpg`) son archivos crudos de
+cámara, de 14 y 30 megapíxeles (6,8, 6,2 y 10,8 MB), mientras que el resto del catálogo son exportaciones de ~1,1-1,4 MP
+(1,5-2 MB). La ficha baja 25 MB en la compu (las miniaturas usan el mismo archivo) y en iPhone las fotos 3 y 4 tardan
+5-8 s. Son los mismos archivos de la web de Marco: pedirle que las exporte como las demás (no recomprimirlas nosotros).
 
 **Falta:** probar en un iPhone y un Android reales (punto 8 del checklist).
 
