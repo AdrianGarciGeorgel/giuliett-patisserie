@@ -130,6 +130,11 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
   16 MB (LCP **45,9 s**). Alternativa lista si algún día se prioriza la velocidad: sacar `unoptimized` y
   poner `images.qualities: [100]` (las mismas fotos, achicadas al tamaño de cada pantalla a calidad
   máxima; el hero baja de 2,1 MB a ~240 KB en un celular). Es decisión de Adrián, no técnica.
+- **Catálogo en el celular: la foto que cambia al desplazarse usa los originales** (decisión de Adrián del
+  27-09-2026: "manteniendo la calidad en las fotos"). Quien recorre toda Tortas clásicas baja hasta **12,5 MB
+  más**, y al abrir unos 3,5 MB (la segunda foto de la fila del medio, después de la principal). Las reglas de
+  `lib/foto-alterna.ts` descargan cada segunda foto solo cuando hace falta. Alternativa si pesa demasiado:
+  copias livianas solo para este efecto (toca las fotos de Marco: la decide Adrián).
 
 ### 4. Git
 
@@ -233,6 +238,14 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
     empresa en el `alt` de los logos de clientes. Reglas en `lib/pedido.ts`; un test compara el HTML del
     formulario con una copia del de Marco (`test/fixtures/contacto-formulario-marco.html`): si cambia algo
     visible, falla.
+  - **Nuestros productos, en el celular (pedido de Giu, aprobado el 27-09-2026):** en la compu la segunda foto
+    de cada torta aparece al pasar el mouse (Marco); en el celular quedaba quieta. Ahora, en pantallas táctiles,
+    la foto que pasa por la franja del medio (35 % a 52 % del alto) al desplazarse se funde a la segunda, con el
+    mismo fundido, y vuelve al salir. Empieza al desplazarse o deslizar el dedo; con "reducir movimiento", nada.
+    Giu mandó de muestra un video de otra tienda (WooCommerce + JetWooBuilder) donde el cambio era el iPhone
+    simulando el mouse bajo el dedo: irregular y solo en iPhone; este es a propósito y anda en iPhone y Android.
+    Probado en iPhone SE, 13 y 14 Pro Max y Pixel 7, en las cuatro categorías: cambian las 18 tortas. En la
+    compu la grilla es idéntica (`test/fixtures/catalogo-tortas-clasicas.html`). Reglas en `lib/foto-alterna.ts`.
 
 ---
 
@@ -295,6 +308,7 @@ lib/
 ├── carrusel.ts                   # reglas de los carruseles (home, galería, eventos): avance automático y costados (puras)
 ├── catalogo.ts                   # ÚNICA puerta a productos/eventos desde app/ y components/
 ├── giuliett.ts                   # CONTACT, waLink(), EVENTOS (datos crudos)
+├── foto-alterna.ts               # catálogo en el celular: cuándo se ve y se descarga la segunda foto (puras)
 ├── pedido.ts                     # reglas del formulario "Hacé tu pedido": validación y mensaje de WhatsApp (puras)
 └── products.ts                   # catálogo PRODUCTS (datos crudos, precios incluidos)
 proxy.ts                          # protege /admin, refresca la sesión
