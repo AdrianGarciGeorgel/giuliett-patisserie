@@ -5,13 +5,13 @@ import { SectionLockup } from '@/components/giuliett/section-lockup'
 import { waLink } from '@/lib/giuliett'
 
 export const metadata: Metadata = {
-  title: 'Página no encontrada',
+  title: 'Página no encontrada · Giuliett Pâtisserie',
 }
 
 /* La 404 de fábrica de Next salía en inglés ("404: This page could not be found."), con la
    tipografía del sistema, dos <title> y sin la región principal que usan los lectores de
    pantalla (QA del 26-09-2026). Esta usa solo piezas del sistema de diseño de Marco.
-   PROPUESTA: es visual, así que se publica con el OK de Adrián y Marco (regla 8). */
+   Es visual: se publica con el OK de Adrián en la vista previa (regla 8). */
 export default function PaginaNoEncontrada() {
   return (
     <main>

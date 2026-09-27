@@ -21,7 +21,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: ProductPageProps) {
   const { slug } = await params
   const product = await getProductoPorSlug(slug)
-  if (!product) return { title: 'Producto no encontrado · Giuliett Pâtisserie', robots: { index: false } }
+  // El "no indexar" lo pone Next en toda página no encontrada; repetirlo acá sacaba dos etiquetas en la 404 propia.
+  if (!product) return { title: 'Producto no encontrado · Giuliett Pâtisserie' }
   return metadataProducto(product)
 }
 
