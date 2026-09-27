@@ -147,7 +147,7 @@ Core Web Vitals en verde es compromiso contractual de Adrián.
   anterior; se mergean en orden): #1 imágenes → #2 consultas → #3 SEO → #4 capa de datos + fix Atrás
   → #5 recuperación de contraseña + aviso + CSP → #6 código sin uso → #7 un solo h1 → #8 imágenes
   (performance) → #9 fotos originales de Marco + color del menú → #11 seguridad y QA → #12 home → #13 galería
-  → #14 eventos. El #10
+  → #14 eventos → #15 formulario de "Hacé tu pedido". El #10
   (carruseles automáticos) se cerró sin mergear por reclamo de la clienta (regla 8). Cada rama
   vive en los dos remotos: `origin` (cabeza del PR) y `upstream` (base del PR siguiente). El `main` del fork se lleva a la
   punta de la rama más nueva (`git push origin <rama>:main`; si hubo rebase, `--force-with-lease`).
@@ -214,10 +214,17 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
     de la home y la galería: avanzan solos sin pausa (cada uno solo mientras se ve), clic en los costados en
     la computadora y cursor normal. **La leyenda queda quieta** sobre la foto y su texto cambia con un fundido
     (prop `leyendaFija`; no la pidió Adrián: se propuso por coherencia con la home y él la aprobó en la vista
-    previa). La
-    clase de Marco (sombra, borde y subida al pasar el mouse) pasa a la caja que contiene foto, leyenda y
-    costados, así sube la tarjeta entera. Con la foto quieta se ve idéntica a la de Marco (captura píxel a
-    píxel). Un `HeroCarousel` sin opciones sigue siendo el de Marco, tal cual.
+    previa). La clase de Marco (sombra, borde y subida al pasar el mouse) pasa a la caja que contiene foto,
+    leyenda y costados, así sube la tarjeta entera. Con la foto quieta se ve idéntica a la de Marco (captura
+    píxel a píxel). Un `HeroCarousel` sin opciones sigue siendo el de Marco, tal cual.
+  - **Hacé tu pedido / /contacto (26-09-2026, PR #15):** la página **no cambia** (capturas píxel a píxel contra
+    la de Marco); se arreglaron errores de código de su formulario. El email, que tiene asterisco, se valida
+    (obligatorio y bien escrito) y **llega en el mensaje** (antes se perdía); con un campo vacío, la vista va
+    al primer campo con error (antes el aviso quedaba fuera de la pantalla); un doble clic abre WhatsApp una
+    sola vez; y atributos invisibles: `aria-required`, teclado de email en el celular y el nombre de cada
+    empresa en el `alt` de los logos de clientes. Reglas en `lib/pedido.ts`; un test compara el HTML del
+    formulario con una copia del de Marco (`test/fixtures/contacto-formulario-marco.html`): si cambia algo
+    visible, falla.
 
 ---
 
@@ -260,7 +267,7 @@ app/
     ├── auth/callback/route.ts    # canjea el enlace del email por una sesión
     └── consultas/[id]/           # detalle + seguimiento
 components/giuliett/
-├── contact-form.tsx              # el formulario de Marco, tal cual: manda directo a WhatsApp (desde el 26-09)
+├── contact-form.tsx              # el formulario de Marco (diseño tal cual): manda directo a WhatsApp; reglas en lib/pedido.ts
 └── …                             # componentes de Marco
 lib/
 ├── consultas/
@@ -280,6 +287,7 @@ lib/
 ├── carrusel.ts                   # reglas de los carruseles (home, galería, eventos): avance automático y costados (puras)
 ├── catalogo.ts                   # ÚNICA puerta a productos/eventos desde app/ y components/
 ├── giuliett.ts                   # CONTACT, waLink(), EVENTOS (datos crudos)
+├── pedido.ts                     # reglas del formulario "Hacé tu pedido": validación y mensaje de WhatsApp (puras)
 └── products.ts                   # catálogo PRODUCTS (datos crudos, precios incluidos)
 proxy.ts                          # protege /admin, refresca la sesión
 supabase/migrations/              # esquema versionado (consultas, administradores, RLS)
@@ -446,7 +454,9 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
    componentes huérfanos, `getProductBySlug` y 4 dependencias fuera; quedan como *aviso* los exports
    sin uso de `atoms.tsx`, `line-art.tsx`, `Prose`, `AUDIENCES` y `STEPS` (sistema de diseño de
    Marco y datos del Master Plan: se dejan).
-8. ~~Email decía obligatorio pero no se validaba~~ → resuelto: opcional y validado.
+8. ~~Email decía obligatorio pero no se validaba~~ → resuelto: opcional y validado. Volvió con el formulario de
+   Marco (PR #11) y se resolvió de nuevo el 26-09-2026 (PR #15): **obligatorio**, como marca su asterisco,
+   validado y en el mensaje. Hacerlo opcional pide sacar el asterisco: cambio visual, lo decide Marco.
 9. ~~El formulario no registraba nada~~ → resuelto en Fase B.
 10. ⚠️ **Vercel en plan Hobby con el dominio comercial ya conectado (26-09-2026).** Los términos de
     Hobby son para uso personal no comercial: pasar a **Pro** (USD 20/mes) es decisión de Adrián y Giu,
@@ -498,7 +508,9 @@ contraseñas filtradas → Pro (USD 25/mes) o un chequeo diario. Namecheap → r
 con las fotos originales eso tarda: /eventos se ve vacía varios segundos en celulares (medido: 8 s en Chrome y
 13 s en WebKit sobre una conexión rápida); desborde de 27 px en /eventos a 320 px (la palabra "Celebraciones"
 a 30 px); /productos sin botón flotante de WhatsApp; 404 de fábrica de Next en inglés (propuesta lista en la
-rama local `propuesta/404-espanol`); contraste del menú; alt de las fotos de categoría.
+rama local `propuesta/404-espanol`); contraste del menú; alt de las fotos de categoría. En /contacto (revisión del
+26-09): en el pie, el teléfono tiene el ícono de WhatsApp pero el link es `tel:` (llama, no abre WhatsApp); y las
+opciones de "¿Qué estás buscando?" no muestran el foco al recorrerlas con el teclado (el checkbox es `sr-only`).
 
 **Falta:** probar en un iPhone y un Android reales (punto 8 del checklist).
 
