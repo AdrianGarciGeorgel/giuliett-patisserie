@@ -35,29 +35,40 @@ describe('mostrarSegundaFoto', () => {
 })
 
 describe('bajarSegundaFoto', () => {
-  const enPantalla = { tactil: true, movimientoReducido: false, desplazado: true, vista: true }
+  const desplazandose = { tactil: true, movimientoReducido: false, desplazado: true, enBanda: false, vista: true, principalCargada: false }
+  const alAbrir = { ...desplazandose, desplazado: false }
 
-  it('en el celular, la segunda foto se descarga cuando su tarjeta está en pantalla', () => {
-    expect(bajarSegundaFoto(enPantalla)).toBe(true)
-    expect(bajarSegundaFoto({ ...enPantalla, vista: false })).toBe(false)
+  it('mientras la persona se desplaza, se descarga la de cada tarjeta que aparece en pantalla, y no las otras', () => {
+    expect(bajarSegundaFoto(desplazandose)).toBe(true)
+    expect(bajarSegundaFoto({ ...desplazandose, vista: false })).toBe(false)
   })
 
-  it('al abrir la página no se descarga nada extra: recién cuando la persona se desplaza', () => {
-    expect(bajarSegundaFoto({ ...enPantalla, desplazado: false })).toBe(false)
+  it('al abrir, solo la fila que ya está en el medio, y después de ver su foto principal', () => {
+    expect(bajarSegundaFoto({ ...alAbrir, enBanda: true, principalCargada: true })).toBe(true)
+    expect(bajarSegundaFoto({ ...alAbrir, enBanda: true, principalCargada: false })).toBe(false)
+    expect(bajarSegundaFoto({ ...alAbrir, enBanda: false, principalCargada: true })).toBe(false)
   })
 
   it('en la compu y con "reducir movimiento" no se toca: queda como está', () => {
-    expect(bajarSegundaFoto({ ...enPantalla, tactil: false })).toBe(false)
-    expect(bajarSegundaFoto({ ...enPantalla, movimientoReducido: true })).toBe(false)
+    expect(bajarSegundaFoto({ ...desplazandose, tactil: false })).toBe(false)
+    expect(bajarSegundaFoto({ ...desplazandose, movimientoReducido: true })).toBe(false)
+    expect(bajarSegundaFoto({ ...alAbrir, enBanda: true, principalCargada: true, tactil: false })).toBe(false)
   })
 })
 
 describe('BANDA_CENTRAL', () => {
-  it('es una franja angosta justo en el medio de la pantalla: cambia más o menos una fila por vez', () => {
-    const [arriba, , abajo] = BANDA_CENTRAL.split(' ').map((v) => Number.parseFloat(v))
-    expect(arriba).toBe(abajo)
-    const alto = 100 + arriba + abajo
+  const [arriba, , abajo] = BANDA_CENTRAL.split(' ').map((v) => -Number.parseFloat(v))
+
+  it('es una franja angosta: cambia más o menos una fila por vez', () => {
+    const alto = 100 - arriba - abajo
     expect(alto).toBeGreaterThanOrEqual(5)
     expect(alto).toBeLessThanOrEqual(20)
+  })
+
+  it('alcanza a la primera fila al abrir y a la última al final de la página, también en los celulares altos', () => {
+    // Medido en iPhone SE, 13 y 14 Pro Max y Pixel 7: la primera fila al abrir termina entre el 45 % y el 55 % del
+    // alto; la última, al final de la página, empieza entre el 34 % y el 46 %.
+    expect(arriba).toBeLessThan(45)
+    expect(100 - abajo).toBeGreaterThan(46)
   })
 })

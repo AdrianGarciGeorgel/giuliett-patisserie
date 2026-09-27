@@ -62,13 +62,16 @@ export function ProductCatalog({ initialCategory, productos }: ProductCatalogPro
   const [vistas, setVistas] = useState<ReadonlySet<string>>(() => new Set())
   const [enBanda, setEnBanda] = useState<ReadonlySet<string>>(() => new Set())
   const [cargadas, setCargadas] = useState<ReadonlySet<string>>(() => new Set())
+  const [principales, setPrincipales] = useState<ReadonlySet<string>>(() => new Set())
   // La foto de cada tarjeta → el id de su producto, para los observadores.
   const fotos = useRef(new Map<Element, string>())
 
   useEffect(() => {
     if (!conFotoAlterna) return
+    // Desplazarse o deslizar el dedo (si la categoría entra entera en la pantalla, no hay nada que desplazar).
     const alDesplazar = () => setDesplazado(true)
     window.addEventListener('scroll', alDesplazar, { passive: true, once: true })
+    window.addEventListener('touchmove', alDesplazar, { passive: true, once: true })
     const seguir = (actualizar: (id: string, dentro: boolean) => void) => (entradas: IntersectionObserverEntry[]) => {
       for (const entrada of entradas) {
         const id = fotos.current.get(entrada.target)
@@ -81,12 +84,17 @@ export function ProductCatalog({ initialCategory, productos }: ProductCatalogPro
     const enElMedio = new IntersectionObserver(seguir((id, dentro) => setEnBanda((antes) => conId(antes, id, dentro))), {
       rootMargin: BANDA_CENTRAL,
     })
-    for (const foto of fotos.current.keys()) {
+    for (const [foto, id] of fotos.current) {
       enPantalla.observe(foto)
       enElMedio.observe(foto)
+      // Fotos que terminaron de bajar antes de que la página se activara: su onLoad ya pasó.
+      const [principal, segunda] = foto.querySelectorAll('img')
+      if (principal?.complete && principal.naturalWidth > 0) setPrincipales((antes) => conId(antes, id, true))
+      if (segunda?.complete && segunda.naturalWidth > 0) setCargadas((antes) => conId(antes, id, true))
     }
     return () => {
       window.removeEventListener('scroll', alDesplazar)
+      window.removeEventListener('touchmove', alDesplazar)
       enPantalla.disconnect()
       enElMedio.disconnect()
     }
@@ -216,7 +224,14 @@ export function ProductCatalog({ initialCategory, productos }: ProductCatalogPro
             enBanda: enBanda.has(product.id),
             cargada: cargadas.has(product.id),
           })
-          const bajar = bajarSegundaFoto({ tactil, movimientoReducido, desplazado, vista: vistas.has(product.id) })
+          const bajar = bajarSegundaFoto({
+            tactil,
+            movimientoReducido,
+            desplazado,
+            enBanda: enBanda.has(product.id),
+            vista: vistas.has(product.id),
+            principalCargada: principales.has(product.id),
+          })
           return (
           <li key={product.id}>
             <Link href={`/productos/${product.slug}?categoria=${selectedCategory}`} className="group block min-w-0" aria-label={`Ver ${product.name}`}>
@@ -235,6 +250,7 @@ export function ProductCatalog({ initialCategory, productos }: ProductCatalogPro
                   alt={product.name}
                   fill
                   sizes="(min-width: 1024px) 260px, (min-width: 768px) 30vw, 46vw"
+                  onLoad={conFotoAlterna ? () => setPrincipales((antes) => conId(antes, product.id, true)) : undefined}
                   className={cn('object-cover transition-opacity duration-[250ms] ease-out md:group-hover:opacity-0', segunda && 'opacity-0')}
                 />
                 <Image
