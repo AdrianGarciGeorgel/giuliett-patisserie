@@ -14,8 +14,12 @@ export function ProductGallery({ name, images }: ProductGalleryProps) {
 
   return (
     <div>
+      {/* Región con foco: en el celular (y en la compu con la pantalla muy agrandada) se recorre también con las
+          flechas del teclado. */}
       <div
+        role="region"
         aria-label={`Galería de ${name}`}
+        tabIndex={0}
         onScroll={(event) => {
           const viewport = event.currentTarget
           setActiveIndex(Math.round(viewport.scrollLeft / viewport.clientWidth))
