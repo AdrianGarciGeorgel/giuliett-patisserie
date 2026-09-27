@@ -246,6 +246,13 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
     simulando el mouse bajo el dedo: irregular y solo en iPhone; este es a propósito y anda en iPhone y Android.
     Probado en iPhone SE, 13 y 14 Pro Max y Pixel 7, en las cuatro categorías: cambian las 18 tortas. En la
     compu la grilla es idéntica (`test/fixtures/catalogo-tortas-clasicas.html`). Reglas en `lib/foto-alterna.ts`.
+  - **Fichas de Tortas clásicas (revisión del 27-09-2026):** las 8 son idénticas a las de Marco (píxel a píxel, compu
+    e iPhone) y funcionan: fotos, miniaturas, deslizar con puntitos, "Volver", "Atrás" del navegador, WhatsApp y
+    tarjeta para compartir. **Arreglo (invisible):** la galería del celular no se podía recorrer con el teclado (axe:
+    `scrollable-region-focusable`); ahora es `role="region"` con `tabIndex={0}` y las flechas pasan de foto. Solo
+    se ve un contorno de foco al navegar con Tab. Test contra una copia del HTML (`test/fixtures/galeria-marquise.html`).
+    **Decisión de Adrián:** en el celular la 3.ª y 4.ª foto tardan 1,5-3 s en aparecer al deslizar (originales de
+    ~2 MB que bajan recién al llegar); adelantar la descarga de la siguiente queda "por ahora no, funciona bien".
 
 ---
 
