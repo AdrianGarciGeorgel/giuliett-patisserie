@@ -488,8 +488,8 @@ Detectada el 22-09-2026. Lo resuelto se resolvió con el menor impacto posible (
    validado y en el mensaje. Hacerlo opcional pide sacar el asterisco: cambio visual, lo decide Marco.
 9. ~~El formulario no registraba nada~~ → resuelto en Fase B.
 10. ⚠️ **Vercel en plan Hobby con el dominio comercial ya conectado (26-09-2026).** Los términos de
-    Hobby son para uso personal no comercial: pasar a **Pro** (USD 20/mes) es decisión de Adrián y Giu,
-    pendiente. La web funciona igual mientras tanto. **Región de Functions: `gru1` (São Paulo), verificada el 23-09-2026** en el header
+    Hobby son para uso personal no comercial: pasar a **Pro** (USD 20/mes) es decisión de Adrián y Giu.
+    **Adrián decidió "por ahora no" (27-09-2026).** La web funciona igual mientras tanto. **Región de Functions: `gru1` (São Paulo), verificada el 23-09-2026** en el header
     `X-Vercel-Id: gru1::gru1::…` de una ruta dinámica. Lo que pasó antes: el plan Hobby permite **una
     sola región** y habían quedado tildadas `iad1` y `gru1` a la vez, con lo que el botón Save no se
     habilitaba; hubo que destildar `iad1`, guardar y redeployar. Si algún día vuelve a `iad1`,
@@ -547,7 +547,8 @@ cámara, de 14 y 30 megapíxeles (6,8, 6,2 y 10,8 MB), mientras que el resto del
 (1,5-2 MB). La ficha baja 25 MB en la compu (las miniaturas usan el mismo archivo) y en iPhone las fotos 3 y 4 tardan
 5-8 s. Son los mismos archivos de la web de Marco: pedirle que las exporte como las demás (no recomprimirlas nosotros).
 
-**Falta:** probar en un iPhone y un Android reales (punto 8 del checklist).
+**Dispositivos reales (punto 8 del checklist):** Adrián la probó en un iPhone y un Android reales el 27-09-2026,
+incluido el ingreso al panel: funciona.
 
 ---
 
@@ -650,6 +651,24 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
   /productos pesa 16 MB; PageSpeed estima que achicar las fotos ahorraría 15,9 MB. **Core Web Vitals
   en rojo en móvil (LCP)**: es el costo aceptado de la regla 8. PageSpeed simula un 4G lento; en WiFi
   se nota mucho menos, pero Google usa esta vara.
+- [x] **PageSpeed en producción, 27-09-2026, después de todo el trabajo página por página** (web de PSI con
+  Playwright; script en el scratchpad `qa-webkit/psi.mjs`):
+
+  | Página | Celular (Rend./Acces./Práct./SEO) | LCP celular | Compu | LCP compu |
+  |---|---|---|---|---|
+  | Inicio | 75 / 96 / 100 / 100 | 14,1 s | 89 / 100 / 100 / 100 | 2,2 s |
+  | Productos (Tortas clásicas) | 99 / 96 / 100 / 100 | 2,3 s | 75 / 100 / 100 / 100 | 8,9 s |
+  | Ficha (Marquise) | 77 / 96 / 100 / 100 | 6,8 s | 76 / 100 / 100 / 100 | 6,8 s |
+  | Eventos | 73 / 96 / 100 / 100 | 49,7 s | 76 / 100 / 100 / 100 | 5,8 s |
+  | Galería | 75 / 96 / 100 / 100 | 47,6 s | 76 / 100 / 100 / 100 | 6,3 s |
+  | Hacé tu pedido | 76 / 96 / 100 / 100 | 7,7 s | 96 / 100 / 100 / 100 | 1,4 s |
+  | Sobre Giuliett | 75 / 96 / 100 / 100 | 23,9 s | 80 / 100 / 100 / 100 | 3,8 s |
+
+  **Contra la web de Marco, misma medición:** Inicio celular 75 (LCP 24,5 s) y compu 79; Eventos celular 75 (LCP
+  53,3 s) y compu 76; accesibilidad 91 / 96. La nuestra da igual o mejor en todo. El LCP alto en celular viene de las
+  fotos originales (regla 3, decisión de Adrián) y de las secciones con `Reveal`, invisibles hasta que la página se
+  activa (de Marco); **no** del avance automático de los carruseles: Eventos de Marco, sin él, da peor. La
+  accesibilidad 96 del celular es el contraste del menú (color de Marco).
 
 Notas: el 404 de `/_vercel/insights/script.js` que aparece en local es Vercel Analytics, que solo
 existe en Vercel. El viejo aviso de consola "*…was preloaded using link preload but not used*" (torre,
@@ -708,7 +727,7 @@ de previews en Settings → Deployment Protection.
 - [ ] Supabase → Auth → SMTP con Resend → plantilla "Reset password" en español con
       `{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=recovery` (el callback ya lo acepta).
 - [ ] Search Console + GA4 (ver Fase C).
-- [ ] Vercel Pro (deuda técnica 10).
+- [ ] Vercel Pro (deuda técnica 10). **Decisión de Adrián (27-09-2026): por ahora no.**
 - [ ] Capacitación del panel a Giu.
 - [ ] **Textos alternativos de las 4 fotos de categoría** (`productCategories` en `lib/giuliett.ts`, las usan
       la home y galería): no describen su foto ("Tortas clásicas" dice *"Cookies artesanales glaseadas…"*).
