@@ -536,8 +536,10 @@ contraseñas filtradas → Pro (USD 25/mes) o un chequeo diario. Namecheap → r
 **Para Marco (visual, regla 8):** las secciones con `Reveal` arrancan invisibles hasta que React se activa, y
 con las fotos originales eso tarda: /eventos se ve vacía varios segundos en celulares (medido: 8 s en Chrome y
 13 s en WebKit sobre una conexión rápida); desborde de 27 px en /eventos a 320 px (la palabra "Celebraciones"
-a 30 px); /productos sin botón flotante de WhatsApp; 404 de fábrica de Next en inglés (propuesta lista en la
-rama local `propuesta/404-espanol`); contraste del menú; alt de las fotos de categoría. En /contacto (revisión del
+a 30 px); /productos sin botón flotante de WhatsApp; contraste del menú; alt de las fotos de categoría.
+**404: se queda la de Marco** (la de fábrica de Next, en inglés; decisión de Adrián del 27-09-2026 después de ver en
+una vista previa la versión en español con el sistema de diseño, que queda sin publicar en la rama
+`feat/404-espanol`). No volver a proponerla salvo que Adrián o Marco la pidan. En /contacto (revisión del
 26-09): en el pie, el teléfono tiene el ícono de WhatsApp pero el link es `tel:` (llama, no abre WhatsApp); y las
 opciones de "¿Qué estás buscando?" no muestran el foco al recorrerlas con el teclado (el checkbox es `sr-only`).
 **Box Macarons (revisión de las 18 fichas, 27-09):** 3 de sus 4 fotos (`BOX_MACARONS_1/3/4.jpg`) son archivos crudos de
