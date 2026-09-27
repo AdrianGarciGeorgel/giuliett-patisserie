@@ -1,20 +1,16 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useRef, useState, type FormEvent } from 'react'
 import { waLink } from '@/lib/giuliett'
-
-type FormValues = {
-  name: string
-  email: string
-  whatsapp: string
-  orderType: string
-  eventDate: string
-  people: string
-  interests: string[]
-  description: string
-}
-
-type FormErrors = Partial<Record<'name' | 'email' | 'whatsapp' | 'orderType', string>>
+import {
+  armarMensajePedido,
+  esEnvioRepetido,
+  primerCampoConError,
+  validarPedido,
+  type CampoObligatorio,
+  type ErroresPedido as FormErrors,
+  type ValoresPedido as FormValues,
+} from '@/lib/pedido'
 
 const initialValues: FormValues = {
   name: '',
@@ -33,10 +29,13 @@ const interests = ['Tortas clásicas', 'Tortas personalizadas', 'Galletas person
 export function ContactForm() {
   const [values, setValues] = useState<FormValues>(initialValues)
   const [errors, setErrors] = useState<FormErrors>({})
+  // Los campos con asterisco, para llevar la vista al primero que tenga un error.
+  const obligatorios = useRef<Partial<Record<CampoObligatorio, HTMLInputElement | HTMLSelectElement | null>>>({})
+  const ultimoEnvio = useRef(-Infinity)
 
   const updateValue = <Field extends keyof FormValues>(field: Field, value: FormValues[Field]) => {
     setValues((current) => ({ ...current, [field]: value }))
-    if (field === 'name' || field === 'whatsapp' || field === 'orderType') {
+    if (field === 'name' || field === 'email' || field === 'whatsapp' || field === 'orderType') {
       setErrors((current) => ({ ...current, [field]: undefined }))
     }
   }
@@ -53,36 +52,34 @@ export function ContactForm() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const nextErrors: FormErrors = {}
-    if (!values.name.trim()) nextErrors.name = 'Contanos tu nombre para poder responderte.'
-    if (!values.whatsapp.trim()) nextErrors.whatsapp = 'Necesitamos un WhatsApp para contactarte.'
-    if (!values.orderType) nextErrors.orderType = 'Elegí el tipo de pedido que estás imaginando.'
-
+    const nextErrors = validarPedido(values)
     setErrors(nextErrors)
-    if (Object.keys(nextErrors).length > 0) return
+    const conError = primerCampoConError(nextErrors)
+    if (conError) {
+      // El aviso puede quedar fuera de la pantalla (en el celular, "Enviar" queda lejos del primer campo):
+      // se lleva la vista hasta el primer campo con error.
+      const campo = obligatorios.current[conError]
+      campo?.scrollIntoView({ block: 'center' })
+      campo?.focus({ preventScroll: true })
+      return
+    }
 
-    const message = [
-      'Hola Giuliett! Quiero hacer una consulta.',
-      '',
-      `Nombre: ${values.name.trim()}`,
-      `WhatsApp: ${values.whatsapp.trim()}`,
-      `Tipo de pedido: ${values.orderType}`,
-      `Fecha del evento: ${values.eventDate || 'No especificada'}`,
-      `Cantidad aproximada de personas: ${values.people.trim() || 'No especificada'}`,
-      `Productos / intereses: ${values.interests.length ? values.interests.join(', ') : 'No especificados'}`,
-      `Idea: ${values.description.trim() || 'No especificada'}`,
-    ].join('\n')
+    // Un doble clic abría WhatsApp dos veces.
+    if (esEnvioRepetido(event.timeStamp, ultimoEnvio.current)) return
+    ultimoEnvio.current = event.timeStamp
 
-    window.open(waLink(message), '_blank', 'noopener,noreferrer')
+    window.open(waLink(armarMensajePedido(values)), '_blank', 'noopener,noreferrer')
   }
 
   return (
     <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-7">
       <Field label="Nombre y apellido" required error={errors.name}>
         <input
+          ref={(campo) => { obligatorios.current.name = campo }}
           value={values.name}
           onChange={(event) => updateValue('name', event.target.value)}
           aria-invalid={Boolean(errors.name)}
+          aria-required="true"
           className={inputClassName}
           autoComplete="name"
         />
@@ -90,20 +87,26 @@ export function ContactForm() {
 
       <Field label="Email" required error={errors.email}>
         <input
+          ref={(campo) => { obligatorios.current.email = campo }}
           value={values.email}
           onChange={(event) => updateValue('email', event.target.value)}
           aria-invalid={Boolean(errors.email)}
+          aria-required="true"
           className={inputClassName}
           autoComplete="email"
+          inputMode="email"
+          autoCapitalize="none"
         />
       </Field>
 
       <Field label="Número de teléfono" required error={errors.whatsapp}>
         <input
+          ref={(campo) => { obligatorios.current.whatsapp = campo }}
           type="tel"
           value={values.whatsapp}
           onChange={(event) => updateValue('whatsapp', event.target.value)}
           aria-invalid={Boolean(errors.whatsapp)}
+          aria-required="true"
           className={inputClassName}
           autoComplete="tel"
           inputMode="tel"
@@ -112,9 +115,11 @@ export function ContactForm() {
 
       <Field label="Tipo de pedido" required error={errors.orderType}>
         <select
+          ref={(campo) => { obligatorios.current.orderType = campo }}
           value={values.orderType}
           onChange={(event) => updateValue('orderType', event.target.value)}
           aria-invalid={Boolean(errors.orderType)}
+          aria-required="true"
           className={inputClassName}
         >
           <option value="">Elegí una opción</option>
