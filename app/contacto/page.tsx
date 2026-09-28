@@ -60,9 +60,9 @@ export default function ContactoPage() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Escribinos por WhatsApp"
-              className="czm-pulse fixed bottom-[calc(92px+env(safe-area-inset-bottom))] right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#51375C] text-[#FFF8E9] shadow-[0_12px_32px_-10px_rgb(81_55_92/0.45)] transition-[transform,box-shadow] duration-300 ease-out hover:scale-[1.03] active:scale-[0.97] sm:right-8 lg:right-8"
+              className="czm-pulse fixed bottom-[calc(92px+env(safe-area-inset-bottom))] right-5 z-50 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#51375C] text-[#FFF8E9] shadow-[0_12px_32px_-10px_rgb(81_55_92/0.45)] transition-[transform,box-shadow] duration-300 ease-out hover:scale-[1.03] active:scale-[0.97] sm:right-8 lg:right-8"
               >
-              <IconWhatsApp className="czm-pulse h-6 w-6" strokeWidth={1.7} />
+              <IconWhatsApp className="czm-pulse h-8 w-8" strokeWidth={1.7} />
             </a>
       
     </main>
