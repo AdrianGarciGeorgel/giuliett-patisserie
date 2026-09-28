@@ -271,7 +271,7 @@ export const PRODUCTS: Product[] = [
     price: 22000,
     imagePrimary: '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_1.png',
     imageSecondary: '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_3.png',
-    description: 'Una selección inspirada en la pâtisserie francesa: macarons, madeleines, mini choux y éclairs. Ideal para compartir entre 2–3 personas.',
+    description: 'Una selección inspirada en la pâtisserie francesa: macarons, madeleines, mini choux y éclairs.\nIdeal para compartir entre 2–3 personas.',
     gallery: [
       '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_1.png',
       '/images/PRODUCTOS/BOXS/BOX PARISINO/BOX_PARISINO_3.png',
