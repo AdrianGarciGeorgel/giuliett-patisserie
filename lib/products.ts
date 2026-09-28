@@ -79,7 +79,7 @@ export const PRODUCTS: Product[] = [
     price: 25000,
     imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/ChocotartaPremium/chocotorta_premium.png',
     imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/ChocotartaPremium/chocotorta_premium_2.png',
-    description: 'Nuestra chocotorta más especial: mucho dulce de leche, chocolates y Oreos bañadas. También podés pedirla personalizada con colores, temática y detalles especiales.\n\nPetit: rinde aproximadamente 15–20 personas.\nSuper: rinde aproximadamente 30–35 personas.\n\nLas personalizaciones especiales pueden tener un costo adicional.',
+    description: 'Nuestra chocotorta más especial: mucho dulce de leche, chocolates y Oreos bañadas. También podés pedirla personalizada con colores, temática y detalles especiales.\n\n· Petit: rinde aproximadamente 15–20 personas.\n· Súper: rinde aproximadamente 30–35 personas. Precio: $ 115.000\n\nLas personalizaciones especiales pueden tener un costo adicional.',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/ChocotartaPremium/chocotorta_premium.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/ChocotartaPremium/chocotorta_premium_2.png',
