@@ -65,7 +65,7 @@ export const PRODUCTS: Product[] = [
     price: 23000,
     imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_2.png',
     imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_1.jpeg',
-    description: 'Base de vainilla, dulce de leche y ganache de chocolate. Un clásico simple e irresistible.',
+    description: 'Base de vainilla, dulce de leche y ganache de chocolate.\nUn clásico simple e irresistible.',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_2.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/Cabsha/CABSHA_1.jpeg',
