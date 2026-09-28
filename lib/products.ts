@@ -191,7 +191,7 @@ export const PRODUCTS: Product[] = [
     price: 38000,
     imagePrimary: '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_2.png',
     imageSecondary: '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_1.png',
-    description: 'Una torta única para un día único. Personalizamos sabores, colores, flores y cada detalle para que acompañe la estética de su casamiento.',
+    description: 'Una torta única para un día único. Personalizamos sabores, colores, flores y cada detalle para que acompañe la estética de tu casamiento.',
     gallery: [
       '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_2.png',
       '/images/PRODUCTOS/CUSTOM_CAKES/WeddingCake/WC_1.png',
