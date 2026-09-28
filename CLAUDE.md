@@ -253,6 +253,11 @@ WhatsApp directo sigue siendo el CTA principal y el formulario es el camino que 
     se ve un contorno de foco al navegar con Tab. Test contra una copia del HTML (`test/fixtures/galeria-marquise.html`).
     **Decisión de Adrián:** en el celular la 3.ª y 4.ª foto tardan 1,5-3 s en aparecer al deslizar (originales de
     ~2 MB que bajan recién al llegar); adelantar la descarga de la siguiente queda "por ahora no, funciona bien".
+  - **Pedidos de Giu (aprobados por Adrián en vista previa, 28-09-2026):** el mensaje general de WhatsApp
+    (`WA_GENERAL`) dice *"Hola Giuliett, quiero hacer un pedido!"*; en /galeria los títulos de categoría quedan
+    centrados (el `max-w-[14ch]` hacía desbordar PERSONALIZADAS a la derecha: ahora `w-min` + `pl-[0.22em]` que
+    compensa el espaciado final); y el botón flotante de WhatsApp pasa de 56 a 64 px (ícono de 24 a 32 px) en las
+    5 páginas.
 
 ---
 
@@ -546,6 +551,11 @@ opciones de "¿Qué estás buscando?" no muestran el foco al recorrerlas con el 
 cámara, de 14 y 30 megapíxeles (6,8, 6,2 y 10,8 MB), mientras que el resto del catálogo son exportaciones de ~1,1-1,4 MP
 (1,5-2 MB). La ficha baja 25 MB en la compu (las miniaturas usan el mismo archivo) y en iPhone las fotos 3 y 4 tardan
 5-8 s. Son los mismos archivos de la web de Marco: pedirle que las exporte como las demás (no recomprimirlas nosotros).
+
+**Facebook del pie de la home (QA del 27-09):** `home-footer.tsx` apunta a facebook.com/giuliettpatisserie, que
+responde igual que una página inexistente. Falta el link real de Giu; si no tiene página, sacar el ícono es visual
+(OK de Marco). El resto de los links, el formulario y una prueba real de envío desde un celular dieron OK
+(scripts `qa-enlaces-todo.mjs` y `qa-formulario-final.mjs`).
 
 **Dispositivos reales (punto 8 del checklist):** Adrián la probó en un iPhone y un Android reales el 27-09-2026,
 incluido el ingreso al panel: funciona.
