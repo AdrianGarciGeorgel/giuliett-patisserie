@@ -338,7 +338,7 @@ test/                             # Vitest
 | Dato | Dónde |
 |---|---|
 | Teléfono, email, Instagram, ciudad | `lib/giuliett.ts` → `CONTACT` |
-| Productos, precios, galerías | `lib/products.ts` → `PRODUCTS` (se leen vía `lib/catalogo.ts`) |
+| Productos, precios, galerías | `lib/products.ts` → `PRODUCTS` (se leen vía `lib/catalogo.ts`). Precios = la lista de Giu (hoy, septiembre 2026, fijada en `test/precios.test.ts`); sin `price` = "Sin precio publicado" (no se muestra importe ni se declara oferta a Google). Formato `formatearPrecio()` → "$60.000" |
 | Fotos de Eventos | `lib/giuliett.ts` → `EVENTOS` (se leen vía `lib/catalogo.ts`) |
 | **Consultas de clientes** | **Supabase**, tabla `consultas` (se ven en `/admin`) |
 | Quién entra al panel | Supabase, tabla `administradores` |
