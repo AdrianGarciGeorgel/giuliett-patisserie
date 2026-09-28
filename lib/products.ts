@@ -18,7 +18,7 @@ export const PRODUCTS: Product[] = [
     price: 24000,
     imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_1.png',
     imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_2.png',
-    description: 'Base de chocolate, dulce de leche y crema Chantilly. Terminada con chocolates o frutillas, según la temporada.\n\n Elaborada sin ingredientes con gluten.',
+    description: 'Base de chocolate, dulce de leche y crema Chantilly. Terminada con chocolates o frutillas, según la temporada.\n\nElaborada con ingredientes sin gluten.',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_1.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/Marquise/MARQUISE_2.png',
