@@ -50,7 +50,7 @@ export const PRODUCTS: Product[] = [
     price: 22000,
     imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_2.png',
     imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_1.png',
-    description: 'Masa sablée de vainilla, curd de limón y merengue italiano. Un clásico fresco y equilibrado.',
+    description: 'Masa sablée de vainilla, curd de limón y merengue italiano.\nUn clásico fresco y equilibrado.',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_1.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/LemonPie/LEMON_PIE_2.png',
