@@ -239,7 +239,7 @@ export const PRODUCTS: Product[] = [
     price: 16000,
     imagePrimary: '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_1.png',
     imageSecondary: '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_3.jpg',
-    description: '6 cookies estilo New York, grandes y bien cargadas, en una selección de nuestros sabores. \n\nSabores disponibles: \n·Clásica de vainilla \n· Red Velvet \n· Limón & Chocolate \n· Doble Chocolate \n· Frambuesa & Chocolate \n· Salted Caramel.',
+    description: '6 cookies estilo New York, grandes y bien cargadas, en una selección de nuestros sabores. \n\nSabores disponibles: \n· Clásica de vainilla con chips \n· Red Velvet \n· Limón & Chocolate \n· Doble Chocolate \n· Frambuesa & Chocolate \n· Salted Caramel.',
     gallery: [
       '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_1.png',
       '/images/PRODUCTOS/BOXS/BOX COOKIES/BOX_COOKIES_2.png',
