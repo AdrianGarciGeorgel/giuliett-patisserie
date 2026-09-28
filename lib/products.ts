@@ -35,7 +35,7 @@ export const PRODUCTS: Product[] = [
     price: 26000,
     imagePrimary: '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_2.png',
     imageSecondary: '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_3.png',
-    description: 'Cheesecake estilo New York, súper cremoso, con base de galletas y topping de frutos rojos',
+    description: 'Cheesecake estilo New York, súper cremoso, con base de galletas y topping de frutos rojos.',
     gallery: [
       '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_2.png',
       '/images/PRODUCTOS/CLASSIC_CAKES/NY_CheeseCake/CHEESECAKE_3.png',
