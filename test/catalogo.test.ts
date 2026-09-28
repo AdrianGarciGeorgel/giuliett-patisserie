@@ -28,11 +28,11 @@ describe('catálogo de productos', () => {
     for (const p of PRODUCTS) expect(p.slug).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
   })
 
-  it('cada producto tiene nombre, precio positivo, categoría válida y descripción', () => {
+  it('cada producto tiene nombre, precio positivo (si tiene), categoría válida y descripción', () => {
     const categorias = new Set<string>(Object.values(PRODUCT_CATEGORIES))
     for (const p of PRODUCTS) {
       expect(p.name.trim().length, p.slug).toBeGreaterThan(0)
-      expect(p.price, p.slug).toBeGreaterThan(0)
+      if (p.price !== undefined) expect(p.price, p.slug).toBeGreaterThan(0)
       expect(categorias.has(p.category), `${p.slug}: categoría ${p.category}`).toBe(true)
       expect((p.description ?? '').trim().length, `${p.slug}: sin descripción`).toBeGreaterThan(0)
     }

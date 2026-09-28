@@ -154,15 +154,18 @@ export function jsonLdProducto(producto: Product, base: string = resolverUrlSiti
     url,
     category: etiquetaCategoria(producto),
     brand: { '@type': 'Brand', name: NOMBRE_SITIO },
-    offers: {
-      '@type': 'Offer',
-      url,
-      price: producto.price,
-      priceCurrency: 'ARS',
-      availability: producto.available === false ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
-      itemCondition: 'https://schema.org/NewCondition',
-      seller: { '@type': 'Organization', name: NOMBRE_SITIO },
-    },
+    // Sin precio publicado (a cotizar según el diseño) no se declara oferta: Google no debe mostrar un importe.
+    offers: producto.price
+      ? {
+          '@type': 'Offer',
+          url,
+          price: producto.price,
+          priceCurrency: 'ARS',
+          availability: producto.available === false ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+          itemCondition: 'https://schema.org/NewCondition',
+          seller: { '@type': 'Organization', name: NOMBRE_SITIO },
+        }
+      : undefined,
   }
 }
 

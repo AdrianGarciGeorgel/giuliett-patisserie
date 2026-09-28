@@ -98,8 +98,8 @@ describe('JSON-LD', () => {
     expect(ld.name).toBe(p.name)
     expect(ld.url).toBe(`${BASE}/productos/${p.slug}`)
     expect(ld.image[0]).toBe(`${BASE}${p.imagePrimary}`)
-    expect(ld.offers.priceCurrency).toBe('ARS')
-    expect(ld.offers.price).toBe(p.price)
+    expect(ld.offers?.priceCurrency).toBe('ARS')
+    expect(ld.offers?.price).toBe(p.price)
     expect(ld.brand.name).toBe('Giuliett Pâtisserie')
   })
 

@@ -12,7 +12,8 @@ export type Product = {
   slug: string
   name: string
   category: ProductCategory
-  price: number
+  /** Sin precio = "Sin precio publicado" (depende del modelo y la cantidad): no se muestra ningún importe. */
+  price?: number
   imagePrimary: string
   imageSecondary: string
   description?: string

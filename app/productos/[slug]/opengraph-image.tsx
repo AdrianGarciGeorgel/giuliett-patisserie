@@ -2,6 +2,7 @@ import { ImageResponse } from 'next/og'
 import { comprimirTarjeta, fotoParaTarjeta } from '@/lib/og'
 import { getProductoPorSlug, getProductos } from '@/lib/catalogo'
 import { etiquetaCategoria } from '@/lib/seo'
+import { formatearPrecio } from '@/lib/precio'
 
 /* Se generan en el build, una por producto del catálogo. Antes se armaban en cada pedido y con
    cualquier slug: /productos/lo-que-sea/opengraph-image devolvía 200 y gastaba CPU con sharp
@@ -21,7 +22,6 @@ export const alt = 'Producto de Giuliett Pâtisserie'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/jpeg'
 
-const priceFormatter = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -43,7 +43,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           <div style={{ fontSize: product && product.name.length > 18 ? 60 : 76, fontWeight: 700, lineHeight: 1.05, marginTop: 18 }}>
             {product?.name ?? 'Giuliett Pâtisserie'}
           </div>
-          {product ? <div style={{ fontSize: 34, marginTop: 22 }}>{priceFormatter.format(product.price)}</div> : null}
+          {product?.price ? <div style={{ fontSize: 34, marginTop: 22 }}>{formatearPrecio(product.price)}</div> : null}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 'auto', fontSize: 28 }}>
             <div style={{ width: 14, height: 14, borderRadius: 999, background: '#BFB4DC' }} />
             Giuliett Pâtisserie · Mendoza
