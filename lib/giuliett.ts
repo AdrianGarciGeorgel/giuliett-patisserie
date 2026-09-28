@@ -14,7 +14,7 @@ export function waLink(message: string) {
   return `https://wa.me/${CONTACT.phoneRaw}?text=${encodeURIComponent(message)}`
 }
 
-export const WA_GENERAL = 'Hola Giuliett, quiero hacer una consulta.'
+export const WA_GENERAL = 'Hola Giuliett, quiero hacer un pedido!'
 
 export type EventImage = {
   image: string
