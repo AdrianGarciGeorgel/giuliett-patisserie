@@ -206,7 +206,7 @@ export const PRODUCTS: Product[] = [
     price: 18000,
     imagePrimary: '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_7.png',
     imageSecondary: '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_8.png',
-    description: 'Tu idea, hecha galleta.\n\nCreamos galletas personalizadas con fotos, nombres, ilustraciones o el diseño que quieras. Un detalle original para cumpleaños, casamientos, eventos, souvenirs y regalos especiales.\n\nElaboradas con sablée de vainilla, rellenas con dulce de leche y terminadas con impresión comestible de alta calidad.\n\nInformación:\n\n-6 cm de diámetro\n-Presentación individual\n-Diseño personalizado\n-Envíos a toda Argentina 🇦🇷',
+    description: 'Tu idea, hecha galleta.\n\nCreamos galletas personalizadas con fotos, nombres, ilustraciones o el diseño que quieras. Un detalle original para cumpleaños, casamientos, eventos, souvenirs y regalos especiales.\n\nElaboradas con sablée de vainilla, dulce de leche, pasta ballina y terminadas con impresión comestible de alta calidad.\n\nInformación:\n\n-6 cm de diámetro\n-Presentación individual\n-Diseño personalizado\n-Envíos a toda Argentina 🇦🇷',
     gallery: [
       
       '/images/PRODUCTOS/COOKIES/CELEBRATIONS/CELE_7.png',
