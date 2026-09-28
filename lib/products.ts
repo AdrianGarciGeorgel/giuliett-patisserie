@@ -285,7 +285,7 @@ export const PRODUCTS: Product[] = [
     price: 22000,
     imagePrimary: '/images/PRODUCTOS/BOXS/BOX SOUVENIR/BOX_SOUVENIR_1.png',
     imageSecondary: '/images/PRODUCTOS/BOXS/BOX SOUVENIR/BOX_SOUVENIR_2.png',
-    description: 'Macarons presentados en cajitas individuales y personalizados con colores, etiquetas y detalles para cada ocasión. Ideales para cumpleaños, casamientos, baby showers y eventos corporativos.',
+    description: 'Macarons presentados en cajitas individuales y personalizados con colores, etiquetas y detalles para cada ocasión.\n\nIdeales para cumpleaños, casamientos, baby showers y eventos corporativos.',
     gallery: [
       '/images/PRODUCTOS/BOXS/BOX SOUVENIR/BOX_SOUVENIR_1.png',
       '/images/PRODUCTOS/BOXS/BOX SOUVENIR/BOX_SOUVENIR_2.png',
