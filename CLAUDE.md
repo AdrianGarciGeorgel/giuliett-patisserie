@@ -73,6 +73,8 @@ Cómo estaba (y cómo vuelve, si se reactiva):
 
 > ✅ **Decisión (Adrián, 22-09-2026):** el copy *"Elaborada sin ingredientes con gluten"* de
 > **Marquise** y **Macarons** en `lib/products.ts` **se respeta tal cual**. No reabrir.
+> ↪️ **28-09-2026, pedido de Giu (la dueña):** en **Box Macarons** pasa a *"Elaborados con ingredientes sin gluten."*,
+> en su propia línea, y la descripción va en dos líneas. Marquise sigue con la redacción original.
 
 El aviso de privacidad bajo el botón (*"Usamos tus datos solo para responder esta consulta.
 No los compartimos con nadie."*) también quedó confirmado el 22-09-2026.

@@ -255,7 +255,7 @@ export const PRODUCTS: Product[] = [
     price: 19000,
     imagePrimary: '/images/PRODUCTOS/BOXS/BOX MACARONS/BOX_MACARONS_1.jpg',
     imageSecondary: '/images/PRODUCTOS/BOXS/BOX MACARONS/BOX_MACARONS_2.png',
-    description: 'Selección de macarons en colores y sabores surtidos. Un clásico Giuliett, ideal para regalar o disfrutar. Elaborados sin ingredientes con gluten.',
+    description: 'Selección de macarons en colores y sabores surtidos.\nUn clásico Giuliett, ideal para regalar o disfrutar.\n\nElaborados con ingredientes sin gluten.',
     gallery: [
       '/images/PRODUCTOS/BOXS/BOX MACARONS/BOX_MACARONS_1.jpg',
       '/images/PRODUCTOS/BOXS/BOX MACARONS/BOX_MACARONS_2.png',
