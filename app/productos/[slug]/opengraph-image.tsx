@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og'
 import { comprimirTarjeta, fotoParaTarjeta } from '@/lib/og'
 import { getProductoPorSlug, getProductos } from '@/lib/catalogo'
 import { etiquetaCategoria } from '@/lib/seo'
-import { formatearPrecio } from '@/lib/precio'
+import { textoPrecio } from '@/lib/precio'
 
 /* Se generan en el build, una por producto del catálogo. Antes se armaban en cada pedido y con
    cualquier slug: /productos/lo-que-sea/opengraph-image devolvía 200 y gastaba CPU con sharp
@@ -43,7 +43,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           <div style={{ fontSize: product && product.name.length > 18 ? 60 : 76, fontWeight: 700, lineHeight: 1.05, marginTop: 18 }}>
             {product?.name ?? 'Giuliett Pâtisserie'}
           </div>
-          {product?.price ? <div style={{ fontSize: 34, marginTop: 22 }}>{formatearPrecio(product.price)}</div> : null}
+          {product ? <div style={{ fontSize: 34, marginTop: 22 }}>{textoPrecio(product.price)}</div> : null}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 'auto', fontSize: 28 }}>
             <div style={{ width: 14, height: 14, borderRadius: 999, background: '#BFB4DC' }} />
             Giuliett Pâtisserie · Mendoza

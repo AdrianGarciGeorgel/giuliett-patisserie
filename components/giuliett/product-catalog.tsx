@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { BANDA_CENTRAL, bajarSegundaFoto, mostrarSegundaFoto } from '@/lib/foto-alterna'
-import { formatearPrecio } from '@/lib/precio'
+import { textoPrecio } from '@/lib/precio'
 import { PRODUCT_CATEGORY_OPTIONS, isProductCategory } from '@/lib/products'
 import { cn } from '@/lib/utils'
 import type { Product, ProductCategory } from '@/types/product'
@@ -268,7 +268,7 @@ export function ProductCatalog({ initialCategory, productos }: ProductCatalogPro
               </div>
               <div className="mt-4 flex flex-col gap-1.5">
                 <h2 className="text-[14px] font-medium leading-snug text-primary md:text-[15px]">{product.name}</h2>
-                {product.price ? <p className="text-[13px] text-muted-foreground">{formatearPrecio(product.price)}</p> : null}
+                <p className="text-[13px] text-muted-foreground">{textoPrecio(product.price)}</p>
               </div>
             </Link>
           </li>

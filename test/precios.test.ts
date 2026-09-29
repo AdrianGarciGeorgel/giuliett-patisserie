@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { PRODUCTS } from '@/lib/products'
-import { formatearPrecio } from '@/lib/precio'
+import { PRECIO_SEGUN_DISENO, formatearPrecio, textoPrecio } from '@/lib/precio'
 import { jsonLdProducto } from '@/lib/seo'
 
 /** Lista de Giu "Precios para Web, septiembre 2026" (catálogo de WhatsApp Business del 28-09-2026).
@@ -45,6 +45,15 @@ describe('precios de la web (lista de Giu, septiembre 2026)', () => {
     expect(formatearPrecio(5000)).toBe('$5.000')
     expect(formatearPrecio(950)).toBe('$950')
     expect(formatearPrecio(1250000)).toBe('$1.250.000')
+  })
+
+  it('sin precio publicado se lee "Precio según diseño" (acordado con Giu el 28-09)', () => {
+    expect(PRECIO_SEGUN_DISENO).toBe('Precio según diseño')
+    expect(textoPrecio(60000)).toBe('$60.000')
+    expect(textoPrecio(undefined)).toBe('Precio según diseño')
+    const sinPrecio = PRODUCTS.filter((p) => p.price === undefined).map((p) => textoPrecio(p.price))
+    expect(sinPrecio).toHaveLength(6)
+    expect(new Set(sinPrecio)).toEqual(new Set(['Precio según diseño']))
   })
 
   it('Google recibe la oferta solo si hay precio', () => {

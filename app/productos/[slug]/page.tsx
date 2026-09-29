@@ -6,7 +6,7 @@ import { Section } from '@/components/giuliett/section'
 import { getProductoPorSlug, getProductos } from '@/lib/catalogo'
 import { PRODUCT_CATEGORY_OPTIONS } from '@/lib/products'
 import { waLink } from '@/lib/giuliett'
-import { formatearPrecio } from '@/lib/precio'
+import { textoPrecio } from '@/lib/precio'
 import { jsonLdMigas, jsonLdProducto, jsonLdSeguro, metadataProducto, resolverUrlSitio } from '@/lib/seo'
 
 type ProductPageProps = {
@@ -63,9 +63,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <h1 className="mt-5 text-balance text-[32px] font-light leading-[1.15] text-primary md:text-[42px] lg:text-[48px]">
               {product.name}
             </h1>
-            {product.price ? (
-              <p className="mt-5 text-[18px] text-primary md:text-[20px]">{formatearPrecio(product.price)}</p>
-            ) : null}
+            <p className="mt-5 text-[18px] text-primary md:text-[20px]">{textoPrecio(product.price)}</p>
             <p className="mt-7 max-w-[38ch] text-[15px] leading-[1.7] text-muted-foreground whitespace-pre-line">{product.description}</p>
             <PrimaryAction href={waLink(whatsappMessage)} className="mt-10 w-full max-w-[400px] lg:w-auto">
               Consultar por WhatsApp
