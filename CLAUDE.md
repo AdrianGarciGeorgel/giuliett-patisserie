@@ -616,6 +616,9 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
       archivo tal cual el de su repo): Giu pidió cambiar la tarjeta generada y Marco la subió solo a su repo,
       apuntando al dominio, donde daba 404. `IMAGEN_COMPARTIR_HOME` en `lib/seo.ts`, cubierto por
       `test/imagen-compartir.test.ts`. Las demás páginas siguen con la tarjeta generada.
+      **Ícono de la pestaña (6-11-2026):** la "G" de Giuliett de Marco (`public/Giuliett_favicon_claro_32x32.png` y
+      `_oscuro_`; miden 134×134 aunque el nombre diga 32×32), traída tal cual de su repo. Reemplaza al "v0" de la
+      plantilla; `icon.svg` y `apple-icon.png` se borraron como en su repo. Test en `test/layout.metadata.test.ts`.
 - [x] **Seguridad (punto 10):** `npm audit` en 0 (Next 16.3.6 cerró una crítica de bypass del
       proxy); cabeceras `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
       `Permissions-Policy` en todo el sitio y `noindex` + `no-store` en `/admin`

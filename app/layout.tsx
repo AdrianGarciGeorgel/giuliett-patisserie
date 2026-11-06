@@ -34,13 +34,29 @@ export const metadata: Metadata = {
   }),
   // Sin `robots`: indexar es el comportamiento por defecto. Fijarlo acá chocaba con el noindex
   // que Next pone en la 404 (salían las dos metas). El panel fija su noindex en admin/layout.
+  // Ícono de la pestaña: la "G" de Giuliett que hizo Marco (6-11-2026). Reemplaza al "v0" de la plantilla.
   icons: {
     icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
+      {
+        url: '/Giuliett_favicon_claro_32x32.png',
+        type: 'image/png',
+        sizes: '134x134',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/Giuliett_favicon_oscuro_32x32.png',
+        type: 'image/png',
+        sizes: '134x134',
+        media: '(prefers-color-scheme: dark)',
+      },
     ],
-    apple: '/apple-icon.png',
+    apple: [
+      {
+        url: '/Giuliett_favicon_claro_32x32.png',
+        type: 'image/png',
+        sizes: '134x134',
+      },
+    ],
   },
 }
 
