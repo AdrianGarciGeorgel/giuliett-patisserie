@@ -612,6 +612,10 @@ PR #1: https://github.com/maap00/giuliett-patisserie/pull/1 (pendiente de review
 - [x] Tarjetas Open Graph generadas (`app/opengraph-image.tsx` y por producto): JPEG de ~60 KB
       con foto + nombre + precio y paleta oficial. `sharp` **siempre en la misma versión que
       trae Next** (hoy 0.35.4): dos versiones conviviendo rompen el build (`colourspace`).
+      **Desde el 6-11-2026 la home usa la imagen de Marco** (`public/images/giuliett-og-2026.jpg`, 1600×900,
+      archivo tal cual el de su repo): Giu pidió cambiar la tarjeta generada y Marco la subió solo a su repo,
+      apuntando al dominio, donde daba 404. `IMAGEN_COMPARTIR_HOME` en `lib/seo.ts`, cubierto por
+      `test/imagen-compartir.test.ts`. Las demás páginas siguen con la tarjeta generada.
 - [x] **Seguridad (punto 10):** `npm audit` en 0 (Next 16.3.6 cerró una crítica de bypass del
       proxy); cabeceras `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
       `Permissions-Policy` en todo el sitio y `noindex` + `no-store` en `/admin`

@@ -56,18 +56,29 @@ export function descripcionBreve(texto: string | undefined, max = 155): string {
   return `${corte.slice(0, corte.lastIndexOf(' '))}…`
 }
 
+type ImagenCompartir = { ruta: string; ancho: number; alto: number }
+
+/** La imagen que aparece al compartir la home (WhatsApp, redes). La hizo Marco a pedido de Giu y la subió a su
+ *  repo el 6-11-2026: el archivo es el suyo, tal cual. Las demás páginas siguen con la tarjeta generada. */
+export const IMAGEN_COMPARTIR_HOME = { ruta: '/images/giuliett-og-2026.jpg', ancho: 1600, alto: 900 } as const
+
 type MetadataPagina = {
   titulo: string
   descripcion: string
   /** Ruta absoluta dentro del sitio, p. ej. "/eventos". */
   ruta: string
   base?: string
+  /** Imagen para compartir. Sin esto, la tarjeta de 1200×630 que genera `app/opengraph-image.tsx`. */
+  imagen?: ImagenCompartir
 }
 
 /** Metadata completa para una página estática: título, canonical, Open Graph y Twitter. */
-export function metadataPagina({ titulo, descripcion, ruta, base = resolverUrlSitio() }: MetadataPagina): Metadata {
+export function metadataPagina({ titulo, descripcion, ruta, base = resolverUrlSitio(), imagen }: MetadataPagina): Metadata {
   const url = `${base}${ruta === '/' ? '' : ruta}`
   const tituloCompleto = ruta === '/' ? `${NOMBRE_SITIO} · ${LEMA}` : `${titulo} · ${NOMBRE_SITIO}`
+  const imagenOg = imagen
+    ? { url: `${base}${imagen.ruta}`, width: imagen.ancho, height: imagen.alto }
+    : { url: `${base}/opengraph-image`, width: 1200, height: 630 }
   return {
     title: tituloCompleto,
     description: descripcion,
@@ -79,7 +90,7 @@ export function metadataPagina({ titulo, descripcion, ruta, base = resolverUrlSi
       siteName: NOMBRE_SITIO,
       locale: 'es_AR',
       type: 'website',
-      images: [{ url: `${base}/opengraph-image`, width: 1200, height: 630, alt: `${NOMBRE_SITIO} · ${LEMA}` }],
+      images: [{ ...imagenOg, alt: `${NOMBRE_SITIO} · ${LEMA}` }],
     },
     twitter: { card: 'summary_large_image', title: tituloCompleto, description: descripcion },
   }
